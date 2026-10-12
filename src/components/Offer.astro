@@ -1,0 +1,28 @@
+---
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const t = getUI(Astro.props.lang).offer;
+---
+
+<section id="services" class="wrap pb-24 md:pb-40">
+  <div class="mb-12 grid gap-6 md:mb-16 md:grid-cols-12">
+    <p class="eyebrow reveal md:col-span-3">{t.eyebrow}</p>
+    <h2 class="h-section reveal md:col-span-9 md:max-w-[22ch]">{t.title}</h2>
+  </div>
+  <ul class="grid gap-4 md:grid-cols-3">
+    {
+      t.items.map((item, i) => (
+        <li class="reveal flex min-h-[18rem] flex-col justify-between rounded-card bg-white p-7 md:min-h-[26rem] md:p-9" style={`--i:${i}`}>
+          <span class="font-serif text-lg italic text-mute">0{i + 1}</span>
+          <div>
+            <h3 class="font-serif text-3xl leading-tight tracking-tight md:text-4xl">{item.title}</h3>
+            <p class="mt-4 text-base leading-relaxed text-mute">{item.text}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>

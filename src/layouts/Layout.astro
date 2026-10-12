@@ -1,0 +1,61 @@
+---
+import "../styles/global.css";
+import interLatin from "../assets/fonts/inter-tight-latin-wght-normal.woff2?url";
+import newsreaderLatin from "../assets/fonts/newsreader-latin-wght-normal.woff2?url";
+import { site } from "../data/site";
+import { getUI, homePath, type Lang } from "../i18n/ui";
+import { jsonLd, langs, ogImage } from "../lib/seo";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getUI(lang);
+const origin = Astro.site!;
+const canonical = new URL(homePath(lang), origin).href;
+const og = await ogImage();
+const ld = await jsonLd(lang, origin);
+---
+
+<!doctype html>
+<html lang={t.htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.metaTitle}</title>
+    <meta name="description" content={t.metaDescription} />
+    <meta name="theme-color" content="#f6f3f0" />
+    <link rel="canonical" href={canonical} />
+    {
+      langs.map((l) => <link rel="alternate" hreflang={getUI(l).hreflang} href={new URL(homePath(l), origin).href} />)
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL(homePath("sr"), origin).href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={t.ogLocale} />
+    {langs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={getUI(l).ogLocale} />)}
+    <meta property="og:title" content={t.metaTitle} />
+    <meta property="og:description" content={t.metaDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(og.src, origin).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.metaTitle} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-black focus:px-4 focus:py-2 focus:text-white"
+      >{t.skip}</a
+    >
+    <slot />
+    <script>
+      import "../scripts/main.ts";
+    </script>
+  </body>
+</html>

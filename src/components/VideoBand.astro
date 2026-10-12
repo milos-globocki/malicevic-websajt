@@ -1,0 +1,45 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import { Image } from "astro:assets";
+import { photo } from "../data/photos";
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const t = getUI(Astro.props.lang).video;
+
+// Drop real clips into public/video/. Until then only the poster image renders.
+// Recommended: 1280x720, 6-12 s seamless loop, no audio, MP4 (H.264) under ~1.5 MB,
+// plus an optional WebM (VP9/AV1) that is usually ~40% smaller.
+const has = (file: string) => fs.existsSync(path.join(process.cwd(), "public/video", file));
+const mp4 = has("workshop.mp4");
+const webm = has("workshop.webm");
+---
+
+<section class="px-5 pb-24 md:px-10 md:pb-40" aria-labelledby="video-title">
+  <div class="vband">
+    <Image
+      src={photo("poster")}
+      alt=""
+      widths={[800, 1280, 1920]}
+      sizes="100vw"
+      loading="lazy"
+      class="vband-media"
+    />
+    {
+      (mp4 || webm) && (
+        <video class="vband-media vband-video" muted loop playsinline preload="none" aria-hidden="true" data-src>
+          {webm && <source data-src="/video/workshop.webm" type="video/webm" />}
+          {mp4 && <source data-src="/video/workshop.mp4" type="video/mp4" />}
+        </video>
+      )
+    }
+    <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-black/20"></div>
+    <div class="absolute inset-x-0 bottom-0 p-7 text-white md:p-14">
+      <p class="eyebrow mb-4 text-white/80">{t.eyebrow}</p>
+      <h2 id="video-title" class="h-section max-w-[18ch]">{t.title}</h2>
+    </div>
+  </div>
+</section>

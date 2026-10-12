@@ -1,0 +1,15 @@
+---
+import { splitWords } from "../lib/words";
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const words = splitWords(getUI(Astro.props.lang).statement);
+---
+
+<section class="wrap py-28 md:py-44">
+  <p class="fill h-section max-w-[24ch] md:max-w-[28ch]" style="font-size: clamp(2rem, 5.2vw, 4.75rem)">
+    {words.map(({ word, p }) => <span class="w" style={`--p:${p}`}>{word} </span>)}
+  </p>
+</section>

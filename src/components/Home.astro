@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "./Header.astro";
+import Hero from "./Hero.astro";
+import Statement from "./Statement.astro";
+import Offer from "./Offer.astro";
+import Featured from "./Featured.astro";
+import VideoBand from "./VideoBand.astro";
+import Portfolio from "./Portfolio.astro";
+import Process from "./Process.astro";
+import About from "./About.astro";
+import Contact from "./Contact.astro";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<Layout lang={lang}>
+  <Header lang={lang} />
+  <main id="main">
+    <Hero lang={lang} />
+    <Statement lang={lang} />
+    <Offer lang={lang} />
+    <Featured lang={lang} />
+    <VideoBand lang={lang} />
+    <Portfolio lang={lang} />
+    <Process lang={lang} />
+    <About lang={lang} />
+  </main>
+  <Contact lang={lang} />
+</Layout>

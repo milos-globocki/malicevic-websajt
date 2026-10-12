@@ -1,0 +1,59 @@
+---
+import { getUI, homePath, otherLang, languages, type Lang } from "../i18n/ui";
+import { site } from "../data/site";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getUI(lang);
+const other = otherLang(lang);
+const links = [
+  { href: "#top", label: t.nav.home },
+  { href: "#portfolio", label: t.nav.portfolio },
+  { href: "#services", label: t.nav.services },
+  { href: "#about", label: t.nav.about },
+  { href: "#contact", label: t.nav.contact },
+];
+---
+
+<header class="site-header">
+  <div class="wrap flex h-16 items-center justify-between md:h-20">
+    <a href={homePath(lang)} class="text-lg font-semibold tracking-tight md:text-xl" aria-label={site.name}>
+      MALIČEVIĆ<span class="ml-1.5 font-normal opacity-70">Enterijeri</span>
+    </a>
+
+    <nav class="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Main">
+      {links.map((l) => <a href={l.href} class="opacity-80 transition-opacity hover:opacity-100">{l.label}</a>)}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={homePath(other)}
+        hreflang={getUI(other).hreflang}
+        lang={getUI(other).htmlLang}
+        class="text-sm font-medium uppercase opacity-80 hover:opacity-100"
+        aria-label={languages[other]}>{other}</a
+      >
+      <a href="#contact" class="pill hidden md:inline-flex">{t.cta}</a>
+      <button popovertarget="menu" class="pill md:hidden" aria-label={t.menu}>{t.menu}</button>
+    </div>
+  </div>
+</header>
+
+<nav id="menu" popover class="menu-pop" aria-label="Menu">
+  <div class="flex items-center justify-between">
+    <span class="text-lg font-semibold tracking-tight">MALIČEVIĆ</span>
+    <button popovertarget="menu" popovertargetaction="hide" class="pill">{t.close}</button>
+  </div>
+  <ul class="mt-12 space-y-2">
+    {
+      links.map((l) => (
+        <li>
+          <a href={l.href} class="block py-2 font-serif text-5xl tracking-tight">{l.label}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <a href="#contact" class="pill pill--solid mt-10">{t.cta}</a>
+</nav>

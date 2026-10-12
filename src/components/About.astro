@@ -1,0 +1,40 @@
+---
+import { Image } from "astro:assets";
+import { photo } from "../data/photos";
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const t = getUI(Astro.props.lang).about;
+---
+
+<section id="about" class="wrap pb-24 md:pb-40">
+  <div class="grid items-center gap-10 md:grid-cols-12 md:gap-16">
+    <div class="reveal overflow-hidden rounded-card md:col-span-5">
+      <Image
+        src={photo("about")}
+        alt=""
+        widths={[480, 800, 1000]}
+        sizes="(min-width: 768px) 40vw, 100vw"
+        loading="lazy"
+        class="par aspect-[4/5] w-full scale-[1.16] object-cover"
+      />
+    </div>
+    <div class="md:col-span-7">
+      <p class="eyebrow reveal mb-5">{t.eyebrow}</p>
+      <h2 class="h-section reveal max-w-[16ch]">{t.title}</h2>
+      <p class="reveal mt-8 max-w-xl text-lg leading-relaxed text-mute">{t.text}</p>
+      <dl class="mt-12 grid grid-cols-3 gap-4 border-t border-line pt-8">
+        {
+          t.stats.map((s, i) => (
+            <div class="reveal" style={`--i:${i}`}>
+              <dt class="font-serif text-4xl tracking-tight md:text-6xl">{s.value}</dt>
+              <dd class="mt-2 text-sm text-mute">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>

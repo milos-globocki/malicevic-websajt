@@ -1,0 +1,26 @@
+---
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const t = getUI(Astro.props.lang).process;
+---
+
+<section class="wrap pb-24 md:pb-40">
+  <div class="mb-12 grid gap-6 md:mb-16 md:grid-cols-12">
+    <p class="eyebrow reveal md:col-span-3">{t.eyebrow}</p>
+    <h2 class="h-section reveal md:col-span-9 md:max-w-[20ch]">{t.title}</h2>
+  </div>
+  <ol class="grid gap-x-8 gap-y-10 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      t.steps.map((s, i) => (
+        <li class="reveal" style={`--i:${i}`}>
+          <span class="font-serif text-6xl italic leading-none text-mute md:text-7xl">{i + 1}</span>
+          <h3 class="mt-6 text-xl font-medium tracking-tight">{s.title}</h3>
+          <p class="mt-2 max-w-[28ch] text-mute">{s.text}</p>
+        </li>
+      ))
+    }
+  </ol>
+</section>

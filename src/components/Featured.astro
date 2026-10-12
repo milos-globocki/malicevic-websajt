@@ -1,0 +1,51 @@
+---
+import { Image } from "astro:assets";
+import { projects } from "../data/projects";
+import { photo } from "../data/photos";
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getUI(lang);
+const featured = projects.filter((p) => p.featured).slice(0, 3);
+---
+
+<section class="wrap pb-24 md:pb-40">
+  <div class="mb-10 flex items-end justify-between gap-6 md:mb-14">
+    <h2 class="h-section reveal">{t.featured.title}</h2>
+    <p class="eyebrow reveal hidden md:block">{t.featured.eyebrow}</p>
+  </div>
+
+  <div class="space-y-6">
+    {
+      featured.map((p, i) => (
+        <article class="stack-card overflow-hidden rounded-card bg-white" style={`--i:${i}`}>
+          <div class="grid md:grid-cols-12">
+            <div class="flex flex-col justify-between gap-10 p-7 md:col-span-4 md:p-10">
+              <p class="eyebrow text-mute">
+                {t.portfolio.filters[p.category]} · {p.year}
+              </p>
+              <div>
+                <h3 class="font-serif text-4xl leading-none tracking-tight md:text-5xl">{p.title[lang]}</h3>
+                <p class="mt-4 max-w-xs text-mute">{p.note[lang]}</p>
+                <a href="#portfolio" class="pill pill--solid mt-8">{t.featured.view} →</a>
+              </div>
+            </div>
+            <div class="hover-zoom overflow-hidden md:col-span-8">
+              <Image
+                src={photo(p.image)}
+                alt={p.title[lang]}
+                widths={[640, 960, 1280]}
+                sizes="(min-width: 768px) 66vw, 100vw"
+                loading="lazy"
+                class="aspect-[4/3] h-full w-full object-cover md:aspect-auto md:min-h-[32rem]"
+              />
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>

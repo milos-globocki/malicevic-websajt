@@ -1,0 +1,39 @@
+---
+import { Image } from "astro:assets";
+import { photo } from "../data/photos";
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const t = getUI(Astro.props.lang);
+---
+
+<section id="top" class="relative isolate flex h-[100svh] min-h-[34rem] items-end overflow-hidden bg-black text-white">
+  <div class="hero-media absolute inset-0 -z-10">
+    <Image
+      src={photo("hero")}
+      alt=""
+      widths={[800, 1280, 1920, 2400]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-black/35"></div>
+  </div>
+
+  <div class="wrap pb-10 md:pb-16">
+    <h1 class="h-display max-w-[16ch]">
+      <span class="hero-rise block" style="--d:0">{t.hero.line1}</span>
+      <span class="hero-rise block font-serif font-normal italic" style="--d:1">{t.hero.line2}</span>
+    </h1>
+    <div class="hero-rise mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between" style="--d:3">
+      <p class="max-w-md text-base leading-relaxed text-white/85 md:text-lg">{t.hero.sub}</p>
+      <div class="flex gap-3">
+        <a href="#portfolio" class="pill pill--light">{t.hero.scroll} ↓</a>
+        <a href="#contact" class="pill">{t.cta}</a>
+      </div>
+    </div>
+  </div>
+</section>
