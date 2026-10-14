@@ -1,4 +1,4 @@
-# Maličević Enterijeri — website
+# Maličević Enterijeri website
 
 Showcase site and portfolio for a furniture and interiors workshop: finished products, designer pieces, made-to-measure. The company is based in **Republika Srpska, BiH** and has clients across Europe.
 
@@ -10,6 +10,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 - The locale is BiH, not Serbia:
   - `<html lang="sr-Latn-BA">`, `og:locale` `sr_BA`, phone `+387`, schema `addressCountry: "BA"`.
   - hreflang stays plain `sr`/`en`. It should not be region-locked, because Serbian-speaking clients are all over Europe.
+- **No em dashes (—) and no double hyphens (--) anywhere a person can read them**: copy, meta titles, alt text, captions, code comments, docs, commit messages. Don't swap in a hyphen either; rewrite the sentence so it reads naturally, with a comma, a full stop, or a colon. Use `|` to separate a meta title. Syntax such as CSS custom properties (`--ease-out`) and `<!-- -->` is exempt.
 - Every string lives in `src/i18n/ui.ts`, and every project text in `src/data/projects.ts`, always as an `{ sr, en }` pair.
 
 ## SEO

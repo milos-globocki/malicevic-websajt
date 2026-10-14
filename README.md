@@ -1,4 +1,4 @@
-# Maličević Enterijeri — website
+# Maličević Enterijeri website
 
 Landing page + portfolio for a furniture / interiors workshop (finished products,
 designer pieces, made-to-measure) based in Republika Srpska, BiH, with clients across Europe.

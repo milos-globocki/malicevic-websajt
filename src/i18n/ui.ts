@@ -8,7 +8,7 @@ export const ui = {
     htmlLang: "sr-Latn-BA",
     hreflang: "sr",
     ogLocale: "sr_BA",
-    metaTitle: "Maličević Enterijeri — namještaj i enterijeri po mjeri",
+    metaTitle: "Maličević Enterijeri | Namještaj i enterijeri po mjeri",
     metaDescription:
       "Namještaj i enterijeri iz naše radionice u Republici Srpskoj, BiH: gotovi proizvodi, dizajnerski komadi i namještaj po mjeri za klijente širom Evrope.",
     skip: "Pređi na sadržaj",
@@ -19,11 +19,11 @@ export const ui = {
     hero: {
       line1: "Namještaj i enterijeri",
       line2: "napravljeni za vas.",
-      sub: "Gotovi proizvodi, dizajnerski komadi i namještaj po mjeri — od ideje do ugradnje.",
+      sub: "Gotovi proizvodi, dizajnerski komadi i namještaj po mjeri. S vama smo od prve ideje do ugradnje.",
       scroll: "Pogledajte radove",
     },
     statement:
-      "Svaki prostor ima svoj ritam. Mi pravimo namještaj koji ga prati — od mjere i materijala do posljednjeg detalja.",
+      "Svaki prostor ima svoj ritam. Mi pravimo namještaj koji ga prati, od mjere i materijala do posljednjeg detalja.",
     offer: {
       eyebrow: "Ponuda",
       title: "Tri načina da dođete do namještaja iz naše radionice",
@@ -85,7 +85,7 @@ export const ui = {
     htmlLang: "en",
     hreflang: "en",
     ogLocale: "en_GB",
-    metaTitle: "Maličević Enterijeri — furniture & custom interiors",
+    metaTitle: "Maličević Enterijeri | Furniture & custom interiors",
     metaDescription:
       "Furniture and interiors from our workshop in Republika Srpska, Bosnia and Herzegovina: ready-made, designer and bespoke pieces for clients across Europe.",
     skip: "Skip to content",
@@ -96,11 +96,11 @@ export const ui = {
     hero: {
       line1: "Furniture and interiors",
       line2: "made for you.",
-      sub: "Ready-made products, designer pieces and bespoke furniture — from idea to installation.",
+      sub: "Ready-made products, designer pieces and bespoke furniture. We are with you from the first idea to installation.",
       scroll: "See our work",
     },
     statement:
-      "Every space has its own rhythm. We build furniture that follows it — from measurements and materials to the last detail.",
+      "Every space has its own rhythm. We build furniture that follows it, from measurements and materials to the last detail.",
     offer: {
       eyebrow: "Services",
       title: "Three ways to get furniture from our workshop",
