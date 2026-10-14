@@ -88,7 +88,7 @@ const items = (
   <dialog id="lb" class="lb" aria-label={t.title}>
     <div class="lb-top">
       <p data-lb-count class="text-sm tabular-nums text-white/70"></p>
-      <button type="button" class="lb-btn" data-lb-close aria-label={getUI(lang).close}>✕</button>
+      <button type="button" class="lb-btn" data-lb-close aria-label={getUI(lang).close}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
     </div>
     <div class="lb-stage" data-lb-stage><img alt="" /></div>
     <div class="lb-bar">
@@ -97,8 +97,8 @@ const items = (
         <p data-lb-note class="lb-note text-sm text-white/70"></p>
       </div>
       <div class="flex shrink-0 gap-2">
-        <button type="button" class="lb-btn" data-lb-prev aria-label={t.prev}>←</button>
-        <button type="button" class="lb-btn" data-lb-next aria-label={t.next}>→</button>
+        <button type="button" class="lb-btn" data-lb-prev aria-label={t.prev}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6l-6 6 6 6" /></svg></button>
+        <button type="button" class="lb-btn" data-lb-next aria-label={t.next}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6" /></svg></button>
       </div>
     </div>
   </dialog>

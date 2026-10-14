@@ -783,7 +783,7 @@
   }
 }
 .lb::backdrop {
-  background: rgb(10 8 6 / 0.97);
+  background: rgb(10 8 6 / 0.985);
 }
 .lb-top,
 .lb-bar {
@@ -791,9 +791,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-}
-.lb-bar {
-  align-items: flex-end;
 }
 /* Always two lines tall, so a short note doesn't shift the bar. */
 .lb-note {
@@ -826,11 +823,20 @@
   height: 3rem;
   border: 1px solid rgb(255 255 255 / 0.5);
   border-radius: 999px;
-  font-size: 0.85rem;
-  line-height: 1;
   color: #fff;
   background: transparent;
   cursor: pointer;
+}
+/* Stroked SVG icons, not text glyphs: arrows in a font sit on the baseline and
+   read off-centre and thin. */
+.lb-icon {
+  width: 1.375rem;
+  height: 1.375rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .lb-btn:hover {
   background: rgb(255 255 255 / 0.14);
