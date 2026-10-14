@@ -41,7 +41,12 @@ if (video) {
 const dialog = document.getElementById("lb") as HTMLDialogElement | null;
 if (dialog) {
   const img = dialog.querySelector("img")!;
-  const caption = dialog.querySelector("[data-lb-caption]")!;
+  const stage = dialog.querySelector("[data-lb-stage]")!;
+  const count = dialog.querySelector("[data-lb-count]")!;
+  const title = dialog.querySelector("[data-lb-title]")!;
+  const note = dialog.querySelector("[data-lb-note]")!;
+  const pad = (n: number) => String(n).padStart(2, "0");
+  img.addEventListener("load", () => img.classList.add("is-in"));
   const items = () =>
     [...document.querySelectorAll<HTMLElement>("[data-lb]")].filter((el) => el.offsetParent !== null);
   let index = 0;
@@ -51,9 +56,12 @@ if (dialog) {
     if (!list.length) return;
     index = (i + list.length) % list.length;
     const el = list[index]!;
+    img.classList.remove("is-in");
     img.src = el.dataset.full!;
     img.alt = el.dataset.alt ?? "";
-    caption.textContent = el.dataset.caption ?? "";
+    count.textContent = `${pad(index + 1)} / ${pad(list.length)}`;
+    title.textContent = el.dataset.title ?? "";
+    note.textContent = el.dataset.note ?? "";
   };
 
   document.addEventListener("click", (e) => {
@@ -67,7 +75,7 @@ if (dialog) {
   dialog.querySelector("[data-lb-next]")!.addEventListener("click", () => show(index + 1));
   dialog.querySelector("[data-lb-close]")!.addEventListener("click", () => dialog.close());
   dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) dialog.close();
+    if (e.target === dialog || e.target === stage) dialog.close();
   });
   dialog.addEventListener("keydown", (e) => {
     if (e.key === "ArrowLeft") show(index - 1);

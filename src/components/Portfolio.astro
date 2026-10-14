@@ -58,7 +58,8 @@ const items = (
             data-lb
             data-full={p.full}
             data-alt={p.title[lang]}
-            data-caption={`${p.title[lang]} — ${p.note[lang]}`}
+            data-title={p.title[lang]}
+            data-note={p.note[lang]}
             aria-label={`${t.open}: ${p.title[lang]}`}
           >
             <span class="unveil block min-h-0 flex-1 overflow-clip rounded-card">
@@ -82,14 +83,22 @@ const items = (
   </ul>
   </div>
 
+  <!-- Full-screen frame with fixed slots: the photo fits the middle, the
+       counter, close, caption and arrows never move whatever its shape. -->
   <dialog id="lb" class="lb" aria-label={t.title}>
-    <img alt="" />
-    <div class="mt-4 flex items-center justify-between gap-4">
-      <p data-lb-caption class="text-sm text-white/80"></p>
+    <div class="lb-top">
+      <p data-lb-count class="text-sm tabular-nums text-white/70"></p>
+      <button type="button" class="lb-btn" data-lb-close aria-label={getUI(lang).close}>✕</button>
+    </div>
+    <div class="lb-stage" data-lb-stage><img alt="" /></div>
+    <div class="lb-bar">
+      <div class="min-w-0">
+        <p data-lb-title class="truncate font-serif text-xl leading-tight md:text-2xl"></p>
+        <p data-lb-note class="lb-note text-sm text-white/70"></p>
+      </div>
       <div class="flex shrink-0 gap-2">
         <button type="button" class="lb-btn" data-lb-prev aria-label={t.prev}>←</button>
         <button type="button" class="lb-btn" data-lb-next aria-label={t.next}>→</button>
-        <button type="button" class="lb-btn" data-lb-close aria-label={getUI(lang).close}>✕</button>
       </div>
     </div>
   </dialog>
