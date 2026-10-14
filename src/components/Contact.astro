@@ -10,10 +10,12 @@ const t = getUI(lang).contact;
 
 const rows = [
   { label: t.call, value: site.phone.display, href: `tel:${site.phone.href}` },
+  { label: t.call, value: site.phone2.display, href: `tel:${site.phone2.href}` },
   ...(site.viber ? [{ label: t.viber, value: site.phone.display, href: `viber://chat?number=%2B${site.viber}` }] : []),
   { label: t.whatsapp, value: site.phone.display, href: `https://wa.me/${site.whatsapp}` },
   { label: "Instagram", value: "@enterijer_malicevic", href: site.instagram },
   { label: "Facebook", value: "Maličević Enterijeri", href: site.facebook },
+  { label: "TikTok", value: "@enterijermalicevic", href: site.tiktok },
   { label: t.email, value: site.email, href: `mailto:${site.email}` },
 ];
 ---
@@ -30,8 +32,8 @@ const rows = [
           <div>
             <p class="eyebrow mb-2 text-white/50">{t.visit}</p>
             <address class="not-italic leading-relaxed">
-              {site.address.street}<br />
-              {site.address.city}, {site.address.country[lang]}
+              {site.address.street && <>{site.address.street}<br /></>}
+              {site.address.postalCode} {site.address.city}, {site.address.country[lang]}
             </address>
             <a href={site.mapUrl} class="mt-3 inline-block underline underline-offset-4" target="_blank" rel="noopener">{t.map} ↗</a>
           </div>
@@ -53,7 +55,7 @@ const rows = [
                 rel={r.href.startsWith("http") ? "noopener" : undefined}
               >
                 <span class="eyebrow text-white/55">{r.label}</span>
-                <span class="font-serif text-2xl tracking-tight md:text-4xl">{r.value} <span aria-hidden="true">↗</span></span>
+                <span class="font-serif text-xl tracking-tight min-[400px]:text-2xl md:text-4xl">{r.value} <span aria-hidden="true">↗</span></span>
               </a>
             </li>
           ))
@@ -61,6 +63,15 @@ const rows = [
         <li class="border-t border-white/20"></li>
       </ul>
     </div>
+  </div>
+
+  <div class="wrap pb-16 md:pb-24">
+    <span
+      role="img"
+      aria-label={`${site.shortName} Wood Form`}
+      class="block aspect-[890/759] w-36 bg-white md:w-44"
+      style="mask:url(/brand/lockup.png) left center/contain no-repeat;-webkit-mask:url(/brand/lockup.png) left center/contain no-repeat"
+    ></span>
   </div>
 
   <footer class="border-t border-white/15">

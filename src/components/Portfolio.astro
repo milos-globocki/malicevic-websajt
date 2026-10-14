@@ -11,7 +11,10 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = getUI(lang).portfolio;
-const filters = ["all", "finished", "designer", "custom"] as const;
+// A filter is only offered when at least one project belongs to it.
+const filters = (["all", "finished", "designer", "custom"] as const).filter(
+  (f) => f === "all" || projects.some((p) => p.category === f),
+);
 
 // Tile shape comes from the photo itself, read off the getImage() result: touching
 // photo().width directly would make Astro ship the original JPEG too. Portrait shots

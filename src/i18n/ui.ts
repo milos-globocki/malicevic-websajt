@@ -42,7 +42,7 @@ export const ui = {
     portfolio: {
       eyebrow: "Radovi",
       title: "Naši radovi",
-      filters: { all: "Sve", finished: "Gotovi proizvodi", designer: "Dizajnerski", custom: "Po mjeri" },
+      filters: { all: "Sve", finished: "Gotovi proizvodi", designer: "Dizajn enterijera", custom: "Po mjeri" },
       open: "Otvori sliku",
       prev: "Prethodna",
       next: "Sljedeća",
@@ -119,7 +119,7 @@ export const ui = {
     portfolio: {
       eyebrow: "Portfolio",
       title: "Our work",
-      filters: { all: "All", finished: "Ready-made", designer: "Designer", custom: "Custom" },
+      filters: { all: "All", finished: "Ready-made", designer: "Interior design", custom: "Custom" },
       open: "Open image",
       prev: "Previous",
       next: "Next",

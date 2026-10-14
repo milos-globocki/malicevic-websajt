@@ -43,6 +43,8 @@ const ld = await jsonLd(lang, origin);
     <meta property="og:image:alt" content={t.metaTitle} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
