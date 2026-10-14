@@ -1,0 +1,27 @@
+---
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const t = getUI(Astro.props.lang).materials;
+// Two copies so the row is always wider than the screen while it slides.
+const row = [...t.items, ...t.items];
+---
+
+<section class="ticker pb-24 md:pb-40" aria-label={t.label}>
+  <p class="eyebrow reveal wrap mb-6 text-mute md:mb-8">{t.label}</p>
+  <div class="overflow-hidden" aria-hidden="true">
+    <p class="ticker-row">
+      {
+        row.map((item, i) => (
+          <>
+            <span class:list={[i % 2 ? "font-sans font-medium tracking-[-0.04em]" : "font-serif italic"]}>{item}</span>
+            <span class="ticker-dot"></span>
+          </>
+        ))
+      }
+    </p>
+  </div>
+  <ul class="sr-only">{t.items.map((item) => <li>{item}</li>)}</ul>
+</section>

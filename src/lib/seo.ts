@@ -8,7 +8,9 @@ export const langs = Object.keys(languages) as Lang[];
 
 // Same options as the components use, so Astro reuses the generated files.
 export const ogImage = () => getImage({ src: photo("hero"), width: 1200, height: 630, format: "jpg", fit: "cover" });
-export const projectImage = (name: string) => getImage({ src: photo(name), width: 1800, format: "webp" });
+/** Lightbox size: fits a 1800x1500 box, so portrait shots don't ship at 2700px tall. */
+export const projectImage = (name: string) =>
+  getImage({ src: photo(name), width: 1800, height: 1500, fit: "inside", format: "webp" });
 
 /** schema.org @graph: one business + website, plus the page in the given language. */
 export async function jsonLd(lang: Lang, origin: URL) {

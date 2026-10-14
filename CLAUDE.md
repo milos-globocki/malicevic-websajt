@@ -20,7 +20,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 ## Stack and architecture
 - Astro with static output, no client framework. Tailwind v4 via `@tailwindcss/vite`, with tokens in the `@theme` block of `src/styles/global.css`.
 - There is **no backend and no contact form**. The contact section only shows details (phone, Viber, WhatsApp, Instagram, Facebook, email, map). Don't add a form, server, or Turnstile/Resend unless the user asks.
-- JS is one file, `src/scripts/main.ts` (~2 KB). It closes the menu, plays and pauses the video while it is visible, and runs the lightbox. **Don't add animation libraries** (GSAP, Lenis, etc.). Motion is CSS scroll-driven animation, behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`. Without support, the page shows its static final state.
+- JS is one file, `src/scripts/main.ts` (~2 KB). It closes the menu, plays and pauses the video while it is visible, and runs the lightbox. The opening sequence is CSS only: the hero photo opens from a card to full bleed, then the headline lines rise. On scroll the hero tucks back into a card; the "frame opens" motif repeats in the photo reveals and the video band. **Don't add animation libraries** (GSAP, Lenis, etc.). Motion is CSS scroll-driven animation, behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`. Without support, the page shows its static final state.
 - Layout:
   - Sections are in `src/components/*.astro`, composed in `Home.astro`.
   - `src/pages/index.astro` and `src/pages/en/index.astro` only pass `lang`.
@@ -36,13 +36,17 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 
 ## Gotchas
 - **Write scroll-driven animations as longhands** (`animation-name`, `animation-timeline`, …). Lightning CSS folds `animation-timeline` into the `animation` shorthand, which Chrome rejects, and the effect silently dies. To verify, check that the computed `animation-name` is not `none`.
+- When an element has more than one effect (hover zoom + scroll reveal), animate the individual `translate`/`scale` properties rather than `transform`, so the effects compose.
+- Never read `photo(x).width`/`.height` in a component. Any property access makes Astro ship the original JPEG as well. Read the dimensions off a `getImage()` result (`.options.src`) instead, as `Portfolio.astro` does.
 - Component CSS must stay inside `@layer components`. Otherwise it overrides Tailwind utilities such as `hidden` and `md:flex`.
 - `astro check` needs TypeScript 6. TS 7 is unsupported, so keep `typescript@^6`.
 
 ## Content workflow
 - The developer adds portfolio projects by hand for the first year: photo into `src/assets/photos/`, entry into `src/data/projects.ts`. Mark exactly 3 projects `featured`.
+- Portfolio tiles take their shape from the photo: portrait photos become tall tiles (2 rows), and the first project, if landscape, becomes a large 2x2 tile on desktop. Order the list so the 3-column "all" view packs without holes, e.g. with 1 large tile, 5 tall and 7 normal.
 - An admin panel or CMS comes only if manual updates become a burden. Keep the data shape CMS-friendly: flat objects, one photo per name.
-- Placeholders are marked `TODO`. This covers photos, contact details, domain (`site` in `astro.config.mjs` and `public/robots.txt`), logo, video and copy.
+- Current photos are Pexels stock placeholders, listed in `src/assets/photos/CREDITS.md`. Replace them with the client's photos.
+- Placeholders are marked `TODO`. This covers contact details, domain (`site` in `astro.config.mjs`), logo, video and copy.
 
 ## Commands
 `pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm check`. Run `pnpm check && pnpm build` before calling work done.

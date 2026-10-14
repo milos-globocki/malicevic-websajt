@@ -10,6 +10,11 @@ interface Props {
 const { lang } = Astro.props;
 const t = getUI(lang);
 const featured = projects.filter((p) => p.featured).slice(0, 3);
+
+// Each card sinks back while the next one slides over it: card i is driven by
+// card i+1's view timeline, shared through timeline-scope on the list.
+const tl = (i: number) => `--stack-${i}`;
+const scope = featured.map((_, i) => tl(i)).join(", ");
 ---
 
 <section class="wrap pb-24 md:pb-40">
@@ -18,34 +23,42 @@ const featured = projects.filter((p) => p.featured).slice(0, 3);
     <p class="eyebrow reveal hidden md:block">{t.featured.eyebrow}</p>
   </div>
 
-  <div class="space-y-6">
+  <div class="space-y-6" style={`timeline-scope: ${scope}`}>
     {
-      featured.map((p, i) => (
-        <article class="stack-card overflow-hidden rounded-card bg-white" style={`--i:${i}`}>
-          <div class="grid md:grid-cols-12">
-            <div class="flex flex-col justify-between gap-10 p-7 md:col-span-4 md:p-10">
-              <p class="eyebrow text-mute">
-                {t.portfolio.filters[p.category]} · {p.year}
-              </p>
-              <div>
-                <h3 class="font-serif text-4xl leading-none tracking-tight md:text-5xl">{p.title[lang]}</h3>
-                <p class="mt-4 max-w-xs text-mute">{p.note[lang]}</p>
-                <a href="#portfolio" class="pill pill--solid mt-8">{t.featured.view} →</a>
+      featured.map((p, i) => {
+        const next = i < featured.length - 1;
+        return (
+          <article
+            class:list={["stack-card overflow-hidden rounded-card bg-white", { "stack-sink": next }]}
+            style={`--i:${i}; view-timeline-name: ${tl(i)};${next ? ` animation-timeline: ${tl(i + 1)};` : ""}`}
+          >
+            <div class="grid md:grid-cols-12">
+              <div class="flex flex-col justify-between gap-10 p-7 md:col-span-4 md:p-10">
+                <p class="eyebrow text-mute">
+                  <span class="font-serif text-base normal-case italic tracking-normal">0{i + 1}</span>
+                  <span class="mx-2">·</span>
+                  {t.portfolio.filters[p.category]} · {p.year}
+                </p>
+                <div>
+                  <h3 class="font-serif text-4xl leading-none tracking-tight md:text-5xl">{p.title[lang]}</h3>
+                  <p class="mt-4 max-w-xs text-mute">{p.note[lang]}</p>
+                  <a href="#portfolio" class="pill pill--solid mt-8">{t.featured.view} →</a>
+                </div>
+              </div>
+              <div class="hover-zoom overflow-hidden md:col-span-8">
+                <Image
+                  src={photo(p.image)}
+                  alt={p.title[lang]}
+                  widths={[640, 960, 1280]}
+                  sizes="(min-width: 768px) 66vw, 100vw"
+                  loading="lazy"
+                  class="aspect-[4/3] h-full w-full object-cover md:aspect-auto md:h-[34rem]"
+                />
               </div>
             </div>
-            <div class="hover-zoom overflow-hidden md:col-span-8">
-              <Image
-                src={photo(p.image)}
-                alt={p.title[lang]}
-                widths={[640, 960, 1280]}
-                sizes="(min-width: 768px) 66vw, 100vw"
-                loading="lazy"
-                class="aspect-[4/3] h-full w-full object-cover md:aspect-auto md:min-h-[32rem]"
-              />
-            </div>
-          </div>
-        </article>
-      ))
+          </article>
+        );
+      })
     }
   </div>
 </section>

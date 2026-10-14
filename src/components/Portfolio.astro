@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 import { projects } from "../data/projects";
 import { photo } from "../data/photos";
@@ -12,12 +13,18 @@ const { lang } = Astro.props;
 const t = getUI(lang).portfolio;
 const filters = ["all", "finished", "designer", "custom"] as const;
 
-const items = await Promise.all(
-  projects.map(async (p) => ({
-    ...p,
-    full: (await projectImage(p.image)).src,
-  })),
-);
+// Tile shape comes from the photo itself, read off the getImage() result: touching
+// photo().width directly would make Astro ship the original JPEG too. Portrait shots
+// span two rows; the first project, if landscape, is a large 2x2 tile on desktop.
+const items = (
+  await Promise.all(
+    projects.map(async (p) => {
+      const full = await projectImage(p.image);
+      const { width, height } = full.options.src as ImageMetadata;
+      return { ...p, full: full.src, tall: height > width };
+    }),
+  )
+).map((p, i) => ({ ...p, big: i === 0 && !p.tall }));
 ---
 
 <section id="portfolio" class="pf wrap pb-24 md:pb-40">
@@ -38,29 +45,34 @@ const items = await Promise.all(
     </div>
   </div>
 
-  <ul class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+  <!-- Packed grid: row height follows column width (container units), portrait
+       tiles span two rows, and dense flow fills the holes a filter leaves. -->
+  <div class="pf-wrap">
+  <ul class="pf-grid">
     {
       items.map((p) => (
-        <li class="pf-item" data-cat={p.category}>
+        <li class:list={["pf-item", { "pf-tall": p.tall, "pf-big": p.big }]} data-cat={p.category}>
           <button
             type="button"
-            class="hover-zoom group block w-full overflow-hidden rounded-card text-left"
+            class="hover-zoom group flex h-full w-full flex-col text-left"
             data-lb
             data-full={p.full}
             data-alt={p.title[lang]}
             data-caption={`${p.title[lang]} — ${p.note[lang]}`}
             aria-label={`${t.open}: ${p.title[lang]}`}
           >
-            <Image
-              src={photo(p.image)}
-              alt={p.title[lang]}
-              widths={[480, 800, 1100]}
-              sizes="(min-width: 768px) 33vw, 50vw"
-              loading="lazy"
-              class="aspect-[4/5] w-full object-cover"
-            />
-            <span class="mt-3 flex items-baseline justify-between gap-3 px-1">
-              <span class="font-serif text-xl leading-tight tracking-tight md:text-2xl">{p.title[lang]}</span>
+            <span class="unveil block min-h-0 flex-1 overflow-hidden rounded-card">
+              <Image
+                src={photo(p.image)}
+                alt={p.title[lang]}
+                widths={p.big ? [800, 1100, 1600] : [480, 800, 1100]}
+                sizes={p.big ? "(min-width: 768px) 66vw, 50vw" : "(min-width: 768px) 33vw, 50vw"}
+                loading="lazy"
+                class="unveil-img h-full w-full object-cover"
+              />
+            </span>
+            <span class="flex h-12 shrink-0 items-center justify-between gap-3 px-1">
+              <span class="min-w-0 truncate font-serif text-base leading-tight tracking-tight md:text-2xl">{p.title[lang]}</span>
               <span class="shrink-0 text-xs text-mute">{p.year}</span>
             </span>
           </button>
@@ -68,6 +80,7 @@ const items = await Promise.all(
       ))
     }
   </ul>
+  </div>
 
   <dialog id="lb" class="lb" aria-label={t.title}>
     <img alt="" />

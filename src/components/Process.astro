@@ -12,7 +12,7 @@ const t = getUI(Astro.props.lang).process;
     <p class="eyebrow reveal md:col-span-3">{t.eyebrow}</p>
     <h2 class="h-section reveal md:col-span-9 md:max-w-[20ch]">{t.title}</h2>
   </div>
-  <ol class="grid gap-x-8 gap-y-10 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
+  <ol class="draw-line grid gap-x-8 gap-y-10 pt-8 sm:grid-cols-2 lg:grid-cols-4">
     {
       t.steps.map((s, i) => (
         <li class="reveal" style={`--i:${i}`}>
