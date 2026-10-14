@@ -79,7 +79,7 @@ export const ui = {
       hours: "Radno vrijeme",
       map: "Otvori mapu",
     },
-    footer: { rights: "Sva prava zadržana.", credit: "Izrada sajta:", linkedin: "LinkedIn profil" },
+    footer: { rights: "Sva prava zadržana.", credit: "Website by", linkedin: "LinkedIn profil" },
   },
   en: {
     htmlLang: "en",
