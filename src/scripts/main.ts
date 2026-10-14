@@ -81,5 +81,10 @@ if (dialog) {
     if (e.key === "ArrowLeft") show(index - 1);
     if (e.key === "ArrowRight") show(index + 1);
   });
-  dialog.addEventListener("close", () => (img.src = ""));
+  // Drop the photo once the fade-out is over, unless the lightbox was reopened.
+  dialog.addEventListener("close", () =>
+    setTimeout(() => {
+      if (!dialog.open) img.removeAttribute("src");
+    }, 500),
+  );
 }

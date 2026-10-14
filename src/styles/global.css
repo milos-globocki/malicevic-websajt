@@ -434,32 +434,40 @@
     }
   }
 
-  /* Lightbox fades in, the photo settles; each new photo fades in once loaded. */
-  .lb[open] {
-    animation: lb-fade 0.4s ease-out;
+  /* Lightbox fades in and out (close button, Escape or a click outside), the
+     photo settles in and sinks back; each new photo fades in once loaded.
+     Transitions on display and overlay keep the dialog painted while it fades. */
+  .lb,
+  .lb::backdrop {
+    transition:
+      opacity 0.4s ease-out,
+      display 0.4s allow-discrete,
+      overlay 0.4s allow-discrete;
   }
-  .lb[open] .lb-stage {
-    animation: lb-in 0.5s var(--ease-out);
+  .lb:not([open]),
+  .lb:not([open])::backdrop {
+    opacity: 0;
+  }
+  .lb-stage {
+    transition: scale 0.5s var(--ease-out);
+  }
+  .lb:not([open]) .lb-stage {
+    scale: 0.96;
+  }
+  @starting-style {
+    .lb[open],
+    .lb[open]::backdrop {
+      opacity: 0;
+    }
+    .lb[open] .lb-stage {
+      scale: 0.96;
+    }
   }
   .lb-stage img {
     transition: opacity 0.35s ease-out;
   }
   .lb-stage img:not(.is-in) {
     opacity: 0;
-  }
-  .lb[open]::backdrop {
-    animation: lb-fade 0.4s ease-out;
-  }
-  @keyframes lb-in {
-    from {
-      opacity: 0;
-      scale: 0.96;
-    }
-  }
-  @keyframes lb-fade {
-    from {
-      opacity: 0;
-    }
   }
 }
 

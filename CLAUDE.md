@@ -33,7 +33,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 
 ## Design
 - The reference is hola.design: warm paper `#f6f3f0`, black ink, a large grotesque paired with a serif accent, 25px radii, pill buttons. The aim is the same feel at a fraction of the weight.
-- The client's logo has arrived: a near-black "m" monogram with the wordmark "MALIČEVIĆ WOOD FORM", monochrome, so it fits the palette as is. `src/components/Mark.astro` is the monogram traced to a vector (it takes `currentColor`), used in the header and menu. `public/brand/lockup.png` (monogram with wordmark) is used as a CSS mask in the contact footer, `public/brand/logo-square.png` is the schema.org logo, and the favicons are generated from the same trace.
+- The client's logo has arrived: a near-black "m" monogram with the wordmark "MALIČEVIĆ WOOD FORM", monochrome, so it fits the palette as is. `src/components/Mark.astro` is the monogram traced to a vector (it takes `currentColor`), used in the header and menu. `public/brand/lockup.png` (monogram with wordmark) is used as a CSS mask at the foot of the contact section's left column, `public/brand/logo-square.png` is the schema.org logo, and the favicons are generated from the same trace.
 
 ## Gotchas
 - **Write scroll-driven animations as longhands** (`animation-name`, `animation-timeline`, …). Lightning CSS folds `animation-timeline` into the `animation` shorthand, which Chrome rejects, and the effect silently dies. To verify, check that the computed `animation-name` is not `none`.
@@ -45,7 +45,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 
 ## Content workflow
 - The developer adds portfolio projects by hand for the first year: photo into `src/assets/photos/`, entry into `src/data/projects.ts`. Mark exactly 3 projects `featured`.
-- Portfolio tiles take their shape from the photo: portrait photos become tall tiles (2 rows), and the first project, if landscape, becomes a large 2x2 tile on desktop. Order the list so the 3-column "all" view packs without holes, e.g. with 1 large tile, 5 tall and 7 normal.
+- Portfolio tiles take their shape from the photo: portrait photos become tall tiles (2 rows), and the first project, if landscape, becomes a large 2x2 tile on desktop. Order the list so the 3-column "all" view packs without holes, e.g. with 1 large tile, 7 tall and 9 normal. Check every filter view and the 2-column phone grid too.
 - An admin panel or CMS comes only if manual updates become a burden. Keep the data shape CMS-friendly: flat objects, one photo per name.
 - Current photos are the client's own work, taken from their old website and listed in `src/assets/photos/CREDITS.md`. They are only 900 to 1920px wide, so swap in the camera originals when they arrive (same file names). Photos with an empty filter (no `finished` project yet) simply hide that filter pill.
 - Contact details, address (city only), geo and socials come from the old site too. Placeholders are marked `TODO`: domain (`site` in `astro.config.mjs`), street address, opening hours, video, and the About/Offer copy and numbers.

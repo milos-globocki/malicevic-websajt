@@ -8,6 +8,11 @@ interface Props {
 const { lang } = Astro.props;
 const t = getUI(lang).contact;
 
+// The logo sits at the foot of the left column, its base on the list's last rule.
+// On phones the column stacks, so it moves below the list instead.
+const mask = "mask:url(/brand/lockup.png) left bottom/contain no-repeat;-webkit-mask:url(/brand/lockup.png) left bottom/contain no-repeat";
+const lockupLabel = `${site.shortName} Wood Form`;
+
 const rows = [
   { label: t.call, value: site.phone.display, href: `tel:${site.phone.href}` },
   { label: t.call, value: site.phone2.display, href: `tel:${site.phone2.href}` },
@@ -23,7 +28,7 @@ const rows = [
 <section id="contact" class="rounded-t-[2rem] bg-black text-white md:rounded-t-[3rem]">
   <div class="wrap py-20 md:py-32">
     <div class="grid gap-14 md:grid-cols-12 md:gap-10">
-      <div class="md:col-span-5">
+      <div class="md:col-span-5 md:flex md:flex-col">
         <p class="eyebrow mb-5 text-white/60">{t.eyebrow}</p>
         <h2 class="h-section max-w-[14ch]">{t.title}</h2>
         <p class="mt-6 max-w-sm text-white/70">{t.text}</p>
@@ -41,6 +46,10 @@ const rows = [
             <p class="eyebrow mb-2 text-white/50">{t.hours}</p>
             <p>{site.hours[lang]}</p>
           </div>
+        </div>
+
+        <div class="mt-auto hidden pt-12 md:block">
+          <span role="img" aria-label={lockupLabel} class="block aspect-[890/759] w-28 bg-white" style={mask}></span>
         </div>
       </div>
 
@@ -62,16 +71,9 @@ const rows = [
         }
         <li class="border-t border-white/20"></li>
       </ul>
-    </div>
-  </div>
 
-  <div class="wrap pb-16 md:pb-24">
-    <span
-      role="img"
-      aria-label={`${site.shortName} Wood Form`}
-      class="block aspect-[890/759] w-36 bg-white md:w-44"
-      style="mask:url(/brand/lockup.png) left center/contain no-repeat;-webkit-mask:url(/brand/lockup.png) left center/contain no-repeat"
-    ></span>
+      <span role="img" aria-label={lockupLabel} class="block aspect-[890/759] w-24 bg-white md:hidden" style={mask}></span>
+    </div>
   </div>
 
   <footer class="border-t border-white/15">
