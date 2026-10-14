@@ -55,4 +55,4 @@ Hosting is undecided. Any static host works; Cloudflare Pages is preferred.
 
 ## Don'ts
 - Don't use the connected Resend MCP. It belongs to another project (Terminko).
-- Don't commit unless the user asks.
+- Commit after each finished piece of work, once `pnpm check && pnpm build` pass. Push only when asked.

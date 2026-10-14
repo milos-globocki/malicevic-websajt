@@ -607,12 +607,13 @@
       animation-timeline: view();
       animation-range: cover 0% cover 100%;
     }
+    /* Travel is kept short (23% of the row) so it drifts rather than races. */
     @keyframes ticker {
       from {
         translate: 4% 0;
       }
       to {
-        translate: -42% 0;
+        translate: -19% 0;
       }
     }
 
