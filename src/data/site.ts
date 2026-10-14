@@ -4,6 +4,7 @@ export const site = {
   name: "Maličević Enterijeri",
   shortName: "Maličević",
   tagline: { sr: "Namještaj i enterijeri", en: "Furniture & interiors" },
+  developer: { name: "Miloš Globočki", linkedin: "https://www.linkedin.com/in/globocki/" },
   phone: { display: "+387 65 000 000", href: "+38765000000" }, // TODO
   viber: "38765000000", // TODO: digits only, with country code; empty string hides it
   whatsapp: "38765000000", // TODO: digits only, with country code
