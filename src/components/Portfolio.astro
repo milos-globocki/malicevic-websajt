@@ -61,7 +61,7 @@ const items = (
             data-caption={`${p.title[lang]} — ${p.note[lang]}`}
             aria-label={`${t.open}: ${p.title[lang]}`}
           >
-            <span class="unveil block min-h-0 flex-1 overflow-hidden rounded-card">
+            <span class="unveil block min-h-0 flex-1 overflow-clip rounded-card">
               <Image
                 src={photo(p.image)}
                 alt={p.title[lang]}

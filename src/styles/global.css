@@ -86,8 +86,12 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  /* Anchor jumps land below the fixed header (4rem / 5rem) with room to breathe. */
   [id] {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 7.5rem;
+    @media (min-width: 48rem) {
+      scroll-margin-top: 9rem;
+    }
   }
   :focus-visible {
     outline: 2px solid currentColor;
@@ -690,7 +694,7 @@
   position: relative;
   height: min(88svh, 56rem);
   min-height: 26rem;
-  overflow: hidden;
+  overflow: clip;
   border-radius: var(--radius-card);
   isolation: isolate;
   background: #1a1612;

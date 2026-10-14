@@ -37,6 +37,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 ## Gotchas
 - **Write scroll-driven animations as longhands** (`animation-name`, `animation-timeline`, …). Lightning CSS folds `animation-timeline` into the `animation` shorthand, which Chrome rejects, and the effect silently dies. To verify, check that the computed `animation-name` is not `none`.
 - When an element has more than one effect (hover zoom + scroll reveal), animate the individual `translate`/`scale` properties rather than `transform`, so the effects compose.
+- Never put `overflow: hidden` on an ancestor of a `view()`-animated element. It makes that ancestor the timeline's scroller, which never scrolls, so the effect freezes. Use `overflow: clip` (`overflow-clip`) to crop instead.
 - Never read `photo(x).width`/`.height` in a component. Any property access makes Astro ship the original JPEG as well. Read the dimensions off a `getImage()` result (`.options.src`) instead, as `Portfolio.astro` does.
 - Component CSS must stay inside `@layer components`. Otherwise it overrides Tailwind utilities such as `hidden` and `md:flex`.
 - `astro check` needs TypeScript 6. TS 7 is unsupported, so keep `typescript@^6`.

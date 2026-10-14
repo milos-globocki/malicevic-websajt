@@ -11,7 +11,7 @@ const row = [...t.items, ...t.items];
 
 <section class="ticker pb-24 md:pb-40" aria-label={t.label}>
   <p class="eyebrow reveal wrap mb-6 text-mute md:mb-8">{t.label}</p>
-  <div class="overflow-hidden" aria-hidden="true">
+  <div class="overflow-clip" aria-hidden="true">
     <p class="ticker-row">
       {
         row.map((item, i) => (
