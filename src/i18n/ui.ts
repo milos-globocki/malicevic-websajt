@@ -19,7 +19,7 @@ export const ui = {
     hero: {
       line1: "Namještaj i enterijeri",
       line2: "napravljeni za vas.",
-      sub: "Gotovi proizvodi, dizajnerski komadi i namještaj po mjeri. S vama smo od prve ideje do ugradnje.",
+      sub: "Gotovi proizvodi, dizajnerski komadi i namještaj po mjeri.\nS vama smo od prve ideje do ugradnje.",
       scroll: "Pogledajte radove",
     },
     statement:
@@ -95,7 +95,7 @@ export const ui = {
     hero: {
       line1: "Furniture and interiors",
       line2: "made for you.",
-      sub: "Ready-made products, designer pieces and bespoke furniture. We are with you from the first idea to installation.",
+      sub: "Ready-made products, designer pieces and bespoke furniture.\nWe are with you from the first idea to installation.",
       scroll: "See our work",
     },
     statement:
