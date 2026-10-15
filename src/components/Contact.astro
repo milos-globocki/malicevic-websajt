@@ -67,9 +67,9 @@ const apps = [
           ))}
         <li class="contact-row">
           <span class="contact-row-num font-serif text-xl tracking-tight min-[400px]:text-2xl md:text-2xl lg:text-4xl">{site.messenger.display}</span>
-          <span class="contact-row-apps flex gap-2">
+          <span class="contact-row-apps flex flex-col gap-2 lg:flex-row">
             {apps.map((app) => (
-              <a class="pill pill--light" href={app.href} target={app.href.startsWith("http") ? "_blank" : undefined} rel={app.href.startsWith("http") ? "noopener" : undefined}>{app.label} <span aria-hidden="true">↗</span></a>
+              <a class="pill pill--light justify-center" href={app.href} target={app.href.startsWith("http") ? "_blank" : undefined} rel={app.href.startsWith("http") ? "noopener" : undefined}>{app.label} <span aria-hidden="true">↗</span></a>
             ))}
           </span>
         </li>

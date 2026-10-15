@@ -873,13 +873,14 @@
 .contact-link:hover {
   padding-left: 0.75rem;
 }
-/* The Viber and WhatsApp row has no label: the buttons say it. Number on the right
-   like the other rows; on narrow screens the buttons drop under it, from desktop
-   width both share one line. */
+/* The Viber and WhatsApp row has no label: the buttons say it. Same two column rhythm
+   as the other rows, buttons on the left and the number on the right. The buttons
+   stack on narrow screens and share one line from desktop width. */
 .contact-row {
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas: "num num" "apps apps";
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "apps num";
+  align-items: center;
   gap: 1rem;
   padding: 1.25rem 0;
   border-top: 1px solid rgb(255 255 255 / 0.22);
@@ -887,14 +888,9 @@
 .contact-row-num {
   grid-area: num;
   justify-self: end;
+  white-space: nowrap;
 }
 .contact-row-apps {
   grid-area: apps;
-}
-@media (min-width: 1024px) {
-  .contact-row {
-    grid-template-areas: "apps num";
-    align-items: center;
-  }
 }
 }
