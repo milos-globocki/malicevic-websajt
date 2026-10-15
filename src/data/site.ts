@@ -4,7 +4,6 @@
 export const site = {
   name: "Maličević Enterijeri",
   shortName: "Maličević",
-  tagline: { sr: "Namještaj i enterijeri", en: "Furniture & interiors" },
   developer: { name: "Miloš Globočki", linkedin: "https://www.linkedin.com/in/globocki/" },
   legalName: "Maličević Wood Form d.o.o.",
   // Three numbers, each with one job. `display` is what visitors read, `href` is the

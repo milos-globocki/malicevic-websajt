@@ -8,8 +8,8 @@ interface Props {
 const { lang } = Astro.props;
 const t = getUI(lang).contact;
 
-// The logo sits at the foot of the left column, its base on the list's last rule.
-// On phones the column stacks, so it moves below the list instead.
+// From tablet width the logo sits at the foot of the left column. On phones the column
+// stacks, so it moves below the list and is centred.
 const mask = "mask:url(/brand/lockup.png) left bottom/contain no-repeat;-webkit-mask:url(/brand/lockup.png) left bottom/contain no-repeat";
 const lockupLabel = `${site.shortName} Wood Form`;
 
@@ -89,15 +89,14 @@ const apps = [
         <li class="border-t border-white/20"></li>
       </ul>
 
-      <span role="img" aria-label={lockupLabel} class="block aspect-[890/759] w-24 bg-white md:hidden" style={mask}></span>
+      <span role="img" aria-label={lockupLabel} class="mx-auto block aspect-[890/759] w-24 bg-white md:hidden" style={mask}></span>
     </div>
   </div>
 
   <footer class="border-t border-white/15">
-    <div class="wrap flex flex-col gap-2 py-6 text-sm text-white/55 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-6">
+    <div class="wrap flex flex-col gap-2 py-6 text-sm text-white/55 md:flex-row md:items-center md:justify-between md:gap-6">
       <p>© {new Date().getFullYear()} {site.name}. {getUI(lang).footer.rights}</p>
-      <p class="md:text-center">{site.tagline[lang]}</p>
-      <p class="flex items-center gap-2 md:justify-end">
+      <p class="flex items-center gap-2">
         {getUI(lang).footer.credit} {site.developer.name}
         <a
           href={site.developer.linkedin}
