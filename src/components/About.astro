@@ -29,7 +29,7 @@ const t = getUI(Astro.props.lang).about;
         {
           t.stats.map((s, i) => (
             <div class="reveal" style={`--i:${i}`}>
-              <dt class="font-serif text-4xl tracking-tight md:text-6xl">{s.value}</dt>
+              <dt class="font-serif text-4xl tracking-tight md:text-5xl lg:text-6xl">{s.value}</dt>
               <dd class="mt-2 text-sm text-mute">{s.label}</dd>
             </div>
           ))
