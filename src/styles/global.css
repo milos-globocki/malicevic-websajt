@@ -871,35 +871,28 @@
 .contact-link:hover {
   padding-left: 0.75rem;
 }
-/* The Viber and WhatsApp row keeps the other rows' rhythm: label left, number right.
-   The two app buttons sit under the label, and from desktop width the number is
-   centred against the label and buttons together. */
+/* The Viber and WhatsApp row has no label: the buttons say it. Number on the right
+   like the other rows; on narrow screens the buttons drop under it, from desktop
+   width both share one line. */
 .contact-row {
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-areas: "label num" "apps apps";
-  align-items: baseline;
+  grid-template-areas: "num num" "apps apps";
   gap: 1rem;
   padding: 1.25rem 0;
   border-top: 1px solid rgb(255 255 255 / 0.22);
 }
-.contact-row-label {
-  grid-area: label;
-}
 .contact-row-num {
   grid-area: num;
+  justify-self: end;
 }
 .contact-row-apps {
   grid-area: apps;
 }
 @media (min-width: 1024px) {
   .contact-row {
-    grid-template-areas: "label num" "apps num";
-    grid-template-rows: auto auto;
-    row-gap: 0.75rem;
-  }
-  .contact-row-num {
-    align-self: center;
+    grid-template-areas: "apps num";
+    align-items: center;
   }
 }
 }

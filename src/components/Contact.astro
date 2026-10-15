@@ -32,7 +32,7 @@ const apps = [
 ---
 
 <section id="contact" class="rounded-t-[2rem] bg-black text-white md:rounded-t-[3rem]">
-  <div class="wrap py-20 md:py-32">
+  <div class="wrap py-14">
     <div class="grid gap-14 md:grid-cols-12 md:gap-10">
       <div class="md:col-span-5 md:flex md:flex-col">
         <p class="eyebrow mb-5 text-white/60">{t.eyebrow}</p>
@@ -66,7 +66,6 @@ const apps = [
             </li>
           ))}
         <li class="contact-row">
-          <span class="eyebrow contact-row-label text-white/55">{t.messenger}</span>
           <span class="contact-row-num font-serif text-xl tracking-tight min-[400px]:text-2xl md:text-2xl lg:text-4xl">{site.messenger.display}</span>
           <span class="contact-row-apps flex gap-2">
             {apps.map((app) => (
