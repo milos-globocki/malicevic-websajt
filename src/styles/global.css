@@ -93,6 +93,14 @@
       scroll-margin-top: 9rem;
     }
   }
+  /* The contact block is a dark card with its own rounded top: land just under the
+     header (4rem / 5rem), a few pixels clear, so the whole card is in view. */
+  #contact {
+    scroll-margin-top: 4.5rem;
+    @media (min-width: 48rem) {
+      scroll-margin-top: 5.5rem;
+    }
+  }
   :focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 3px;
