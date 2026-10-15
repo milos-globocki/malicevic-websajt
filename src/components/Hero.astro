@@ -1,4 +1,6 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
 import { Image } from "astro:assets";
 import { photo } from "../data/photos";
 import { getUI, type Lang } from "../i18n/ui";
@@ -7,6 +9,20 @@ interface Props {
   lang: Lang;
 }
 const t = getUI(Astro.props.lang);
+
+// Background clips: public/video/hero-landscape.* for wide screens, hero-portrait.* for
+// tall ones (phones held upright, tablets in portrait). Each can be .webm and/or .mp4.
+// If only one orientation is supplied it serves both; with neither, the photo stays.
+const clip = (name: string) =>
+  [
+    ["webm", "video/webm"],
+    ["mp4", "video/mp4"],
+  ]
+    .filter(([ext]) => fs.existsSync(path.join(process.cwd(), "public/video", `${name}.${ext}`)))
+    .map(([ext, type]) => ({ src: `/video/${name}.${ext}`, type }));
+const landscape = clip("hero-landscape");
+const portrait = clip("hero-portrait");
+const hasVideo = landscape.length > 0 || portrait.length > 0;
 ---
 
 <!--
@@ -15,6 +31,8 @@ const t = getUI(Astro.props.lang);
   .hero-media  scroll: the photo drifts down (parallax)
   .hero-frame  load:   the photo opens from a centred card to full bleed
   .hero-img    load:   the photo settles from a slight zoom
+  .hero-video  the looping clip sits on the photo (same settle) and fades in once it plays;
+               the photo is what shows first, and what stays if the clip can't play
 -->
 <section id="top" class="hero relative isolate flex h-[100svh] min-h-[34rem] items-end overflow-hidden text-white">
   <div class="hero-media absolute inset-0 -z-10">
@@ -28,6 +46,22 @@ const t = getUI(Astro.props.lang);
         fetchpriority="high"
         class="hero-img h-full w-full object-cover"
       />
+      {
+        hasVideo && (
+          <video
+            class="hero-img hero-video absolute inset-0 h-full w-full object-cover"
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+            tabindex="-1"
+            data-hero
+            data-landscape={JSON.stringify(landscape.length ? landscape : portrait)}
+            data-portrait={JSON.stringify(portrait.length ? portrait : landscape)}
+          />
+        )
+      }
       <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/40"></div>
     </div>
   </div>
@@ -39,7 +73,7 @@ const t = getUI(Astro.props.lang);
     </h1>
     <div class="hero-rise mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between" style="--d:3">
       <p class="max-w-md text-base leading-relaxed text-white/85 md:text-lg">{t.hero.sub}</p>
-      <div class="flex gap-3">
+      <div class="flex flex-wrap gap-3">
         <a href="#portfolio" class="pill pill--light">{t.hero.scroll} ↓</a>
         <a href="#contact" class="pill">{t.cta}</a>
       </div>

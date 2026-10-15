@@ -22,10 +22,10 @@ const links = [
   <div class="intro-fade wrap flex h-16 items-center justify-between md:h-20">
     <a href={homePath(lang)} class="flex items-center gap-2.5 text-lg font-semibold tracking-tight md:text-xl" aria-label={site.name}>
       <Mark class="h-[1.15em] w-auto shrink-0" />
-      <span>MALIČEVIĆ<span class="ml-1.5 font-normal opacity-70">Enterijeri</span></span>
+      <span>MALIČEVIĆ<span class="ml-1.5 font-normal opacity-70 max-[359px]:hidden">Enterijeri</span></span>
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Main">
+    <nav class="hidden items-center gap-8 text-sm font-medium lg:flex" aria-label="Main">
       {links.map((l) => <a href={l.href} class="opacity-80 transition-opacity hover:opacity-100">{l.label}</a>)}
     </nav>
 
@@ -37,8 +37,8 @@ const links = [
         class="text-sm font-medium uppercase opacity-80 hover:opacity-100"
         aria-label={languages[other]}>{other}</a
       >
-      <a href="#contact" class="pill hidden md:inline-flex">{t.cta}</a>
-      <button popovertarget="menu" class="pill md:hidden" aria-label={t.menu}>{t.menu}</button>
+      <a href="#contact" class="pill hidden lg:inline-flex">{t.cta}</a>
+      <button popovertarget="menu" class="pill lg:hidden" aria-label={t.menu}>{t.menu}</button>
     </div>
   </div>
 </header>

@@ -20,15 +20,16 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 
 ## Stack and architecture
 - Astro with static output, no client framework. Tailwind v4 via `@tailwindcss/vite`, with tokens in the `@theme` block of `src/styles/global.css`.
-- There is **no backend and no contact form**. The contact section only shows details (phone, Viber, WhatsApp, Instagram, Facebook, email, map). Don't add a form, server, or Turnstile/Resend unless the user asks.
-- JS is one file, `src/scripts/main.ts` (~2 KB). It closes the menu, plays and pauses the video while it is visible, and runs the lightbox. The opening sequence is CSS only: the hero photo opens from a card to full bleed, then the headline lines rise. On scroll the hero tucks back into a card; the "frame opens" motif repeats in the photo reveals and the video band. **Don't add animation libraries** (GSAP, Lenis, etc.). Motion is CSS scroll-driven animation, behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`. Without support, the page shows its static final state.
+- There is **no backend and no contact form**. The contact section only shows details (calls number, one Viber/WhatsApp number, an international calls number, Instagram, Facebook, TikTok, email, opening hours). There is no map and no street address: the client has no premises for customers to visit. Don't add a form, server, or Turnstile/Resend unless the user asks.
+- JS is one file, `src/scripts/main.ts` (~2 KB). It closes the menu, runs the hero background clip and the video band (playing only while visible), and runs the lightbox. The opening sequence is CSS only: the hero photo opens from a card to full bleed, then the headline lines rise. On scroll the hero tucks back into a card; the "frame opens" motif repeats in the photo reveals and the video band. **Don't add animation libraries** (GSAP, Lenis, etc.). Motion is CSS scroll-driven animation, behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`. Without support, the page shows its static final state.
 - Layout:
   - Sections are in `src/components/*.astro`, composed in `Home.astro`.
   - `src/pages/index.astro` and `src/pages/en/index.astro` only pass `lang`.
   - Business details are in `src/data/site.ts`.
 - Images:
   - Photos go in `src/assets/photos/` and are looked up through `photo(name)` in `src/data/photos.ts`, which throws if a file is missing. Always render them via `astro:assets`.
-  - The video goes in `public/video/workshop.mp4`/`.webm`. `VideoBand` falls back to its poster when the file is absent.
+  - The video band clip goes in `public/video/workshop.mp4`/`.webm`. `VideoBand` falls back to its poster when the file is absent.
+  - The hero background is two clips in `public/video/`: `hero-landscape.webm`/`.mp4` (wide screens) and `hero-portrait.webm`/`.mp4` (phones and portrait tablets). `Hero.astro` lists whichever files exist at build time; `main.ts` picks by `(orientation: portrait)`, swaps on rotation, fades the clip in over the photo once it plays and pauses it off screen. One orientation alone serves both; with none, or with reduced motion or data saver, the photo stays. Recommended: 1920x1080 and 1080x1920, 8 to 15 s seamless loop, no audio, H.264 mp4 under ~3 MB with `+faststart`, plus a VP9 webm.
 - Fonts are self-hosted woff2 in `src/assets/fonts/`, Latin + Latin-Ext only. They are Inter Tight (UI) and Newsreader (serif accent), free stand-ins for hola.design's Adobe fonts.
 
 ## Design
@@ -48,7 +49,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 - Portfolio tiles take their shape from the photo: portrait photos become tall tiles (2 rows), and the first project, if landscape, becomes a large 2x2 tile on desktop. Order the list so the 3-column "all" view packs without holes, e.g. with 1 large tile, 7 tall and 9 normal. Check every filter view and the 2-column phone grid too.
 - An admin panel or CMS comes only if manual updates become a burden. Keep the data shape CMS-friendly: flat objects, one photo per name.
 - Current photos are the client's own work, taken from their old website and listed in `src/assets/photos/CREDITS.md`. They are only 900 to 1920px wide, so swap in the camera originals when they arrive (same file names). Photos with an empty filter (no `finished` project yet) simply hide that filter pill.
-- Contact details, address (city only), geo and socials come from the old site too. Placeholders are marked `TODO`: domain (`site` in `astro.config.mjs`), street address, opening hours, video, and the About/Offer copy and numbers.
+- Contact details, address (city only), geo and socials come from the old site too. Placeholders are marked `TODO`: domain (`site` in `astro.config.mjs`), the international phone number (`phoneIntl` in `site.ts`, the row hides while empty), opening hours, the two hero clips, the workshop video, and the About/Offer copy and numbers.
 
 ## Commands
 `pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm check`. Run `pnpm check && pnpm build` before calling work done.

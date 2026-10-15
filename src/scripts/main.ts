@@ -6,35 +6,68 @@ menu?.addEventListener("click", (e) => {
   if ((e.target as Element).closest("a")) menu.hidePopover();
 });
 
-// 2. Looping video: load lazily, play only while visible, skip on reduced
-//    motion or data-saver connections (the poster image stays instead).
-const video = document.querySelector<HTMLVideoElement>("video[data-src]");
-if (video) {
-  const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
-  const skip =
-    matchMedia("(prefers-reduced-motion: reduce)").matches || nav.connection?.saveData === true;
-  if (!skip) {
-    let loaded = false;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry) return;
-        if (entry.isIntersecting) {
-          if (!loaded) {
-            loaded = true;
-            for (const source of video.querySelectorAll<HTMLSourceElement>("source[data-src]")) {
-              source.src = source.dataset.src!;
-            }
-            video.load();
-          }
-          video.play().then(() => video.classList.add("is-playing")).catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { rootMargin: "200px 0px" },
+// 2. Looping videos: play only while visible, skip on reduced motion or data-saver
+//    connections (the poster image stays instead).
+const nav = navigator as Navigator & { connection?: { saveData?: boolean } };
+const skip =
+  matchMedia("(prefers-reduced-motion: reduce)").matches || nav.connection?.saveData === true;
+
+// 2a. Hero background: starts at once, and the clip follows the screen shape (a tall one
+//     on phones and portrait tablets, a wide one elsewhere), swapping if it is rotated.
+const hero = document.querySelector<HTMLVideoElement>("video[data-hero]");
+if (hero && !skip) {
+  const tall = matchMedia("(orientation: portrait)");
+  let shown = "";
+  let visible = true;
+  const play = () => {
+    if (visible) hero.play().catch(() => {});
+  };
+  const pick = () => {
+    const key = tall.matches ? "portrait" : "landscape";
+    if (key === shown) return;
+    shown = key;
+    hero.classList.remove("is-playing");
+    hero.replaceChildren(
+      ...(JSON.parse(hero.dataset[key]!) as { src: string; type: string }[]).map((s) =>
+        Object.assign(document.createElement("source"), s),
+      ),
     );
-    io.observe(video);
-  }
+    hero.load();
+    play();
+  };
+  hero.addEventListener("playing", () => hero.classList.add("is-playing"));
+  tall.addEventListener("change", pick);
+  new IntersectionObserver(([entry]) => {
+    visible = !!entry?.isIntersecting;
+    if (visible) play();
+    else hero.pause();
+  }).observe(hero);
+  pick();
+}
+
+// 2b. Video band: loaded when it comes near the viewport.
+const video = document.querySelector<HTMLVideoElement>("video[data-src]");
+if (video && !skip) {
+  let loaded = false;
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry) return;
+      if (entry.isIntersecting) {
+        if (!loaded) {
+          loaded = true;
+          for (const source of video.querySelectorAll<HTMLSourceElement>("source[data-src]")) {
+            source.src = source.dataset.src!;
+          }
+          video.load();
+        }
+        video.play().then(() => video.classList.add("is-playing")).catch(() => {});
+      } else {
+        video.pause();
+      }
+    },
+    { rootMargin: "200px 0px" },
+  );
+  io.observe(video);
 }
 
 // 3. Lightbox for the portfolio grid.

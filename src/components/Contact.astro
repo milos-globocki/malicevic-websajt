@@ -13,15 +13,21 @@ const t = getUI(lang).contact;
 const mask = "mask:url(/brand/lockup.png) left bottom/contain no-repeat;-webkit-mask:url(/brand/lockup.png) left bottom/contain no-repeat";
 const lockupLabel = `${site.shortName} Wood Form`;
 
+// Plain rows are whole-row links. The Viber and WhatsApp row is separate: one number,
+// two apps, so it carries a button for each instead of repeating the number.
 const rows = [
   { label: t.call, value: site.phone.display, href: `tel:${site.phone.href}` },
-  { label: t.call, value: site.phone2.display, href: `tel:${site.phone2.href}` },
-  ...(site.viber ? [{ label: t.viber, value: site.phone.display, href: `viber://chat?number=%2B${site.viber}` }] : []),
-  { label: t.whatsapp, value: site.phone.display, href: `https://wa.me/${site.whatsapp}` },
+  ...(site.phoneIntl.href ? [{ label: t.intl, value: site.phoneIntl.display, href: `tel:${site.phoneIntl.href}` }] : []),
+];
+const social = [
   { label: "Instagram", value: "@enterijer_malicevic", href: site.instagram },
   { label: "Facebook", value: "Maličević Enterijeri", href: site.facebook },
   { label: "TikTok", value: "@enterijermalicevic", href: site.tiktok },
   { label: t.email, value: site.email, href: `mailto:${site.email}` },
+];
+const apps = [
+  { label: t.viber, href: `viber://chat?number=%2B${site.messenger.digits}` },
+  { label: t.whatsapp, href: `https://wa.me/${site.messenger.digits}` },
 ];
 ---
 
@@ -35,14 +41,6 @@ const rows = [
 
         <div class="mt-12 space-y-8 text-white/85">
           <div>
-            <p class="eyebrow mb-2 text-white/50">{t.visit}</p>
-            <address class="not-italic leading-relaxed">
-              {site.address.street && <>{site.address.street}<br /></>}
-              {site.address.postalCode} {site.address.city}, {site.address.country[lang]}
-            </address>
-            <a href={site.mapUrl} class="mt-3 inline-block underline underline-offset-4" target="_blank" rel="noopener">{t.map} ↗</a>
-          </div>
-          <div>
             <p class="eyebrow mb-2 text-white/50">{t.hours}</p>
             <p>{site.hours[lang]}</p>
           </div>
@@ -54,8 +52,7 @@ const rows = [
       </div>
 
       <ul class="md:col-span-7 md:col-start-6">
-        {
-          rows.map((r) => (
+        {rows.map((r) => (
             <li>
               <a
                 class="contact-link"
@@ -63,12 +60,35 @@ const rows = [
                 target={r.href.startsWith("http") ? "_blank" : undefined}
                 rel={r.href.startsWith("http") ? "noopener" : undefined}
               >
-                <span class="eyebrow text-white/55">{r.label}</span>
-                <span class="font-serif text-xl tracking-tight min-[400px]:text-2xl md:text-4xl">{r.value} <span aria-hidden="true">↗</span></span>
+                <span class="eyebrow shrink-0 text-white/55">{r.label}</span>
+                <span class="min-w-0 text-right font-serif text-xl tracking-tight [overflow-wrap:anywhere] min-[400px]:text-2xl md:text-2xl lg:text-4xl">{r.value}&nbsp;<span aria-hidden="true">↗</span></span>
               </a>
             </li>
-          ))
-        }
+          ))}
+        <li class="contact-row">
+          <span class="eyebrow text-white/55">{t.messenger}</span>
+          <span class="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+            <span class="font-serif text-xl tracking-tight min-[400px]:text-2xl md:text-2xl lg:text-4xl">{site.messenger.display}</span>
+            <span class="flex gap-2">
+              {apps.map((app) => (
+                <a class="pill pill--light" href={app.href} target={app.href.startsWith("http") ? "_blank" : undefined} rel={app.href.startsWith("http") ? "noopener" : undefined}>{app.label} <span aria-hidden="true">↗</span></a>
+              ))}
+            </span>
+          </span>
+        </li>
+        {social.map((r) => (
+            <li>
+              <a
+                class="contact-link"
+                href={r.href}
+                target={r.href.startsWith("http") ? "_blank" : undefined}
+                rel={r.href.startsWith("http") ? "noopener" : undefined}
+              >
+                <span class="eyebrow shrink-0 text-white/55">{r.label}</span>
+                <span class="min-w-0 text-right font-serif text-xl tracking-tight [overflow-wrap:anywhere] min-[400px]:text-2xl md:text-2xl lg:text-4xl">{r.value}&nbsp;<span aria-hidden="true">↗</span></span>
+              </a>
+            </li>
+          ))}
         <li class="border-t border-white/20"></li>
       </ul>
 

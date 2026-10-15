@@ -731,6 +731,14 @@
 .vband-video.is-playing {
   opacity: 1;
 }
+/* Hero clip: over the photo, invisible until it is actually playing. */
+.hero-video {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+.hero-video.is-playing {
+  opacity: 1;
+}
 
 /* ---------- Portfolio: CSS-only category filter ---------- */
 .pf-radio {
@@ -862,5 +870,14 @@
 }
 .contact-link:hover {
   padding-left: 0.75rem;
+}
+/* The Viber and WhatsApp row: same rule and rhythm as the links, with the number on
+   the left and one button per app on the right (they wrap under it when narrow). */
+.contact-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgb(255 255 255 / 0.22);
 }
 }

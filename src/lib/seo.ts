@@ -30,7 +30,7 @@ export async function jsonLd(lang: Lang, origin: URL) {
         image,
         legalName: site.legalName,
         logo: new URL("/brand/logo-square.png", origin).href,
-        telephone: site.phone.href,
+        telephone: [site.phone.href, site.messenger.href, site.phoneIntl.href].filter(Boolean),
         email: site.email,
         address: {
           "@type": "PostalAddress",

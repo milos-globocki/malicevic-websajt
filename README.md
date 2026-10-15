@@ -16,7 +16,7 @@ black, big grotesque + serif, 25px radii, scroll-driven motion) at a fraction of
 | Fonts | Inter Tight + Newsreader, self-hosted, Latin + Latin-Ext only (Serbian č ć š ž đ) |
 | Motion | CSS scroll-driven animations (`animation-timeline`), progressive enhancement |
 | JS | ~2 KB in `src/scripts/main.ts`: menu close, video play/pause, lightbox |
-| Contact | Static details section (phone, Viber, WhatsApp, Instagram, Facebook, email, map). **No form, no backend.** |
+| Contact | Static details section (phone, Viber, WhatsApp, Instagram, Facebook, TikTok, email, opening hours). **No form, no backend.** |
 | SEO | JSON-LD `@graph`, hreflang, OG tags, `sitemap.xml` (with images) + `robots.txt` generated from `site` |
 | Hosting | Not decided. Any static host works (Cloudflare Pages recommended). |
 
@@ -32,7 +32,7 @@ pnpm check      # type-check .astro/.ts files
 
 ## Replace the placeholders (everything marked TODO)
 
-1. **Business details** → `src/data/site.ts` (phone, Viber, WhatsApp, email, address, hours + `openingHours`, map link).
+1. **Business details** → `src/data/site.ts` (phone, Viber/WhatsApp number, international number, email, address, hours + `openingHours`).
 2. **Photos** → overwrite files in `src/assets/photos/` keeping the names
    (`hero.jpg`, `poster.jpg`, `about.jpg`, `p-01.jpg`…). Export ~2400 px wide for `hero`,
    ~1600 px for the rest; Astro generates AVIF/WebP-sized variants at build time.
