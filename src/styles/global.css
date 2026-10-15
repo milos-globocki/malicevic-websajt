@@ -787,11 +787,13 @@
   border: 0;
   background: transparent;
   color: #fff;
+  /* The rows live on .lb, not .lb[open]: while it fades out the dialog is no
+     longer [open], and losing the rows would collapse the photo mid fade. */
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 1rem;
 }
 .lb[open] {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 1rem;
 }
 @media (min-width: 768px) {
   .lb {
