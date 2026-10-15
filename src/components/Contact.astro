@@ -32,7 +32,7 @@ const apps = [
 ---
 
 <section id="contact" class="rounded-t-[2rem] bg-black text-white md:rounded-t-[3rem]">
-  <div class="wrap pt-20 pb-16 md:pt-[5.5rem] md:pb-[4.5rem]">
+  <div class="wrap pt-20 pb-14 md:pt-[5.5rem] md:pb-[4.5rem]">
     <div class="grid gap-14 md:grid-cols-12 md:gap-10">
       <div class="md:col-span-5 md:flex md:flex-col">
         <p class="eyebrow mb-5 text-white/60">{t.eyebrow}</p>
@@ -66,7 +66,7 @@ const apps = [
             </li>
           ))}
         <li class="contact-row">
-          <span class="contact-row-num font-serif text-xl tracking-tight min-[400px]:text-2xl md:text-2xl lg:text-4xl">{site.messenger.display}</span>
+          <span class="contact-row-num font-serif text-xl tracking-tight max-[359px]:text-lg min-[400px]:text-2xl md:text-2xl lg:text-4xl">{site.messenger.display}</span>
           <span class="contact-row-apps flex flex-col gap-2 lg:flex-row">
             {apps.map((app) => (
               <a class="pill pill--light justify-center" href={app.href} target={app.href.startsWith("http") ? "_blank" : undefined} rel={app.href.startsWith("http") ? "noopener" : undefined}>{app.label} <span aria-hidden="true">↗</span></a>
@@ -94,9 +94,9 @@ const apps = [
   </div>
 
   <footer class="border-t border-white/15">
-    <div class="wrap flex flex-col gap-2 py-6 text-sm text-white/55 md:flex-row md:items-center md:justify-between md:gap-6">
+    <div class="wrap flex flex-col items-center gap-2 py-6 text-center text-sm text-white/55 md:flex-row md:justify-between md:gap-6 md:text-left">
       <p>© {new Date().getFullYear()} {site.name}. {getUI(lang).footer.rights}</p>
-      <p class="flex items-center gap-2">
+      <p class="flex items-center justify-center gap-2">
         {getUI(lang).footer.credit} {site.developer.name}
         <a
           href={site.developer.linkedin}
