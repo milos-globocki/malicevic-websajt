@@ -7,7 +7,7 @@ interface Props {
   lang: Lang;
   /** The same page in the other language. Defaults to its home page. */
   alt?: string;
-  /** For pages that open on paper rather than a photo: dark from the start, no intro fade. */
+  /** For pages that open on paper rather than a photo: dark from the start. */
   solid?: boolean;
 }
 const { lang, solid = false } = Astro.props;
@@ -19,6 +19,8 @@ const alt = Astro.props.alt ?? homePath(other);
 // the projects page. Every page ends with the contact section, so that one is always local.
 const home = homePath(lang);
 const onHome = Astro.url.pathname === home;
+// Only the home page fades the header in with its opening. Elsewhere it is there from the
+// first frame, so it holds still while a page transition swaps the rest.
 const section = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 const links = [
   { href: onHome ? "#top" : home, label: t.nav.home },
@@ -31,7 +33,7 @@ const links = [
 ---
 
 <header class:list={["site-header", { "site-header--solid": solid }]}>
-  <div class:list={["wrap flex h-16 items-center justify-between md:h-20", { "intro-fade": !solid }]}>
+  <div class:list={["wrap flex h-16 items-center justify-between md:h-20", { "intro-fade": !solid && onHome }]}>
     <a href={home} class="flex items-center gap-2.5 text-lg font-semibold tracking-tight md:text-xl" aria-label={site.name}>
       <Mark class="h-[1.15em] w-auto shrink-0" />
       <span>MALIČEVIĆ<span class="ml-1.5 font-normal opacity-70 max-[359px]:hidden">Enterijeri</span></span>

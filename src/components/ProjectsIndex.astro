@@ -91,7 +91,11 @@ const ld = {
                 </div>
                 <div class="pj-strip md:col-span-8">
                   {p.photos.slice(0, 3).map((name, j) => (
-                    <span class:list={["pj-frame unveil", { "pj-frame--cover": j === 0 }]}>
+                    <span
+                      class:list={["pj-frame unveil", { "pj-frame--cover": j === 0 }]}
+                      data-vt={j === 0 ? p.id : undefined}
+                      data-vt-href={j === 0 ? projectPath(p, lang) : undefined}
+                    >
                       <Image
                         src={photo(name)}
                         alt={j === 0 ? p.title[lang] : ""}

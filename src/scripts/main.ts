@@ -121,3 +121,40 @@ if (dialog) {
     }, 500),
   );
 }
+
+// 4. Page transitions: the crossfade itself is CSS (@view-transition). Here we pick the one
+//    photo that should grow into the next page's hero, or shrink back into its card:
+//    [data-vt] marks project photos, [data-vt-href] the project page each one opens and
+//    [data-vt-self] the hero of the current project page. Only a pair that is on screen
+//    gets a name, so the photo never flies in from off screen, and the names are dropped
+//    once the transition ends.
+type Transition = { finished: Promise<unknown> } | null | undefined;
+const shown = (el: Element) => {
+  const r = el.getBoundingClientRect();
+  return r.width > 0 && r.bottom > 0 && r.top < innerHeight;
+};
+const ownHero = document.querySelector<HTMLElement>("[data-vt-self]");
+const cardFor = (url?: string) => {
+  if (!url) return undefined;
+  const path = new URL(url).pathname;
+  return [...document.querySelectorAll<HTMLElement>("[data-vt-href]")].find(
+    (el) => el.dataset.vtHref === path && shown(el),
+  );
+};
+const morph = (el: HTMLElement | null | undefined, vt: Transition) => {
+  if (!el || !vt) return;
+  el.style.setProperty("view-transition-name", `pj-${el.dataset.vt}`);
+  vt.finished.finally(() => el.style.removeProperty("view-transition-name"));
+};
+addEventListener("pageswap", (e) => {
+  const { viewTransition, activation } = e as Event & {
+    viewTransition?: Transition;
+    activation?: { entry?: { url?: string } } | null;
+  };
+  morph(cardFor(activation?.entry?.url) ?? (ownHero && shown(ownHero) ? ownHero : undefined), viewTransition);
+});
+addEventListener("pagereveal", (e) => {
+  const { viewTransition } = e as Event & { viewTransition?: Transition };
+  const nav = (window as Window & { navigation?: { activation?: { from?: { url?: string } | null } } }).navigation;
+  morph(ownHero ?? cardFor(nav?.activation?.from?.url), viewTransition);
+});

@@ -80,12 +80,13 @@ const words = splitWords(p.intro[lang]);
   <Header lang={lang} alt={paths[otherLang(lang)]} />
   <main id="main">
     <!--
-      Same opening as the home hero (the photo opens from a card to full bleed, the title
-      rises), but the photo fades into the paper at the bottom and the title sits on it.
+      Arriving from a project card, the card's photo grows into this frame (a view
+      transition, see main.ts), so the photo only settles and the title rises right after.
+      The photo fades into the paper at the bottom and the title sits on it.
     -->
     <section class="relative isolate flex h-[100svh] min-h-[34rem] items-end overflow-hidden">
       <div class="hero-media absolute inset-0 -z-10">
-        <div class="hero-frame absolute inset-0 overflow-hidden bg-[#1a1612]">
+        <div class="absolute inset-0 overflow-hidden bg-[#1a1612]" data-vt={p.id} data-vt-self>
           <Image
             src={photo(cover)}
             alt={alt(0)}
@@ -93,13 +94,13 @@ const words = splitWords(p.intro[lang]);
             sizes="100vw"
             loading="eager"
             fetchpriority="high"
-            class="hero-img h-full w-full object-cover"
+            class="pj-hero-img h-full w-full object-cover"
           />
           <div class="pj-hero-shade absolute inset-0"></div>
         </div>
       </div>
 
-      <div class="hero-copy wrap pb-8 md:pb-12">
+      <div class="hero-copy wrap pb-8 md:pb-12" style="--intro: 0.3s">
         <nav class="hero-rise eyebrow mb-5 flex flex-wrap gap-x-2 text-mute" style="--d:0" aria-label={t.projects.title}>
           <a href={projectsPath(lang)} class="text-ink underline-offset-4 hover:underline">{t.projects.title}</a>
           <span aria-hidden="true">/</span>
@@ -171,7 +172,7 @@ const words = splitWords(p.intro[lang]);
 
     <section class="px-5 pb-24 md:px-10 md:pb-40">
       <a href={projectPath(next, lang)} class="vband group block h-[min(72svh,46rem)]">
-        <Image src={photo(next.photos[0]!)} alt="" widths={[800, 1280, 1920]} sizes="100vw" loading="lazy" class="vband-media" />
+        <Image src={photo(next.photos[0]!)} alt="" widths={[800, 1280, 1920]} sizes="100vw" loading="lazy" class="vband-media" data-vt={next.id} data-vt-href={projectPath(next, lang)} />
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-black/25"></div>
         <div class="absolute inset-x-0 bottom-0 flex flex-col gap-7 p-7 text-white md:flex-row md:items-end md:justify-between md:p-14">
           <div>
