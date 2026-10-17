@@ -105,7 +105,10 @@ const ld = {
         }
       </ol>
 
-      <ul class="pj-grid wrap grid gap-x-5 gap-y-12 md:grid-cols-2 md:gap-y-16">
+      <!-- The toggle hides this wrapper, not the list: a display utility such as `grid`
+           sits in a later layer and would win over the component rule. -->
+      <div class="pj-grid">
+      <ul class="wrap grid gap-x-5 gap-y-12 md:grid-cols-2 md:gap-y-16">
         {
           projects.map((p, i) => {
             const big = odd && i === 0;
@@ -135,6 +138,7 @@ const ld = {
           })
         }
       </ul>
+      </div>
 
       <!-- Floating switch: sticky to the bottom of the screen for as long as the list or
            grid is in view. Radios, so the switch works without JavaScript. -->
