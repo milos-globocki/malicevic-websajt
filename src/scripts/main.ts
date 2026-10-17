@@ -1,9 +1,29 @@
 // Tiny, dependency-free enhancements. The page works without any of this.
 
-// 1. Close the mobile menu popover after choosing a link.
+// 0. Smooth scrolling for in-page links, switched on only once the page has loaded: the
+//    jump to /#section on arrival from another page should land at once.
+const smooth = () => requestAnimationFrame(() => (document.documentElement.dataset.smooth = ""));
+if (document.readyState === "complete") smooth();
+else addEventListener("load", smooth, { once: true });
+
+// 1. Close the mobile menu popover after choosing a link on this page. A link to another
+//    page leaves it open, so the page transition fades the menu itself into the next page
+//    (a half closed menu would bleed over it). Coming Back to that page, it is closed at
+//    once, before the page shows.
 const menu = document.getElementById("menu");
 menu?.addEventListener("click", (e) => {
-  if ((e.target as Element).closest("a")) menu.hidePopover();
+  const link = (e.target as Element).closest("a");
+  if (link && link.pathname === location.pathname) menu.hidePopover();
+});
+const closeMenuNow = () => {
+  if (!menu?.matches(":popover-open")) return;
+  menu.style.transition = "none";
+  menu.hidePopover();
+  requestAnimationFrame(() => menu.style.removeProperty("transition"));
+};
+addEventListener("pagereveal", closeMenuNow);
+addEventListener("pageshow", (e) => {
+  if (e.persisted) closeMenuNow();
 });
 
 // 2. Looping videos: play only while visible, skip on reduced motion or data-saver
@@ -153,8 +173,14 @@ addEventListener("pageswap", (e) => {
   };
   morph(cardFor(activation?.entry?.url) ?? (ownHero && shown(ownHero) ? ownHero : undefined), viewTransition);
 });
+// Arriving from another page of the site (with a transition): the crossfade is the
+// entrance, so the home page skips its opening sequence (see [data-arrived] in the CSS).
+// Only the first reveal counts; a page restored by Back keeps the state it was left in.
+let revealed = false;
 addEventListener("pagereveal", (e) => {
   const { viewTransition } = e as Event & { viewTransition?: Transition };
+  if (viewTransition && !revealed) document.documentElement.dataset.arrived = "";
+  revealed = true;
   const nav = (window as Window & { navigation?: { activation?: { from?: { url?: string } | null } } }).navigation;
   morph(ownHero ?? cardFor(nav?.activation?.from?.url), viewTransition);
 });

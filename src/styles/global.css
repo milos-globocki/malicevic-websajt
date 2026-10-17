@@ -76,8 +76,13 @@
 @layer base {
   html {
     background: var(--color-paper);
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+  }
+  /* In-page links glide; main.ts switches this on once the page has loaded, so arriving
+     at /#portfolio from another page lands there at once instead of gliding through
+     everything above it. */
+  html[data-smooth] {
+    scroll-behavior: smooth;
   }
   body {
     background: var(--color-paper);
@@ -106,7 +111,7 @@
     outline-offset: 3px;
   }
   @media (prefers-reduced-motion: reduce) {
-    html {
+    html[data-smooth] {
       scroll-behavior: auto;
     }
   }
@@ -647,6 +652,28 @@
       opacity: 0;
     }
   }
+  /* A photo with no partner on the other page (its card is off screen, or the page has
+     none) leaves and arrives with the page itself instead of hanging on. */
+  ::view-transition-old(.pj):only-child {
+    animation: vt-out 0.25s ease-out both;
+  }
+  ::view-transition-new(.pj):only-child {
+    animation: vt-in 0.5s var(--ease-out) 0.05s both;
+  }
+  /* Arriving from another page of the site (main.ts sets data-arrived): the transition is
+     the entrance, so the home hero is already full bleed, the header already there, and
+     only the headline rises, as on a project page. */
+  [data-arrived] .hero-frame,
+  [data-arrived] .intro-fade {
+    animation: none;
+  }
+  [data-arrived] .hero-img {
+    animation-name: pj-settle;
+    animation-duration: 1.4s;
+  }
+  [data-arrived] .hero-copy {
+    --intro: 0.3s;
+  }
 
   .hover-zoom img {
     transition: transform 0.9s var(--ease-quart);
@@ -686,6 +713,14 @@
       opacity: 0;
       translate: 0 -1rem;
     }
+  }
+  /* Leaving for another page from the open menu: the menu is its own layer of the page
+     transition, above the old header, and fades out as the next page fades in. */
+  .menu-pop:popover-open {
+    view-transition-name: menu;
+  }
+  ::view-transition-old(menu) {
+    animation: vt-out 0.25s ease-out both;
   }
 
   /* Lightbox fades in and out (close button, Escape or a click outside), the
