@@ -20,6 +20,10 @@ const total = pad(projects.length);
 // Grid view is two columns from tablet width; with an odd count the first tile spans
 // both, so the last row is never half empty.
 const odd = projects.length % 2 === 1;
+// The List/Grid switch is built but hidden for now: only the list is offered. Set this to
+// true to bring the switch (and so the grid) back. The radios stay in the page either way,
+// because the list stays visible only while #v-list is checked.
+const pickView = false;
 
 const ld = {
   type: "CollectionPage" as const,
@@ -142,7 +146,7 @@ const ld = {
 
       <!-- Floating switch: sticky to the bottom of the screen for as long as the list or
            grid is in view. Radios, so the switch works without JavaScript. -->
-      <div class="pj-switch">
+      <div class:list={["pj-switch", { hidden: !pickView }]}>
         <div class="pj-switch-in" role="radiogroup" aria-label={t.projects.viewLabel}>
           <input type="radio" name="pv" id="v-list" class="pf-radio" checked />
           <label for="v-list" class="pj-opt">
