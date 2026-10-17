@@ -1,0 +1,31 @@
+---
+import { getUI, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+  label: string;
+}
+const { lang, label } = Astro.props;
+const t = getUI(lang);
+---
+
+<!-- Full-screen frame with fixed slots: the photo fits the middle, the counter, close,
+     caption and arrows never move whatever its shape. Opened by any [data-lb] button
+     (see main.ts), which carries the photo URL and caption in data attributes. -->
+<dialog id="lb" class="lb" aria-label={label}>
+  <div class="lb-top">
+    <p data-lb-count class="text-sm tabular-nums text-white/70"></p>
+    <button type="button" class="lb-btn" data-lb-close aria-label={t.close}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
+  </div>
+  <div class="lb-stage" data-lb-stage><img alt="" /></div>
+  <div class="lb-bar">
+    <div class="min-w-0">
+      <p data-lb-title class="truncate font-serif text-xl leading-tight md:text-2xl"></p>
+      <p data-lb-note class="lb-note text-sm text-white/70"></p>
+    </div>
+    <div class="flex shrink-0 gap-2">
+      <button type="button" class="lb-btn" data-lb-prev aria-label={t.portfolio.prev}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6l-6 6 6 6" /></svg></button>
+      <button type="button" class="lb-btn" data-lb-next aria-label={t.portfolio.next}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6" /></svg></button>
+    </div>
+  </div>
+</dialog>

@@ -15,16 +15,19 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 
 ## SEO
 - `src/lib/seo.ts` builds the JSON-LD `@graph` (FurnitureStore, WebSite and WebPage, from `src/data/site.ts`) and the list of indexable images.
-- `sitemap.xml` and `robots.txt` are endpoints in `src/pages/`, not static files and not `@astrojs/sitemap`. The sitemap includes hreflang alternates and image entries.
+- `sitemap.xml` and `robots.txt` are endpoints in `src/pages/`, not static files and not `@astrojs/sitemap`. The sitemap lists every page (home, projects index, each project) with hreflang alternates and image entries.
+- Every page goes through `Layout.astro`, which takes the page's `paths` in both languages (canonical + hreflang), title, description, og photo and page JSON-LD (breadcrumbs, `CreativeWork` per project, `ItemList` on the index).
 - Everything derives from `site` in `astro.config.mjs`.
 
 ## Stack and architecture
 - Astro with static output, no client framework. Tailwind v4 via `@tailwindcss/vite`, with tokens in the `@theme` block of `src/styles/global.css`.
 - There is **no backend and no contact form**. The contact section only shows details (calls number, one Viber/WhatsApp number, an international calls number, Instagram, Facebook, TikTok, email, opening hours). There is no map and no street address: the client has no premises for customers to visit. Don't add a form, server, or Turnstile/Resend unless the user asks.
-- JS is one file, `src/scripts/main.ts` (~2 KB). It closes the menu, runs the hero background clip and the video band (playing only while visible), and runs the lightbox. The opening sequence is CSS only: the hero photo opens from a card to full bleed, then the headline lines rise. On scroll the hero tucks back into a card; the "frame opens" motif repeats in the photo reveals and the video band. **Don't add animation libraries** (GSAP, Lenis, etc.). Motion is CSS scroll-driven animation, behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`. Without support, the page shows its static final state.
+- JS is one file, `src/scripts/main.ts` (~2 KB). It closes the menu, runs the hero background clip and the video band (playing only while visible), and runs the lightbox on project pages. The opening sequence is CSS only: the hero photo opens from a card to full bleed, then the headline lines rise. On scroll the hero tucks back into a card; the "frame opens" motif repeats in the photo reveals and the video band. **Don't add animation libraries** (GSAP, Lenis, etc.). Motion is CSS scroll-driven animation, behind `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`. Without support, the page shows its static final state.
 - Layout:
   - Sections are in `src/components/*.astro`, composed in `Home.astro`.
   - `src/pages/index.astro` and `src/pages/en/index.astro` only pass `lang`.
+  - Projects, modelled on hola.design/projects: the index is `/projekti/` and `/en/projects/` (`ProjectsIndex.astro`), each project is `/projekti/<slug>/` and `/en/projects/<slug>/` (`ProjectPage.astro`, slugs per language). The index has a List view (each project a pinned full-screen scene where two more photos rise in as cards) and a Grid view, switched by a CSS-only floating pill. A project page has a full-bleed hero that fades into the paper, the intro, a gallery laid out by photo shape with a lightbox, and a "next project" card. The home page wall links each photo to its project.
+  - The header takes `alt` (the same page in the other language) and `solid` (for pages that open on paper, not a photo).
   - Business details are in `src/data/site.ts`.
 - Images:
   - Photos go in `src/assets/photos/` and are looked up through `photo(name)` in `src/data/photos.ts`, which throws if a file is missing. Always render them via `astro:assets`.
@@ -45,10 +48,11 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 - `astro check` needs TypeScript 6. TS 7 is unsupported, so keep `typescript@^6`.
 
 ## Content workflow
-- The developer adds portfolio projects by hand for the first year: photo into `src/assets/photos/`, entry into `src/data/projects.ts`. Mark exactly 3 projects `featured`.
-- Portfolio tiles take their shape from the photo: portrait photos become tall tiles (2 rows), and the first project, if landscape, becomes a large 2x2 tile on desktop. Order the list so the 3-column "all" view packs without holes, e.g. with 1 large tile, 7 tall and 9 normal. Check every filter view and the 2-column phone grid too.
+- The developer adds projects by hand for the first year: photos into `src/assets/photos/` named `<id>-NN.jpg`, entry into `projects` in `src/data/projects.ts` (`photos` in page order, the first is the cover). A project is one shoot or one set of renders. Mark exactly 3 projects `featured`.
+- Project galleries lay photos out by shape: a landscape photo gets a row of its own, two portrait or square photos share a row, a leftover one sits centred. Order `photos` with that in mind.
+- The home page photo wall is `works` in the same file: a photo, its caption and the project it links to (it must be one of that project's photos, or the build fails). Wall tiles take their shape from the photo: portrait photos become tall tiles (2 rows), and the first work, if landscape, becomes a large 2x2 tile on desktop. Order the list so the 3-column "all" view packs without holes, e.g. with 1 large tile, 7 tall and 9 normal. Check every filter view and the 2-column phone grid too.
 - An admin panel or CMS comes only if manual updates become a burden. Keep the data shape CMS-friendly: flat objects, one photo per name.
-- Current photos are the client's own work, taken from their old website and listed in `src/assets/photos/CREDITS.md`. They are only 900 to 1920px wide, so swap in the camera originals when they arrive (same file names). Photos with an empty filter (no `finished` project yet) simply hide that filter pill.
+- Current photos are the client's own work, taken from their old website and listed in `src/assets/photos/CREDITS.md`. They are only 900 to 1920px wide, so swap in the camera originals when they arrive (same file names). Photos with an empty filter (no `finished` project yet) simply hide that filter pill. The rest of the old site's photos are archived in `../original-site-assets/`; the projects already draw most of them.
 - Contact details, address (city only), geo and socials come from the old site too. Placeholders are marked `TODO`: domain (`site` in `astro.config.mjs`), the international phone number (`phoneIntl` in `site.ts`, the row hides while empty), opening hours, the two hero clips, the workshop video, and the About/Offer copy and numbers.
 
 ## Commands

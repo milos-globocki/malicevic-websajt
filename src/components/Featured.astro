@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { projects } from "../data/projects";
+import { projectPath, projects } from "../data/projects";
 import { photo } from "../data/photos";
 import { getUI, type Lang } from "../i18n/ui";
 
@@ -42,12 +42,12 @@ const scope = featured.map((_, i) => tl(i)).join(", ");
                 <div>
                   <h3 class="font-serif text-4xl leading-none tracking-tight md:text-5xl">{p.title[lang]}</h3>
                   <p class="mt-4 max-w-xs text-mute">{p.note[lang]}</p>
-                  <a href="#portfolio" class="pill pill--solid mt-8">{t.featured.view} →</a>
+                  <a href={projectPath(p, lang)} class="pill pill--solid mt-8">{t.projects.view} →</a>
                 </div>
               </div>
               <div class="hover-zoom overflow-hidden md:col-span-8">
                 <Image
-                  src={photo(p.image)}
+                  src={photo(p.photos[0]!)}
                   alt={p.title[lang]}
                   widths={[640, 960, 1280]}
                   sizes="(min-width: 768px) 66vw, 100vw"

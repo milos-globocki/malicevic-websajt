@@ -1,26 +1,36 @@
 ---
-import { getUI, homePath, otherLang, languages, type Lang } from "../i18n/ui";
+import { getUI, homePath, otherLang, languages, projectsPath, type Lang } from "../i18n/ui";
 import { site } from "../data/site";
 import Mark from "./Mark.astro";
 
 interface Props {
   lang: Lang;
+  /** The same page in the other language. Defaults to its home page. */
+  alt?: string;
+  /** For pages that open on paper rather than a photo: dark from the start, no intro fade. */
+  solid?: boolean;
 }
-const { lang } = Astro.props;
+const { lang, solid = false } = Astro.props;
 const t = getUI(lang);
 const other = otherLang(lang);
+const alt = Astro.props.alt ?? homePath(other);
+// Home page sections are plain anchors at home and full links elsewhere. Every page
+// ends with the contact section, so that one is always local.
+const home = homePath(lang);
+const onHome = Astro.url.pathname === home;
+const section = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 const links = [
-  { href: "#top", label: t.nav.home },
-  { href: "#services", label: t.nav.services },
-  { href: "#portfolio", label: t.nav.portfolio },
-  { href: "#about", label: t.nav.about },
+  { href: onHome ? "#top" : home, label: t.nav.home },
+  { href: section("services"), label: t.nav.services },
+  { href: projectsPath(lang), label: t.nav.projects },
+  { href: section("about"), label: t.nav.about },
   { href: "#contact", label: t.nav.contact },
 ];
 ---
 
-<header class="site-header">
-  <div class="intro-fade wrap flex h-16 items-center justify-between md:h-20">
-    <a href={homePath(lang)} class="flex items-center gap-2.5 text-lg font-semibold tracking-tight md:text-xl" aria-label={site.name}>
+<header class:list={["site-header", { "site-header--solid": solid }]}>
+  <div class:list={["wrap flex h-16 items-center justify-between md:h-20", { "intro-fade": !solid }]}>
+    <a href={home} class="flex items-center gap-2.5 text-lg font-semibold tracking-tight md:text-xl" aria-label={site.name}>
       <Mark class="h-[1.15em] w-auto shrink-0" />
       <span>MALIČEVIĆ<span class="ml-1.5 font-normal opacity-70 max-[359px]:hidden">Enterijeri</span></span>
     </a>
@@ -31,7 +41,7 @@ const links = [
 
     <div class="flex items-center gap-3">
       <a
-        href={homePath(other)}
+        href={alt}
         hreflang={getUI(other).hreflang}
         lang={getUI(other).htmlLang}
         class="text-sm font-medium uppercase opacity-80 hover:opacity-100"

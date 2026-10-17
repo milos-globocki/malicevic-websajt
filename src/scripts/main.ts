@@ -70,7 +70,7 @@ if (video && !skip) {
   io.observe(video);
 }
 
-// 3. Lightbox for the portfolio grid.
+// 3. Lightbox for the photos on a project page.
 const dialog = document.getElementById("lb") as HTMLDialogElement | null;
 if (dialog) {
   const img = dialog.querySelector("img")!;

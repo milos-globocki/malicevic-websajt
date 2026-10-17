@@ -1,9 +1,9 @@
 ---
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
-import { projects } from "../data/projects";
+import { projectOf, projectPath, works } from "../data/projects";
 import { photo } from "../data/photos";
-import { getUI, type Lang } from "../i18n/ui";
+import { getUI, projectsPath, type Lang } from "../i18n/ui";
 import { projectImage } from "../lib/seo";
 
 interface Props {
@@ -11,23 +11,25 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = getUI(lang).portfolio;
-// A filter is only offered when at least one project belongs to it.
-const filters = (["all", "finished", "designer", "custom"] as const).filter(
-  (f) => f === "all" || projects.some((p) => p.category === f),
-);
 
 // Tile shape comes from the photo itself, read off the getImage() result: touching
 // photo().width directly would make Astro ship the original JPEG too. Portrait shots
-// span two rows; the first project, if landscape, is a large 2x2 tile on desktop.
+// span two rows; the first work, if landscape, is a large 2x2 tile on desktop.
 const items = (
   await Promise.all(
-    projects.map(async (p) => {
-      const full = await projectImage(p.image);
+    works.map(async (w) => {
+      const project = projectOf(w);
+      const full = await projectImage(w.image);
       const { width, height } = full.options.src as ImageMetadata;
-      return { ...p, full: full.src, tall: height > width };
+      return { ...w, project, tall: height > width };
     }),
   )
-).map((p, i) => ({ ...p, big: i === 0 && !p.tall }));
+).map((w, i) => ({ ...w, big: i === 0 && !w.tall }));
+
+// A filter is only offered when at least one work belongs to it.
+const filters = (["all", "finished", "designer", "custom"] as const).filter(
+  (f) => f === "all" || items.some((w) => w.project.category === f),
+);
 ---
 
 <section id="portfolio" class="pf wrap pb-24 md:pb-40">
@@ -49,60 +51,36 @@ const items = (
   </div>
 
   <!-- Packed grid: row height follows column width (container units), portrait
-       tiles span two rows, and dense flow fills the holes a filter leaves. -->
+       tiles span two rows, and dense flow fills the holes a filter leaves.
+       Each tile opens the project the photo belongs to. -->
   <div class="pf-wrap">
   <ul class="pf-grid">
     {
-      items.map((p) => (
-        <li class:list={["pf-item", { "pf-tall": p.tall, "pf-big": p.big }]} data-cat={p.category}>
-          <button
-            type="button"
-            class="hover-zoom group flex h-full w-full flex-col text-left"
-            data-lb
-            data-full={p.full}
-            data-alt={p.title[lang]}
-            data-title={p.title[lang]}
-            data-note={p.note[lang]}
-            aria-label={`${t.open}: ${p.title[lang]}`}
-          >
+      items.map((w) => (
+        <li class:list={["pf-item", { "pf-tall": w.tall, "pf-big": w.big }]} data-cat={w.project.category}>
+          <a href={projectPath(w.project, lang)} class="hover-zoom group flex h-full w-full flex-col">
             <span class="unveil block min-h-0 flex-1 overflow-clip rounded-card">
               <Image
-                src={photo(p.image)}
-                alt={p.title[lang]}
-                widths={p.big ? [800, 1100, 1600] : [480, 800, 1100]}
-                sizes={p.big ? "(min-width: 768px) 66vw, 50vw" : "(min-width: 768px) 33vw, 50vw"}
+                src={photo(w.image)}
+                alt={w.title[lang]}
+                widths={w.big ? [800, 1100, 1600] : [480, 800, 1100]}
+                sizes={w.big ? "(min-width: 768px) 66vw, 50vw" : "(min-width: 768px) 33vw, 50vw"}
                 loading="lazy"
                 class="unveil-img h-full w-full object-cover"
               />
             </span>
             <span class="flex h-12 shrink-0 items-center justify-between gap-3 px-1">
-              <span class="min-w-0 truncate font-serif text-base leading-tight tracking-tight md:text-2xl">{p.title[lang]}</span>
-              <span class="shrink-0 text-xs text-mute">{p.year}</span>
+              <span class="min-w-0 truncate font-serif text-base leading-tight tracking-tight md:text-2xl">{w.title[lang]}</span>
+              <span class="shrink-0 text-xs text-mute">{w.project.year}</span>
             </span>
-          </button>
+          </a>
         </li>
       ))
     }
   </ul>
   </div>
 
-  <!-- Full-screen frame with fixed slots: the photo fits the middle, the
-       counter, close, caption and arrows never move whatever its shape. -->
-  <dialog id="lb" class="lb" aria-label={t.title}>
-    <div class="lb-top">
-      <p data-lb-count class="text-sm tabular-nums text-white/70"></p>
-      <button type="button" class="lb-btn" data-lb-close aria-label={getUI(lang).close}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
-    </div>
-    <div class="lb-stage" data-lb-stage><img alt="" /></div>
-    <div class="lb-bar">
-      <div class="min-w-0">
-        <p data-lb-title class="truncate font-serif text-xl leading-tight md:text-2xl"></p>
-        <p data-lb-note class="lb-note text-sm text-white/70"></p>
-      </div>
-      <div class="flex shrink-0 gap-2">
-        <button type="button" class="lb-btn" data-lb-prev aria-label={t.prev}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6l-6 6 6 6" /></svg></button>
-        <button type="button" class="lb-btn" data-lb-next aria-label={t.next}><svg class="lb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6l6 6-6 6" /></svg></button>
-      </div>
-    </div>
-  </dialog>
+  <div class="reveal mt-12 flex justify-center md:mt-16">
+    <a href={projectsPath(lang)} class="pill pill--solid">{t.all} →</a>
+  </div>
 </section>

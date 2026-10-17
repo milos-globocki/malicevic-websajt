@@ -229,6 +229,11 @@
       opacity: 1;
     }
   }
+  /* Pages that open on paper: solid from the start. */
+  .site-header--solid,
+  .site-header--solid::before {
+    animation-name: none;
+  }
 }
 
 /* Mobile menu (native Popover API: no JS needed to open/close). */
@@ -329,6 +334,189 @@
   transform-origin: left;
 }
 
+/* ---------- Project page ---------- */
+/* Dark at the top so the white header reads, paper at the bottom for the title.
+   Phones get a taller fade: the title wraps to more lines there. */
+.pj-hero-shade {
+  background:
+    linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent 24%),
+    linear-gradient(to top, var(--color-paper) 0%, rgb(246 243 240 / 0.92) 20%, rgb(246 243 240 / 0.5) 36%, transparent 54%);
+}
+@media (min-width: 768px) {
+  .pj-hero-shade {
+    background:
+      linear-gradient(to bottom, rgb(0 0 0 / 0.45), transparent 24%),
+      linear-gradient(to top, var(--color-paper) 0%, rgb(246 243 240 / 0.88) 10%, rgb(246 243 240 / 0.45) 22%, transparent 36%);
+  }
+}
+.pj-intro {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3.2vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  max-width: 34ch;
+}
+/* Gallery rows. Each photo's flex-grow is its aspect ratio, so the photos in a row
+   share one height whatever their shapes. Phones stack them. */
+.pj-rows,
+.pj-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.pj-shot {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--r);
+  overflow: clip;
+  border-radius: var(--radius-card);
+  background: #e9e4de;
+  cursor: zoom-in;
+}
+.pj-shot-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@media (min-width: 640px) {
+  .pj-row {
+    flex-direction: row;
+  }
+  .pj-row .pj-shot {
+    flex: var(--r) 1 0%;
+    width: auto;
+  }
+  .pj-row--lone {
+    justify-content: center;
+  }
+  .pj-row--lone .pj-shot {
+    flex: none;
+    width: calc(50% - 0.375rem);
+  }
+}
+@media (min-width: 768px) {
+  .pj-rows,
+  .pj-row {
+    gap: 1.25rem;
+  }
+  .pj-row--lone .pj-shot {
+    width: calc(50% - 0.625rem);
+  }
+}
+
+/* ---------- Projects index ---------- */
+/* Without scroll-driven animation each project is one still screen: cover and text. */
+.pj-stage {
+  position: relative;
+  background: #1a1612;
+}
+.pj-pin {
+  position: relative;
+  height: 100svh;
+  min-height: 32rem;
+  overflow: clip;
+  color: #fff;
+}
+.pj-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pj-dim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.12) 55%, rgb(0 0 0 / 0.3));
+}
+.pj-slide {
+  display: none;
+}
+.pj-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+.pj-text {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-bottom: 2.5rem;
+  pointer-events: none;
+  /* Keeps the title legible while a bright card rises behind it. */
+  text-shadow: 0 1px 28px rgb(0 0 0 / 0.4);
+}
+.pj-text a {
+  pointer-events: auto;
+}
+@media (min-width: 768px) {
+  .pj-text {
+    padding-bottom: 3.5rem;
+  }
+}
+.pj:has(#v-grid:checked) .pj-list,
+.pj:has(#v-list:checked) .pj-grid {
+  display: none;
+}
+/* Sits last in .pj, so sticky bottom keeps it on screen while the list or grid is. */
+.pj-switch {
+  position: sticky;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+  pointer-events: none;
+}
+.pj-switch-in {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border-radius: 999px;
+  background: rgb(246 243 240 / 0.85);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.16);
+  pointer-events: auto;
+}
+.pj-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 0.65rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  transition: background-color 0.25s, color 0.25s;
+}
+.pj-opt:hover {
+  background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+}
+.pf-radio:checked + .pj-opt {
+  background: var(--color-ink);
+  color: #fff;
+}
+.pf-radio:focus-visible + .pj-opt {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+.pj-opt-icon {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
 /* ---------- Motion (all progressive enhancement) ---------- */
 /* NOTE: scroll-driven animations use longhands on purpose. Lightning CSS (Tailwind's
    minifier) would otherwise merge animation-timeline into the `animation` shorthand,
@@ -339,7 +527,8 @@
 @media (prefers-reduced-motion: no-preference) {
   /* Opening sequence (time-based, runs once on load, ~2 s):
      photo opens from a card to full bleed -> headline rises line by line ->
-     copy, buttons and header follow. */
+     copy, buttons and header follow. A page that opens on paper instead of a
+     photo sets --intro on the heading's container to start the text sooner. */
   .hero-frame {
     animation: hero-open 1.6s var(--ease-io) 0.1s both;
   }
@@ -364,7 +553,7 @@
   }
   .line-in {
     animation: line-up 1.2s var(--ease-out) both;
-    animation-delay: calc(1.6s + var(--d, 0) * 0.12s);
+    animation-delay: calc(var(--intro, 1.6s) + var(--d, 0) * 0.12s);
   }
   @keyframes line-up {
     from {
@@ -376,7 +565,7 @@
   }
   .hero-rise {
     animation: hero-rise 1.1s var(--ease-out) both;
-    animation-delay: calc(1.45s + var(--d, 0) * 0.14s);
+    animation-delay: calc(var(--intro, 1.6s) - 0.15s + var(--d, 0) * 0.14s);
   }
   @keyframes hero-rise {
     from {
@@ -703,6 +892,102 @@
       }
       to {
         transform: translateY(9%);
+      }
+    }
+
+    /* Project gallery: photos are taller than their frames so .par can drift them
+       (7% of 118% stays inside the 9% overhang). */
+    .pj-shot-img {
+      inset: -9% 0 auto;
+      height: 118%;
+    }
+
+    /* Projects list: each scene is pinned for a while. Over the cover, two photos
+       rise in as cards, the first sinks back as the second arrives, and the cover
+       settles and darkens. Every layer runs on its stage's view timeline. */
+    .pj-stage {
+      height: 260svh;
+      view-timeline: --stage block;
+    }
+    .pj-pin {
+      position: sticky;
+      top: 0;
+    }
+    .pj-cover,
+    .pj-dim,
+    .pj-slide {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --stage;
+    }
+    .pj-cover {
+      animation-name: pj-cover;
+      animation-range: contain 0% contain 100%;
+    }
+    @keyframes pj-cover {
+      from {
+        scale: 1.12;
+      }
+      to {
+        scale: 1;
+      }
+    }
+    .pj-dim {
+      animation-name: pj-dim;
+      animation-range: contain 0% contain 80%;
+    }
+    @keyframes pj-dim {
+      to {
+        background-color: rgb(0 0 0 / 0.35);
+      }
+    }
+    /* Cards sit right of centre on wide screens, clear of the title. */
+    .pj-slide {
+      display: block;
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      z-index: 2;
+      width: 78vw;
+      aspect-ratio: 4 / 5;
+      overflow: clip;
+      border-radius: var(--radius-card);
+      box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+      translate: -50% 110svh;
+    }
+    @media (min-width: 768px) {
+      .pj-slide {
+        top: 42%;
+        left: 60%;
+        width: min(46vw, 80svh);
+        aspect-ratio: 3 / 2;
+      }
+    }
+    .pj-slide--1 {
+      animation-name: pj-rise, pj-sink;
+      animation-range:
+        contain 5% contain 42%,
+        contain 50% contain 88%;
+    }
+    .pj-slide--2 {
+      z-index: 3;
+      animation-name: pj-rise;
+      animation-range: contain 50% contain 88%;
+    }
+    @keyframes pj-rise {
+      from {
+        translate: -50% 110svh;
+        rotate: 4deg;
+      }
+      to {
+        translate: -50% -50%;
+        rotate: 0deg;
+      }
+    }
+    @keyframes pj-sink {
+      to {
+        scale: 0.88;
+        filter: brightness(0.6);
       }
     }
   }

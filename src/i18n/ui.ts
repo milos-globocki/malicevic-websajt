@@ -12,7 +12,7 @@ export const ui = {
     metaDescription:
       "Namještaj i enterijeri iz naše radionice u Republici Srpskoj, BiH: gotovi proizvodi, dizajnerski komadi i namještaj po mjeri za klijente širom Evrope.",
     skip: "Pređi na sadržaj",
-    nav: { home: "Početna", portfolio: "Radovi", services: "Ponuda", about: "O nama", contact: "Kontakt" },
+    nav: { home: "Početna", projects: "Projekti", services: "Ponuda", about: "O nama", contact: "Kontakt" },
     menu: "Meni",
     close: "Zatvori",
     cta: "Kontaktirajte nas",
@@ -34,7 +34,7 @@ export const ui = {
       ],
     },
     materials: { label: "Materijali", items: ["Masivno drvo", "Furnir", "Lak", "Kamen", "Metal", "Staklo"] },
-    featured: { eyebrow: "Izdvojeno", title: "Odabrani projekti", view: "Pogledaj" },
+    featured: { eyebrow: "Izdvojeno", title: "Odabrani projekti" },
     video: {
       eyebrow: "Radionica",
       title: "Od skice do ugradnje, sve na jednom mjestu.",
@@ -46,6 +46,23 @@ export const ui = {
       open: "Otvori sliku",
       prev: "Prethodna",
       next: "Sljedeća",
+      all: "Svi projekti",
+    },
+    projects: {
+      eyebrow: "Projekti",
+      title: "Projekti",
+      line1: "Prostori koje smo",
+      line2: "osmislili i izradili.",
+      intro: "Stanovi i kuhinje iz naše radionice i idejna rješenja našeg studija. Otvorite projekat da vidite sve fotografije.",
+      metaDescription:
+        "Projekti Maličević Enterijera: stanovi, kuhinje i garderobe po mjeri iz naše radionice u Republici Srpskoj, BiH, i idejna rješenja sa 3D vizualizacijama.",
+      views: { list: "Lista", grid: "Mreža" },
+      viewLabel: "Prikaz",
+      view: "Pogledaj projekat",
+      service: "Usluga",
+      year: "Godina",
+      next: "Sljedeći projekat",
+      photos: "Fotografije",
     },
     process: {
       eyebrow: "Kako radimo",
@@ -88,7 +105,7 @@ export const ui = {
     metaDescription:
       "Furniture and interiors from our workshop in Republika Srpska, Bosnia and Herzegovina: ready-made, designer and bespoke pieces for clients across Europe.",
     skip: "Skip to content",
-    nav: { home: "Home", portfolio: "Portfolio", services: "Services", about: "About", contact: "Contact" },
+    nav: { home: "Home", projects: "Projects", services: "Services", about: "About", contact: "Contact" },
     menu: "Menu",
     close: "Close",
     cta: "Get in touch",
@@ -110,7 +127,7 @@ export const ui = {
       ],
     },
     materials: { label: "Materials", items: ["Solid wood", "Veneer", "Lacquer", "Stone", "Metal", "Glass"] },
-    featured: { eyebrow: "Featured", title: "Selected projects", view: "View" },
+    featured: { eyebrow: "Featured", title: "Selected projects" },
     video: {
       eyebrow: "Workshop",
       title: "From sketch to installation, all under one roof.",
@@ -122,6 +139,23 @@ export const ui = {
       open: "Open image",
       prev: "Previous",
       next: "Next",
+      all: "All projects",
+    },
+    projects: {
+      eyebrow: "Projects",
+      title: "Projects",
+      line1: "Spaces we have",
+      line2: "designed and built.",
+      intro: "Apartments and kitchens from our workshop, and concept designs from our studio. Open a project to see every photo.",
+      metaDescription:
+        "Projects by Maličević Enterijeri: made-to-measure apartments, kitchens and wardrobes from our workshop in Republika Srpska, Bosnia and Herzegovina, and concept designs in 3D.",
+      views: { list: "List", grid: "Grid" },
+      viewLabel: "View",
+      view: "View project",
+      service: "Service",
+      year: "Year",
+      next: "Next project",
+      photos: "Photos",
     },
     process: {
       eyebrow: "How we work",
@@ -162,3 +196,4 @@ export type UI = (typeof ui)[Lang];
 export const getUI = (lang: Lang): UI => ui[lang];
 export const otherLang = (lang: Lang): Lang => (lang === "sr" ? "en" : "sr");
 export const homePath = (lang: Lang) => (lang === defaultLang ? "/" : `/${lang}/`);
+export const projectsPath = (lang: Lang) => (lang === defaultLang ? "/projekti/" : `/${lang}/projects/`);

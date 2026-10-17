@@ -1,23 +1,48 @@
 import { getImage } from "astro:assets";
 import { photo } from "../data/photos";
-import { projects } from "../data/projects";
+import { projectPath, projects, works, type Project } from "../data/projects";
 import { site } from "../data/site";
-import { getUI, homePath, languages, type Lang } from "../i18n/ui";
+import { getUI, homePath, languages, projectsPath, type Lang } from "../i18n/ui";
 
 export const langs = Object.keys(languages) as Lang[];
 
+/** A page's path in every language, for canonical, hreflang and the sitemap. */
+export type Paths = Record<Lang, string>;
+export const homePaths = Object.fromEntries(langs.map((l) => [l, homePath(l)])) as Paths;
+export const projectsPaths = Object.fromEntries(langs.map((l) => [l, projectsPath(l)])) as Paths;
+export const projectPaths = (p: Project) => Object.fromEntries(langs.map((l) => [l, projectPath(p, l)])) as Paths;
+
 // Same options as the components use, so Astro reuses the generated files.
-export const ogImage = () => getImage({ src: photo("hero"), width: 1200, height: 630, format: "jpg", fit: "cover" });
+export const ogImage = (name = "hero") =>
+  getImage({ src: photo(name), width: 1200, height: 630, format: "jpg", fit: "cover" });
 /** Lightbox size: fits a 1800x1500 box, so portrait shots don't ship at 2700px tall. */
 export const projectImage = (name: string) =>
   getImage({ src: photo(name), width: 1800, height: 1500, fit: "inside", format: "webp" });
 
-/** schema.org @graph: one business + website, plus the page in the given language. */
-export async function jsonLd(lang: Lang, origin: URL) {
-  const t = getUI(lang);
+export interface PageMeta {
+  lang: Lang;
+  paths: Paths;
+  title: string;
+  description: string;
+  /** Absolute og:image URL, also the page's primary image. */
+  image: string;
+  /** schema.org type of the page itself. */
+  type?: "WebPage" | "CollectionPage";
+  /** Breadcrumb trail below the home page, as [name, path] pairs. */
+  crumbs?: [string, string][];
+  /** The @id of what the page is mainly about; defaults to the business. */
+  about?: string;
+  /** Extra @graph nodes, such as the project shown on the page. */
+  nodes?: Record<string, unknown>[];
+}
+
+/** schema.org @graph: the business and website on every page, plus this page. */
+export async function jsonLd(m: PageMeta, origin: URL) {
+  const t = getUI(m.lang);
   const base = origin.href;
-  const page = new URL(homePath(lang), origin).href;
-  const image = new URL((await ogImage()).src, origin).href;
+  const page = new URL(m.paths[m.lang], origin).href;
+  const businessImage = new URL((await ogImage()).src, origin).href;
+  const crumbs: [string, string][] = [[t.nav.home, homePath(m.lang)], ...(m.crumbs ?? [])];
 
   return {
     "@context": "https://schema.org",
@@ -27,7 +52,7 @@ export async function jsonLd(lang: Lang, origin: URL) {
         "@id": `${base}#business`,
         name: site.name,
         url: base,
-        image,
+        image: businessImage,
         legalName: site.legalName,
         logo: new URL("/brand/logo-square.png", origin).href,
         telephone: [site.phone.href, site.messenger.href, site.phoneIntl.href].filter(Boolean),
@@ -54,22 +79,49 @@ export async function jsonLd(lang: Lang, origin: URL) {
         publisher: { "@id": `${base}#business` },
       },
       {
-        "@type": "WebPage",
+        "@type": m.type ?? "WebPage",
         "@id": `${page}#webpage`,
         url: page,
-        name: t.metaTitle,
-        description: t.metaDescription,
+        name: m.title,
+        description: m.description,
         inLanguage: t.htmlLang,
         isPartOf: { "@id": `${base}#website` },
-        about: { "@id": `${base}#business` },
-        primaryImageOfPage: image,
+        about: { "@id": m.about ?? `${base}#business` },
+        primaryImageOfPage: m.image,
+        ...(m.crumbs ? { breadcrumb: { "@id": `${page}#breadcrumb` } } : {}),
       },
+      ...(m.crumbs
+        ? [
+            {
+              "@type": "BreadcrumbList",
+              "@id": `${page}#breadcrumb`,
+              itemListElement: crumbs.map(([name, path], i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name,
+                item: new URL(path, origin).href,
+              })),
+            },
+          ]
+        : []),
+      ...(m.nodes ?? []),
     ],
   };
 }
 
-/** Absolute URLs of every image worth indexing (hero + portfolio). */
-export async function indexableImages(origin: URL) {
-  const srcs = [(await ogImage()).src, ...(await Promise.all(projects.map(async (p) => (await projectImage(p.image)).src)))];
-  return srcs.map((s) => new URL(s, origin).href);
+/** Every indexable page with its alternates and images, for sitemap.xml. */
+export async function sitemapPages(origin: URL) {
+  const abs = (src: string) => new URL(src, origin).href;
+  const full = async (names: string[]) =>
+    Promise.all(names.map(async (n) => abs((await projectImage(n)).src)));
+  const unique = <T,>(xs: T[]) => [...new Set(xs)];
+
+  return [
+    {
+      paths: homePaths,
+      images: [abs((await ogImage()).src), ...(await full(unique(works.map((w) => w.image))))],
+    },
+    { paths: projectsPaths, images: await full(projects.map((p) => p.photos[0]!)) },
+    ...(await Promise.all(projects.map(async (p) => ({ paths: projectPaths(p), images: await full(p.photos) })))),
+  ];
 }
