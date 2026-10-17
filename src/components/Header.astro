@@ -14,15 +14,17 @@ const { lang, solid = false } = Astro.props;
 const t = getUI(lang);
 const other = otherLang(lang);
 const alt = Astro.props.alt ?? homePath(other);
-// The nav only moves between the sections of the home page: plain anchors at home, full
-// links elsewhere. Every page ends with the contact section, so that one is always local.
-// The projects pages are reached from the hero and the featured cards, not from here.
+// The nav only moves between the sections of the home page, in page order: plain anchors
+// at home, full links elsewhere. "Projects" is the featured stack, whose last card opens
+// the projects page. Every page ends with the contact section, so that one is always local.
 const home = homePath(lang);
 const onHome = Astro.url.pathname === home;
 const section = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 const links = [
   { href: onHome ? "#top" : home, label: t.nav.home },
   { href: section("services"), label: t.nav.services },
+  { href: section("projects"), label: t.nav.projects },
+  { href: section("portfolio"), label: t.nav.gallery },
   { href: section("about"), label: t.nav.about },
   { href: "#contact", label: t.nav.contact },
 ];
@@ -35,7 +37,7 @@ const links = [
       <span>MALIČEVIĆ<span class="ml-1.5 font-normal opacity-70 max-[359px]:hidden">Enterijeri</span></span>
     </a>
 
-    <nav class="hidden items-center gap-8 text-sm font-medium lg:flex" aria-label="Main">
+    <nav class="hidden items-center gap-6 text-sm font-medium lg:flex xl:gap-8" aria-label="Main">
       {links.map((l) => <a href={l.href} class="opacity-80 transition-opacity hover:opacity-100">{l.label}</a>)}
     </nav>
 

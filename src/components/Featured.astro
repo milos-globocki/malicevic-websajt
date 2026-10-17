@@ -23,7 +23,7 @@ const stack = (i: number) =>
   `--i:${i}; view-timeline-name: ${tl(i)};${i < count - 1 ? ` animation-timeline: ${tl(i + 1)};` : ""}`;
 ---
 
-<section class="wrap pb-24 md:pb-40">
+<section id="projects" class="wrap pb-24 md:pb-40">
   <div class="mb-10 flex items-end justify-between gap-6 md:mb-14">
     <h2 class="h-section reveal">{t.featured.title}</h2>
     <p class="eyebrow reveal hidden md:block">{t.featured.eyebrow}</p>

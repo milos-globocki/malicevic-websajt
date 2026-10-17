@@ -12,7 +12,7 @@ export const ui = {
     metaDescription:
       "Namještaj i enterijeri iz naše radionice u Republici Srpskoj, BiH: gotovi proizvodi, dizajnerski komadi i namještaj po mjeri za klijente širom Evrope.",
     skip: "Pređi na sadržaj",
-    nav: { home: "Početna", services: "Ponuda", about: "O nama", contact: "Kontakt" },
+    nav: { home: "Početna", services: "Ponuda", projects: "Projekti", gallery: "Galerija", about: "O nama", contact: "Kontakt" },
     menu: "Meni",
     close: "Zatvori",
     cta: "Kontaktirajte nas",
@@ -114,7 +114,7 @@ export const ui = {
     metaDescription:
       "Furniture and interiors from our workshop in Republika Srpska, Bosnia and Herzegovina: ready-made, designer and bespoke pieces for clients across Europe.",
     skip: "Skip to content",
-    nav: { home: "Home", services: "Services", about: "About", contact: "Contact" },
+    nav: { home: "Home", services: "Services", projects: "Projects", gallery: "Gallery", about: "About", contact: "Contact" },
     menu: "Menu",
     close: "Close",
     cta: "Get in touch",
