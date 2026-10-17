@@ -408,57 +408,44 @@
 }
 
 /* ---------- Projects index ---------- */
-/* Without scroll-driven animation each project is one still screen: cover and text. */
-.pj-stage {
-  position: relative;
-  background: #1a1612;
+/* List: one row per project, the title on the left and three photos on the right
+   (the cover tall, two more stacked beside it). On phones the cover sits on top. */
+.pj-item + .pj-item {
+  border-top: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
 }
-.pj-pin {
-  position: relative;
-  height: 100svh;
-  min-height: 32rem;
+.pj-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.pj-frame {
+  display: block;
   overflow: clip;
-  color: #fff;
+  border-radius: var(--radius-card);
+  aspect-ratio: 4 / 3;
 }
-.pj-cover {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.pj-dim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgb(0 0 0 / 0.72), rgb(0 0 0 / 0.12) 55%, rgb(0 0 0 / 0.3));
-}
-.pj-slide {
-  display: none;
-}
-.pj-hit {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-}
-.pj-text {
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 5;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 2rem;
-  padding-bottom: 2.5rem;
-  pointer-events: none;
-  /* Keeps the title legible while a bright card rises behind it. */
-  text-shadow: 0 1px 28px rgb(0 0 0 / 0.4);
-}
-.pj-text a {
-  pointer-events: auto;
+.pj-frame--cover {
+  grid-column: span 2;
+  aspect-ratio: 3 / 2;
 }
 @media (min-width: 768px) {
-  .pj-text {
-    padding-bottom: 3.5rem;
+  .pj-strip {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    height: min(30rem, 62svh);
+  }
+  .pj-frame,
+  .pj-frame--cover {
+    grid-column: auto;
+    aspect-ratio: auto;
+  }
+  .pj-frame--cover {
+    grid-row: span 2;
+  }
+  /* A project with only two photos: the second fills the column. */
+  .pj-frame:last-child:nth-child(2) {
+    grid-row: span 2;
   }
 }
 .pj:has(#v-grid:checked) .pj-list,
@@ -900,95 +887,6 @@
     .pj-shot-img {
       inset: -9% 0 auto;
       height: 118%;
-    }
-
-    /* Projects list: each scene is pinned for a while. Over the cover, two photos
-       rise in as cards, the first sinks back as the second arrives, and the cover
-       settles and darkens. Every layer runs on its stage's view timeline. */
-    .pj-stage {
-      height: 260svh;
-      view-timeline: --stage block;
-    }
-    .pj-pin {
-      position: sticky;
-      top: 0;
-    }
-    .pj-cover,
-    .pj-dim,
-    .pj-slide {
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: --stage;
-    }
-    .pj-cover {
-      animation-name: pj-cover;
-      animation-range: contain 0% contain 100%;
-    }
-    @keyframes pj-cover {
-      from {
-        scale: 1.12;
-      }
-      to {
-        scale: 1;
-      }
-    }
-    .pj-dim {
-      animation-name: pj-dim;
-      animation-range: contain 0% contain 80%;
-    }
-    @keyframes pj-dim {
-      to {
-        background-color: rgb(0 0 0 / 0.35);
-      }
-    }
-    /* Cards sit right of centre on wide screens, clear of the title. */
-    .pj-slide {
-      display: block;
-      position: absolute;
-      top: 38%;
-      left: 50%;
-      z-index: 2;
-      width: 78vw;
-      aspect-ratio: 4 / 5;
-      overflow: clip;
-      border-radius: var(--radius-card);
-      box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
-      translate: -50% 110svh;
-    }
-    @media (min-width: 768px) {
-      .pj-slide {
-        top: 42%;
-        left: 60%;
-        width: min(46vw, 80svh);
-        aspect-ratio: 3 / 2;
-      }
-    }
-    .pj-slide--1 {
-      animation-name: pj-rise, pj-sink;
-      animation-range:
-        contain 5% contain 42%,
-        contain 50% contain 88%;
-    }
-    .pj-slide--2 {
-      z-index: 3;
-      animation-name: pj-rise;
-      animation-range: contain 50% contain 88%;
-    }
-    @keyframes pj-rise {
-      from {
-        translate: -50% 110svh;
-        rotate: 4deg;
-      }
-      to {
-        translate: -50% -50%;
-        rotate: 0deg;
-      }
-    }
-    @keyframes pj-sink {
-      to {
-        scale: 0.88;
-        filter: brightness(0.6);
-      }
     }
   }
 }

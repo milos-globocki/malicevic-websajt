@@ -63,59 +63,47 @@ const ld = {
     </section>
 
     <div class="pj">
-      <!-- List: every project is a full-screen scene. While it is pinned, two more of its
-           photos rise in as cards over the cover (see .pj-stage in global.css). -->
-      <div class="pj-list">
+      <!-- List: one row per project, everything visible at once. The title, note and
+           facts on the left, three of its photos on the right; the whole row is the link. -->
+      <ol class="pj-list wrap">
         {
           projects.map((p, i) => (
-            <article class="pj-stage">
-              <div class="pj-pin">
-                <Image
-                  src={photo(p.photos[0]!)}
-                  alt=""
-                  widths={[800, 1280, 1920, 2400]}
-                  sizes="100vw"
-                  loading={i === 0 ? "eager" : "lazy"}
-                  class="pj-cover"
-                />
-                <div class="pj-dim" />
-                {p.photos.slice(1, 3).map((name, j) => (
-                  <div class={`pj-slide pj-slide--${j + 1}`}>
-                    <Image
-                      src={photo(name)}
-                      alt=""
-                      widths={[480, 800, 1100]}
-                      sizes="(min-width: 768px) 46vw, 78vw"
-                      loading="lazy"
-                      class="h-full w-full object-cover"
-                    />
-                  </div>
-                ))}
-                <a href={projectPath(p, lang)} class="pj-hit" tabindex="-1" aria-hidden="true" />
-                <div class="pj-text wrap">
-                  <div>
-                    <p class="eyebrow mb-4 text-white/75">
-                      {t.categories[p.category]} · {p.year}
-                    </p>
-                    <h2 class="h-section max-w-[16ch] text-balance">
-                      <a href={projectPath(p, lang)}>{p.title[lang]}</a>
-                    </h2>
-                    <span class="pill pill--light mt-6" aria-hidden="true">
-                      {t.projects.view} →
-                    </span>
-                  </div>
-                  <div class="hidden max-w-xs shrink-0 text-right md:block">
-                    <p class="font-serif text-2xl italic tabular-nums">
-                      {pad(i + 1)} / {total}
-                    </p>
-                    <p class="mt-2 text-sm text-white/75">{p.note[lang]}</p>
-                  </div>
+            <li class="pj-item">
+              <a href={projectPath(p, lang)} class="hover-zoom group grid grid-cols-1 gap-7 py-10 md:grid-cols-12 md:gap-10 md:py-16">
+                <div class="flex flex-col md:col-span-4">
+                  <p class="font-serif text-lg italic text-mute tabular-nums">
+                    {pad(i + 1)} <span class="text-sm">/ {total}</span>
+                  </p>
+                  <h2 class="mt-3 text-balance font-serif text-3xl leading-[1.05] tracking-tight md:mt-5 md:text-5xl">
+                    {p.title[lang]}
+                  </h2>
+                  <p class="mt-4 max-w-sm text-mute">{p.note[lang]}</p>
+                  <p class="eyebrow mt-6 text-mute md:mb-8">
+                    {t.categories[p.category]} · {p.year}
+                  </p>
+                  <span class="pill mt-8 self-start transition-colors group-hover:bg-ink group-hover:text-white md:mt-auto">
+                    {t.projects.view} →
+                  </span>
                 </div>
-              </div>
-            </article>
+                <div class="pj-strip md:col-span-8">
+                  {p.photos.slice(0, 3).map((name, j) => (
+                    <span class:list={["pj-frame unveil", { "pj-frame--cover": j === 0 }]}>
+                      <Image
+                        src={photo(name)}
+                        alt={j === 0 ? p.title[lang] : ""}
+                        widths={j === 0 ? [640, 960, 1280] : [400, 640, 800]}
+                        sizes={j === 0 ? "(min-width: 768px) 45vw, 100vw" : "(min-width: 768px) 22vw, 50vw"}
+                        loading={i === 0 ? "eager" : "lazy"}
+                        class="unveil-img h-full w-full object-cover"
+                      />
+                    </span>
+                  ))}
+                </div>
+              </a>
+            </li>
           ))
         }
-      </div>
+      </ol>
 
       <ul class="pj-grid wrap grid gap-x-5 gap-y-12 md:grid-cols-2 md:gap-y-16">
         {
