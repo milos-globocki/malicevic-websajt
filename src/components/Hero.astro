@@ -76,10 +76,14 @@ const hasVideo = landscape.length > 0 || portrait.length > 0;
       <p class="max-w-md text-base leading-relaxed text-white/85 md:text-lg lg:max-w-[35rem]">
         {t.hero.sub.split("\n").map((sentence) => <span class="block text-balance">{sentence}</span>)}
       </p>
-      <div class="flex shrink-0 flex-wrap gap-3 sm:flex-nowrap">
-        <a href={projectsPath(lang)} class="pill pill--light">{t.hero.projects} →</a>
-        <a href="#portfolio" class="pill">{t.hero.scroll} ↓</a>
-        <a href="#contact" class="pill">{t.cta}</a>
+      <!-- Phones: right-aligned, contact on top and the two "see the work" pills below it.
+           Wider screens: one row, contact last. -->
+      <div class="flex shrink-0 flex-col items-end gap-3 sm:flex-row sm:items-center">
+        <a href="#contact" class="pill sm:order-last">{t.cta}</a>
+        <div class="flex gap-3">
+          <a href={projectsPath(lang)} class="pill pill--light">{t.hero.projects} →</a>
+          <a href="#portfolio" class="pill pill--light">{t.hero.scroll} ↓</a>
+        </div>
       </div>
     </div>
   </div>
