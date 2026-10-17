@@ -23,7 +23,7 @@ const paths = projectPaths(p);
 const url = new URL(paths[lang], origin).href;
 const next = nextProject(p);
 const title = p.title[lang];
-const category = t.portfolio.filters[p.category];
+const category = t.categories[p.category];
 const [cover, ...rest] = p.photos as [string, ...string[]];
 const alt = (i: number) => `${title}, ${i + 1}/${p.photos.length}`;
 

@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { projectPath, projects } from "../data/projects";
 import { photo } from "../data/photos";
-import { getUI, type Lang } from "../i18n/ui";
+import { getUI, projectsPath, type Lang } from "../i18n/ui";
 
 interface Props {
   lang: Lang;
@@ -10,11 +10,17 @@ interface Props {
 const { lang } = Astro.props;
 const t = getUI(lang);
 const featured = projects.filter((p) => p.featured).slice(0, 3);
+// The last card opens the projects page, showing the covers of the projects not above.
+const rest = projects.filter((p) => !featured.includes(p)).slice(0, 4);
+const pad = (n: number) => String(n).padStart(2, "0");
 
 // Each card sinks back while the next one slides over it: card i is driven by
 // card i+1's view timeline, shared through timeline-scope on the list.
+const count = featured.length + 1;
 const tl = (i: number) => `--stack-${i}`;
-const scope = featured.map((_, i) => tl(i)).join(", ");
+const scope = Array.from({ length: count }, (_, i) => tl(i)).join(", ");
+const stack = (i: number) =>
+  `--i:${i}; view-timeline-name: ${tl(i)};${i < count - 1 ? ` animation-timeline: ${tl(i + 1)};` : ""}`;
 ---
 
 <section class="wrap pb-24 md:pb-40">
@@ -25,40 +31,67 @@ const scope = featured.map((_, i) => tl(i)).join(", ");
 
   <div class="space-y-6" style={`timeline-scope: ${scope}`}>
     {
-      featured.map((p, i) => {
-        const next = i < featured.length - 1;
-        return (
-          <article
-            class:list={["stack-card overflow-hidden rounded-card bg-white", { "stack-sink": next }]}
-            style={`--i:${i}; view-timeline-name: ${tl(i)};${next ? ` animation-timeline: ${tl(i + 1)};` : ""}`}
-          >
-            <div class="grid md:grid-cols-12">
-              <div class="flex flex-col justify-between gap-10 p-7 md:col-span-4 md:p-10">
-                <p class="eyebrow text-mute">
-                  <span class="font-serif text-base normal-case italic tracking-normal">0{i + 1}</span>
-                  <span class="mx-2">·</span>
-                  {t.portfolio.filters[p.category]} · {p.year}
-                </p>
-                <div>
-                  <h3 class="font-serif text-4xl leading-none tracking-tight md:text-5xl">{p.title[lang]}</h3>
-                  <p class="mt-4 max-w-xs text-mute">{p.note[lang]}</p>
-                  <a href={projectPath(p, lang)} class="pill pill--solid mt-8">{t.projects.view} →</a>
-                </div>
-              </div>
-              <div class="hover-zoom overflow-hidden md:col-span-8">
-                <Image
-                  src={photo(p.photos[0]!)}
-                  alt={p.title[lang]}
-                  widths={[640, 960, 1280]}
-                  sizes="(min-width: 768px) 66vw, 100vw"
-                  loading="lazy"
-                  class="aspect-[4/3] h-full w-full object-cover md:aspect-auto md:h-[34rem]"
-                />
+      featured.map((p, i) => (
+        <article class="stack-card stack-sink overflow-hidden rounded-card bg-white" style={stack(i)}>
+          <div class="grid md:grid-cols-12">
+            <div class="flex flex-col justify-between gap-10 p-7 md:col-span-4 md:p-10">
+              <p class="eyebrow text-mute">
+                <span class="font-serif text-base normal-case italic tracking-normal">{pad(i + 1)}</span>
+                <span class="mx-2">·</span>
+                {t.categories[p.category]} · {p.year}
+              </p>
+              <div>
+                <h3 class="font-serif text-4xl leading-none tracking-tight md:text-5xl">{p.title[lang]}</h3>
+                <p class="mt-4 max-w-xs text-mute">{p.note[lang]}</p>
+                <a href={projectPath(p, lang)} class="pill pill--solid mt-8">{t.projects.view} →</a>
               </div>
             </div>
-          </article>
-        );
-      })
+            <div class="hover-zoom overflow-hidden md:col-span-8">
+              <Image
+                src={photo(p.photos[0]!)}
+                alt={p.title[lang]}
+                widths={[640, 960, 1280]}
+                sizes="(min-width: 768px) 66vw, 100vw"
+                loading="lazy"
+                class="aspect-[4/3] h-full w-full object-cover md:aspect-auto md:h-[34rem]"
+              />
+            </div>
+          </div>
+        </article>
+      ))
     }
+
+    <article class="stack-card overflow-hidden rounded-card bg-ink text-white" style={stack(featured.length)}>
+      <a href={projectsPath(lang)} class="hover-zoom grid md:grid-cols-12">
+        <div class="flex flex-col justify-between gap-10 p-7 md:col-span-4 md:p-10">
+          <p class="eyebrow text-white/60">
+            <span class="font-serif text-base normal-case italic tracking-normal">{pad(projects.length)}</span>
+            <span class="mx-2">·</span>
+            {t.projects.title}
+          </p>
+          <div>
+            <h3 class="font-serif text-4xl leading-none tracking-tight md:text-5xl">{t.featured.more.title}</h3>
+            <p class="mt-4 max-w-xs text-white/65">{t.featured.more.text}</p>
+            <span class="pill pill--light mt-8">{t.featured.more.cta} →</span>
+          </div>
+        </div>
+        <div class="grid aspect-[4/3] grid-cols-2 gap-1.5 p-1.5 pt-0 md:col-span-8 md:aspect-auto md:h-[34rem] md:pl-0 md:pt-1.5">
+          {
+            rest.map((p) => (
+              <span class="block overflow-hidden rounded-[calc(var(--radius-card)-0.375rem)]">
+                <Image
+                  src={photo(p.photos[0]!)}
+                  alt=""
+                  widths={[400, 640, 800]}
+                  sizes="(min-width: 768px) 33vw, 50vw"
+                  loading="lazy"
+                  class="h-full w-full object-cover"
+                />
+              </span>
+            ))
+          }
+        </div>
+      </a>
+    </article>
   </div>
 </section>

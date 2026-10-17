@@ -1,5 +1,5 @@
 ---
-import { getUI, homePath, otherLang, languages, projectsPath, type Lang } from "../i18n/ui";
+import { getUI, homePath, otherLang, languages, type Lang } from "../i18n/ui";
 import { site } from "../data/site";
 import Mark from "./Mark.astro";
 
@@ -14,15 +14,15 @@ const { lang, solid = false } = Astro.props;
 const t = getUI(lang);
 const other = otherLang(lang);
 const alt = Astro.props.alt ?? homePath(other);
-// Home page sections are plain anchors at home and full links elsewhere. Every page
-// ends with the contact section, so that one is always local.
+// The nav only moves between the sections of the home page: plain anchors at home, full
+// links elsewhere. Every page ends with the contact section, so that one is always local.
+// The projects pages are reached from the hero and the featured cards, not from here.
 const home = homePath(lang);
 const onHome = Astro.url.pathname === home;
 const section = (id: string) => (onHome ? `#${id}` : `${home}#${id}`);
 const links = [
   { href: onHome ? "#top" : home, label: t.nav.home },
   { href: section("services"), label: t.nav.services },
-  { href: projectsPath(lang), label: t.nav.projects },
   { href: section("about"), label: t.nav.about },
   { href: "#contact", label: t.nav.contact },
 ];

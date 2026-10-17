@@ -1061,7 +1061,6 @@
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }
-.pf:has(#f-finished:checked) .pf-item:not([data-cat="finished"]),
 .pf:has(#f-designer:checked) .pf-item:not([data-cat="designer"]),
 .pf:has(#f-custom:checked) .pf-item:not([data-cat="custom"]) {
   display: none;

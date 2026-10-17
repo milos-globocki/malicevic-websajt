@@ -1,9 +1,10 @@
 ---
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
-import { projectOf, projectPath, works } from "../data/projects";
+import Lightbox from "./Lightbox.astro";
+import { works } from "../data/projects";
 import { photo } from "../data/photos";
-import { getUI, projectsPath, type Lang } from "../i18n/ui";
+import { getUI, type Lang } from "../i18n/ui";
 import { projectImage } from "../lib/seo";
 
 interface Props {
@@ -18,17 +19,16 @@ const t = getUI(lang).portfolio;
 const items = (
   await Promise.all(
     works.map(async (w) => {
-      const project = projectOf(w);
       const full = await projectImage(w.image);
       const { width, height } = full.options.src as ImageMetadata;
-      return { ...w, project, tall: height > width };
+      return { ...w, full: full.src, tall: height > width };
     }),
   )
 ).map((w, i) => ({ ...w, big: i === 0 && !w.tall }));
 
-// A filter is only offered when at least one work belongs to it.
-const filters = (["all", "finished", "designer", "custom"] as const).filter(
-  (f) => f === "all" || items.some((w) => w.project.category === f),
+// "Selected" shows the whole wall; a category is only offered when a work belongs to it.
+const filters = (["selected", "designer", "custom"] as const).filter(
+  (f) => f === "selected" || items.some((w) => w.category === f),
 );
 ---
 
@@ -52,13 +52,22 @@ const filters = (["all", "finished", "designer", "custom"] as const).filter(
 
   <!-- Packed grid: row height follows column width (container units), portrait
        tiles span two rows, and dense flow fills the holes a filter leaves.
-       Each tile opens the project the photo belongs to. -->
+       Each tile opens its photo in the lightbox. -->
   <div class="pf-wrap">
   <ul class="pf-grid">
     {
       items.map((w) => (
-        <li class:list={["pf-item", { "pf-tall": w.tall, "pf-big": w.big }]} data-cat={w.project.category}>
-          <a href={projectPath(w.project, lang)} class="hover-zoom group flex h-full w-full flex-col">
+        <li class:list={["pf-item", { "pf-tall": w.tall, "pf-big": w.big }]} data-cat={w.category}>
+          <button
+            type="button"
+            class="hover-zoom group flex h-full w-full flex-col text-left"
+            data-lb
+            data-full={w.full}
+            data-alt={w.title[lang]}
+            data-title={w.title[lang]}
+            data-note={t.filters[w.category]}
+            aria-label={`${t.open}: ${w.title[lang]}`}
+          >
             <span class="unveil block min-h-0 flex-1 overflow-clip rounded-card">
               <Image
                 src={photo(w.image)}
@@ -71,16 +80,14 @@ const filters = (["all", "finished", "designer", "custom"] as const).filter(
             </span>
             <span class="flex h-12 shrink-0 items-center justify-between gap-3 px-1">
               <span class="min-w-0 truncate font-serif text-base leading-tight tracking-tight md:text-2xl">{w.title[lang]}</span>
-              <span class="shrink-0 text-xs text-mute">{w.project.year}</span>
+              <span class="hidden shrink-0 text-xs text-mute md:inline">{t.filters[w.category]}</span>
             </span>
-          </a>
+          </button>
         </li>
       ))
     }
   </ul>
   </div>
 
-  <div class="reveal mt-12 flex justify-center md:mt-16">
-    <a href={projectsPath(lang)} class="pill pill--solid">{t.all} →</a>
-  </div>
+  <Lightbox lang={lang} label={t.title} />
 </section>

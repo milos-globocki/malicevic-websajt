@@ -12,7 +12,7 @@ export const ui = {
     metaDescription:
       "Namještaj i enterijeri iz naše radionice u Republici Srpskoj, BiH: gotovi proizvodi, dizajnerski komadi i namještaj po mjeri za klijente širom Evrope.",
     skip: "Pređi na sadržaj",
-    nav: { home: "Početna", projects: "Projekti", services: "Ponuda", about: "O nama", contact: "Kontakt" },
+    nav: { home: "Početna", services: "Ponuda", about: "O nama", contact: "Kontakt" },
     menu: "Meni",
     close: "Zatvori",
     cta: "Kontaktirajte nas",
@@ -21,6 +21,7 @@ export const ui = {
       line2: "napravljeni za vas.",
       sub: "Gotovi proizvodi, dizajnerski komadi i namještaj po mjeri.\nS vama smo od prve ideje do ugradnje.",
       scroll: "Pogledajte radove",
+      projects: "Projekti",
     },
     statement:
       "Svaki prostor ima svoj ritam. Mi pravimo namještaj koji ga prati, od mjere i materijala do posljednjeg detalja.",
@@ -34,7 +35,16 @@ export const ui = {
       ],
     },
     materials: { label: "Materijali", items: ["Masivno drvo", "Furnir", "Lak", "Kamen", "Metal", "Staklo"] },
-    featured: { eyebrow: "Izdvojeno", title: "Odabrani projekti" },
+    featured: {
+      eyebrow: "Izdvojeno",
+      title: "Odabrani projekti",
+      more: {
+        title: "Svi projekti",
+        text: "Stanovi, kuhinje i idejna rješenja, svaki sa kompletnom galerijom fotografija.",
+        cta: "Pogledajte sve projekte",
+      },
+    },
+    categories: { finished: "Gotovi proizvodi", designer: "Dizajn enterijera", custom: "Po mjeri" },
     video: {
       eyebrow: "Radionica",
       title: "Od skice do ugradnje, sve na jednom mjestu.",
@@ -42,11 +52,10 @@ export const ui = {
     portfolio: {
       eyebrow: "Radovi",
       title: "Naši radovi",
-      filters: { all: "Sve", finished: "Gotovi proizvodi", designer: "Dizajn enterijera", custom: "Po mjeri" },
+      filters: { selected: "Izdvojeno", designer: "Dizajn enterijera", custom: "Elementi po mjeri" },
       open: "Otvori sliku",
       prev: "Prethodna",
       next: "Sljedeća",
-      all: "Svi projekti",
     },
     projects: {
       eyebrow: "Projekti",
@@ -105,7 +114,7 @@ export const ui = {
     metaDescription:
       "Furniture and interiors from our workshop in Republika Srpska, Bosnia and Herzegovina: ready-made, designer and bespoke pieces for clients across Europe.",
     skip: "Skip to content",
-    nav: { home: "Home", projects: "Projects", services: "Services", about: "About", contact: "Contact" },
+    nav: { home: "Home", services: "Services", about: "About", contact: "Contact" },
     menu: "Menu",
     close: "Close",
     cta: "Get in touch",
@@ -114,6 +123,7 @@ export const ui = {
       line2: "made for you.",
       sub: "Ready-made products, designer pieces and bespoke furniture.\nWe are with you from the first idea to installation.",
       scroll: "See our work",
+      projects: "Projects",
     },
     statement:
       "Every space has its own rhythm. We build furniture that follows it, from measurements and materials to the last detail.",
@@ -127,7 +137,16 @@ export const ui = {
       ],
     },
     materials: { label: "Materials", items: ["Solid wood", "Veneer", "Lacquer", "Stone", "Metal", "Glass"] },
-    featured: { eyebrow: "Featured", title: "Selected projects" },
+    featured: {
+      eyebrow: "Featured",
+      title: "Selected projects",
+      more: {
+        title: "All projects",
+        text: "Apartments, kitchens and concept designs, each with its full photo gallery.",
+        cta: "View all projects",
+      },
+    },
+    categories: { finished: "Ready-made", designer: "Interior design", custom: "Made to measure" },
     video: {
       eyebrow: "Workshop",
       title: "From sketch to installation, all under one roof.",
@@ -135,11 +154,10 @@ export const ui = {
     portfolio: {
       eyebrow: "Portfolio",
       title: "Our work",
-      filters: { all: "All", finished: "Ready-made", designer: "Interior design", custom: "Custom" },
+      filters: { selected: "Selected", designer: "Interior design", custom: "Custom elements" },
       open: "Open image",
       prev: "Previous",
       next: "Next",
-      all: "All projects",
     },
     projects: {
       eyebrow: "Projects",
@@ -196,4 +214,4 @@ export type UI = (typeof ui)[Lang];
 export const getUI = (lang: Lang): UI => ui[lang];
 export const otherLang = (lang: Lang): Lang => (lang === "sr" ? "en" : "sr");
 export const homePath = (lang: Lang) => (lang === defaultLang ? "/" : `/${lang}/`);
-export const projectsPath = (lang: Lang) => (lang === defaultLang ? "/projekti/" : `/${lang}/projects/`);
+export const projectsPath = (lang: Lang) => (lang === defaultLang ? "/projects/" : `/${lang}/projects/`);

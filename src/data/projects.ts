@@ -3,10 +3,10 @@ import { projectsPath, type Lang } from "../i18n/ui";
 export type Category = "finished" | "designer" | "custom";
 
 export interface Project {
-  /** Stable key, used by `works` below and as the file prefix of the project's photos. */
+  /** Stable key, used as the file prefix of the project's photos. */
   id: string;
-  /** URL segment per language: /projekti/<sr>/ and /en/projects/<en>/. */
-  slug: Record<Lang, string>;
+  /** URL segment, in English for both languages: /projects/<slug>/ and /en/projects/<slug>/. */
+  slug: string;
   category: Category;
   featured?: boolean;
   year: number;
@@ -30,7 +30,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "vitrine",
-    slug: { sr: "stan-sa-osvijetljenim-vitrinama", en: "apartment-with-lit-glass-cabinets" },
+    slug: "apartment-with-lit-glass-cabinets",
     category: "custom",
     featured: true,
     year: 2025,
@@ -51,7 +51,7 @@ export const projects: Project[] = [
   },
   {
     id: "hrast",
-    slug: { sr: "stan-u-hrastu-i-bijeloj", en: "oak-and-white-apartment" },
+    slug: "oak-and-white-apartment",
     category: "custom",
     featured: true,
     year: 2025,
@@ -71,7 +71,7 @@ export const projects: Project[] = [
   },
   {
     id: "luk",
-    slug: { sr: "stan-sa-lucnim-policama", en: "apartment-with-arched-shelving" },
+    slug: "apartment-with-arched-shelving",
     category: "designer",
     featured: true,
     year: 2025,
@@ -88,7 +88,7 @@ export const projects: Project[] = [
   },
   {
     id: "vrt",
-    slug: { sr: "svijetli-stan-sa-pogledom-na-vrt", en: "light-apartment-with-a-garden-view" },
+    slug: "light-apartment-with-a-garden-view",
     category: "designer",
     year: 2025,
     title: { sr: "Svijetli stan sa pogledom na vrt", en: "Light apartment with a garden view" },
@@ -104,7 +104,7 @@ export const projects: Project[] = [
   },
   {
     id: "orah",
-    slug: { sr: "kuhinja-u-orahu", en: "walnut-kitchen" },
+    slug: "walnut-kitchen",
     category: "designer",
     year: 2025,
     title: { sr: "Kuhinja u orahu", en: "Walnut kitchen" },
@@ -120,7 +120,7 @@ export const projects: Project[] = [
   },
   {
     id: "crno",
-    slug: { sr: "kuhinja-i-spavaca-soba-sa-crnim-staklom", en: "kitchen-and-bedroom-with-black-glass" },
+    slug: "kitchen-and-bedroom-with-black-glass",
     category: "designer",
     year: 2025,
     title: { sr: "Kuhinja i spavaća soba sa crnim staklom", en: "Kitchen and bedroom with black glass" },
@@ -136,7 +136,7 @@ export const projects: Project[] = [
   },
   {
     id: "letvice",
-    slug: { sr: "kuhinja-i-ulaz-sa-letvicama", en: "kitchen-and-entrance-with-timber-slats" },
+    slug: "kitchen-and-entrance-with-timber-slats",
     category: "designer",
     year: 2025,
     title: { sr: "Kuhinja i ulaz sa letvicama", en: "Kitchen and entrance with timber slats" },
@@ -153,46 +153,39 @@ export const projects: Project[] = [
 ];
 
 export interface Work {
-  /** A photo from the project's `photos`. */
+  /** A name in src/assets/photos. It may also appear in a project, but doesn't have to. */
   image: string;
-  /** The `id` of the project it belongs to; category and year come from there. */
-  project: string;
+  /** The filter it shows under, besides "Selected". */
+  category: "designer" | "custom";
   title: Record<Lang, string>;
 }
 
-// The photo wall on the home page. Each tile links to its project. The order is chosen so
-// the grid packs without holes in every filter view, on desktop (3 columns) and phones (2):
-// portrait shots become tall tiles and the first entry (if landscape) a large one, here
-// 1 large, 7 tall and 9 normal tiles. Categories with no projects hide their filter.
+// The photo wall on the home page: a selection of single photos, kept apart from the
+// projects. A tile opens the photo itself in the lightbox, not a project. The order is
+// chosen so the grid packs without holes in every filter view, on desktop (3 columns) and
+// phones (2): portrait shots become tall tiles and the first entry (if landscape) a large
+// one, here 1 large, 7 tall and 9 normal tiles.
 export const works: Work[] = [
-  { image: "p-01", project: "hrast", title: { sr: "Kuhinja u hrastu i bijeloj", en: "Oak and white kitchen" } },
-  { image: "p-04", project: "vitrine", title: { sr: "Kupatilo sa elementom po mjeri", en: "Made-to-measure bathroom vanity" } },
-  { image: "p-09", project: "vitrine", title: { sr: "TV zid u svijetlom furniru", en: "Media wall in pale veneer" } },
-  { image: "p-17", project: "luk", title: { sr: "Spavaća soba, vizualizacija", en: "Bedroom, visualisation" } },
-  { image: "p-11", project: "hrast", title: { sr: "Vitrina za čaše", en: "Glassware display" } },
-  { image: "p-03", project: "hrast", title: { sr: "Viseći TV element u hrastu", en: "Floating oak media unit" } },
-  { image: "p-07", project: "vitrine", title: { sr: "Vitrina sa rasvjetom", en: "Lit glass display" } },
-  { image: "p-16", project: "vrt", title: { sr: "Svijetla kuhinja, vizualizacija", en: "Light kitchen, visualisation" } },
-  { image: "p-08", project: "hrast", title: { sr: "Plakar sa zelenom ručkom", en: "Wardrobe with a mint handle" } },
-  { image: "p-10", project: "vrt", title: { sr: "Dnevni boravak sa TV zidom", en: "Living room with a media wall" } },
-  { image: "p-15", project: "vitrine", title: { sr: "Dnevna soba sa vitrinom", en: "Living room with a glass display" } },
-  { image: "p-06", project: "orah", title: { sr: "Kuhinja u orahu, vizualizacija", en: "Walnut kitchen, visualisation" } },
-  { image: "p-05", project: "vitrine", title: { sr: "Garderoba sa radnim kutkom", en: "Wardrobe with a study nook" } },
-  { image: "p-02", project: "luk", title: { sr: "Dnevna soba, 3D vizualizacija", en: "Living room, 3D visualisation" } },
-  { image: "p-13", project: "vitrine", title: { sr: "Predsoblje", en: "Hallway" } },
-  { image: "p-12", project: "vrt", title: { sr: "Dnevna soba sa trpezarijom", en: "Living and dining room" } },
-  { image: "p-14", project: "vitrine", title: { sr: "Spavaća soba sa osvijetljenim plakarom", en: "Bedroom with a lit wardrobe" } },
+  { image: "p-01", category: "custom", title: { sr: "Kuhinja u hrastu i bijeloj", en: "Oak and white kitchen" } },
+  { image: "p-04", category: "custom", title: { sr: "Kupatilo sa elementom po mjeri", en: "Made-to-measure bathroom vanity" } },
+  { image: "p-09", category: "custom", title: { sr: "TV zid u svijetlom furniru", en: "Media wall in pale veneer" } },
+  { image: "p-17", category: "designer", title: { sr: "Spavaća soba, vizualizacija", en: "Bedroom, visualisation" } },
+  { image: "p-11", category: "custom", title: { sr: "Vitrina za čaše", en: "Glassware display" } },
+  { image: "p-03", category: "custom", title: { sr: "Viseći TV element u hrastu", en: "Floating oak media unit" } },
+  { image: "p-07", category: "custom", title: { sr: "Vitrina sa rasvjetom", en: "Lit glass display" } },
+  { image: "p-16", category: "designer", title: { sr: "Svijetla kuhinja, vizualizacija", en: "Light kitchen, visualisation" } },
+  { image: "p-08", category: "custom", title: { sr: "Plakar sa zelenom ručkom", en: "Wardrobe with a mint handle" } },
+  { image: "p-10", category: "designer", title: { sr: "Dnevni boravak sa TV zidom", en: "Living room with a media wall" } },
+  { image: "p-15", category: "custom", title: { sr: "Dnevna soba sa vitrinom", en: "Living room with a glass display" } },
+  { image: "p-06", category: "designer", title: { sr: "Kuhinja u orahu, vizualizacija", en: "Walnut kitchen, visualisation" } },
+  { image: "p-05", category: "custom", title: { sr: "Garderoba sa radnim kutkom", en: "Wardrobe with a study nook" } },
+  { image: "p-02", category: "designer", title: { sr: "Dnevna soba, 3D vizualizacija", en: "Living room, 3D visualisation" } },
+  { image: "p-13", category: "custom", title: { sr: "Predsoblje", en: "Hallway" } },
+  { image: "p-12", category: "designer", title: { sr: "Dnevna soba sa trpezarijom", en: "Living and dining room" } },
+  { image: "p-14", category: "custom", title: { sr: "Spavaća soba sa osvijetljenim plakarom", en: "Bedroom with a lit wardrobe" } },
 ];
 
-/** The project a work belongs to. Throws on a typo, so a broken link fails the build. */
-export function projectOf(work: Work): Project {
-  const p = projects.find((x) => x.id === work.project);
-  if (!p) throw new Error(`works: unknown project "${work.project}"`);
-  if (!p.photos.includes(work.image)) throw new Error(`works: ${work.image} is not a photo of "${p.id}"`);
-  return p;
-}
-
-export const projectPath = (p: Project, lang: Lang) => `${projectsPath(lang)}${p.slug[lang]}/`;
+export const projectPath = (p: Project, lang: Lang) => `${projectsPath(lang)}${p.slug}/`;
 
 /** The project after this one, wrapping round to the first. */
 export const nextProject = (p: Project) => projects[(projects.indexOf(p) + 1) % projects.length]!;

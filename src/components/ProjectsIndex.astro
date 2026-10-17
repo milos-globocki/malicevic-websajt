@@ -95,7 +95,7 @@ const ld = {
                 <div class="pj-text wrap">
                   <div>
                     <p class="eyebrow mb-4 text-white/75">
-                      {t.portfolio.filters[p.category]} · {p.year}
+                      {t.categories[p.category]} · {p.year}
                     </p>
                     <h2 class="h-section max-w-[16ch] text-balance">
                       <a href={projectPath(p, lang)}>{p.title[lang]}</a>
@@ -139,7 +139,7 @@ const ld = {
                     <span class="shrink-0 font-serif italic text-mute tabular-nums">{pad(i + 1)}</span>
                   </span>
                   <span class="mt-2 block px-1 text-sm text-mute">
-                    {t.portfolio.filters[p.category]} · {p.year}
+                    {t.categories[p.category]} · {p.year}
                   </span>
                 </a>
               </li>
