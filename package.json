@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "deploy:test": "SITE_URL=https://malicevic.pages.dev astro build && pnpm dlx wrangler pages deploy dist --project-name malicevic --branch main"
+    "deploy:test": "SITE_URL=https://malicevic.pages.dev astro build && pnpm dlx wrangler@4.152.0 pages deploy dist --project-name malicevic --branch main"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
