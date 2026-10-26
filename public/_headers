@@ -1,0 +1,8 @@
+# Cloudflare Pages response headers. Other hosts ignore this file.
+
+# The pages.dev test copy must never be indexed, only the real domain.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
