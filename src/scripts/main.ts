@@ -175,6 +175,55 @@ if (dialog) {
   );
 }
 
+// 3b. The dive into the statement's full stop (Statement.astro): the motion is CSS on the
+//     scroll; this tells it where the dot sits, measured again whenever the text reflows.
+//     offsetLeft/Top give the layout position, unmoved by the zoom.
+const dive = document.querySelector<HTMLElement>("[data-dive]");
+if (dive) {
+  const pin = dive.firstElementChild as HTMLElement;
+  const cam = pin.querySelector<HTMLElement>(".dive-cam")!;
+  const text = pin.querySelector<HTMLElement>(".dive-text")!;
+  const dot = pin.querySelector<HTMLElement>(".dive-dot")!;
+  // Position within the pin, whichever ancestors the browser counts as offset parents.
+  const at = (el: HTMLElement) => {
+    let x = 0;
+    let y = 0;
+    for (let e: HTMLElement | null = el; e && e !== pin; e = e.offsetParent as HTMLElement | null) {
+      x += e.offsetLeft;
+      y += e.offsetTop;
+    }
+    return [x, y] as const;
+  };
+  const measure = () => {
+    // The camera is the screen with the browser bars showing; the pin reaches on to the
+    // bottom of the screen without them.
+    const w = pin.clientWidth;
+    const h = cam.clientHeight;
+    const r = parseFloat(getComputedStyle(dot).width) / 2;
+    const [dl, dt] = at(dot);
+    const [tl, tt] = at(text);
+    const x = dl + r;
+    const y = dt + r;
+    const R = Math.ceil(Math.hypot(w / 2, Math.max(h / 2, pin.clientHeight - h / 2))) + 2;
+    const set = (k: string, v: number) => pin.style.setProperty(k, `${v}px`);
+    set("--dx", x);
+    set("--dy", y);
+    set("--cy", h / 2);
+    set("--tx", w / 2 - x);
+    set("--ty", h / 2 - y);
+    set("--ox", x - tl);
+    set("--oy", y - tt);
+    set("--R", R);
+    pin.style.setProperty("--s0", String(r / R));
+    dive.dataset.ready = "";
+  };
+  const ro = new ResizeObserver(measure);
+  ro.observe(pin);
+  ro.observe(cam);
+  ro.observe(text);
+  document.fonts.ready.then(measure);
+}
+
 // 4. Page transitions: the crossfade itself is CSS (@view-transition). Here we pick the one
 //    photo that should grow into the next page's hero, or shrink back into its card:
 //    [data-vt] marks project photos, [data-vt-href] the project page each one opens and

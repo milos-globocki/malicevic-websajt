@@ -5,11 +5,38 @@ import { getUI, type Lang } from "../i18n/ui";
 interface Props {
   lang: Lang;
 }
-const words = splitWords(getUI(Astro.props.lang).statement);
+// The closing full stop is drawn as a round dot (.dive-dot) the scroll can dive into. It
+// is a box, and a line may break before a box, so it is held to its word.
+const words = splitWords(getUI(Astro.props.lang).statement.replace(/\.$/, ""));
+const last = words.length - 1;
 ---
 
-<section class="wrap py-28 md:py-44">
-  <p class="fill h-section max-w-[24ch] md:max-w-[28ch]" style="font-size: clamp(2rem, 5.2vw, 4.75rem)">
-    {words.map(({ word, p }) => <span class="w" style={`--p:${p}`}>{word} </span>)}
-  </p>
+<!--
+  The statement fills in word by word as it rises, then holds on screen while the scroll
+  zooms into its last words, faster and faster, until the full stop covers the screen.
+  The dark opens from the middle onto the offer heading (Offer.astro), which rises into
+  it. All of it is CSS on the scroll (global.css, "Dive"); main.ts only measures where the
+  dot sits. Without scroll-driven animations, or with reduced motion, this is the plain
+  statement and the heading follows as usual.
+-->
+<section class="dive" data-dive>
+  <div class="dive-pin">
+    <div class="dive-cam wrap">
+      <p class="dive-text h-section max-w-[24ch] md:max-w-[28ch]" style="font-size: clamp(2rem, 5.2vw, 4.75rem)">
+        {
+          words.map(({ word, p }, i) =>
+            i === last ? (
+              <span class="w whitespace-nowrap" style={`--p:${p}`}>{word}<span class="dive-dot" aria-hidden="true"></span><span class="sr-only">.</span></span>
+            ) : (
+              <span class="w" style={`--p:${p}`}>{word} </span>
+            ),
+          )
+        }
+      </p>
+    </div>
+    <div class="dive-veil" aria-hidden="true">
+      <div class="dive-ink"></div>
+      <div class="dive-iris"></div>
+    </div>
+  </div>
 </section>
