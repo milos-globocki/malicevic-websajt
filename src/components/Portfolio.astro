@@ -26,9 +26,9 @@ const items = (
   )
 ).map((w, i) => ({ ...w, big: i === 0 && !w.tall }));
 
-// "Selected" shows the whole wall; a category is only offered when a work belongs to it.
-const filters = (["selected", "designer", "custom"] as const).filter(
-  (f) => f === "selected" || items.some((w) => w.category === f),
+// "Selected" shows the marked works; a room is only offered when a work belongs to it.
+const filters = (["selected", "kitchen", "storage", "living"] as const).filter((f) =>
+  items.some((w) => (f === "selected" ? w.selected : w.category === f)),
 );
 ---
 
@@ -57,7 +57,7 @@ const filters = (["selected", "designer", "custom"] as const).filter(
   <ul class="pf-grid">
     {
       items.map((w) => (
-        <li class:list={["pf-item", { "pf-tall": w.tall, "pf-big": w.big }]} data-cat={w.category}>
+        <li class:list={["pf-item", { "pf-tall": w.tall, "pf-big": w.big }]} data-cat={w.category} data-sel={w.selected ? "" : undefined}>
           <button
             type="button"
             class="hover-zoom group flex h-full w-full flex-col text-left"

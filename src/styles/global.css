@@ -453,6 +453,30 @@
     grid-row: span 2;
   }
 }
+/* A project with a clip: the cover and the 9:16 clip side by side, the clip setting the
+   height on phones and filling the right column from tablet width. */
+.pj-strip--reel {
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+}
+.pj-strip--reel .pj-frame--cover {
+  grid-column: auto;
+  aspect-ratio: auto;
+}
+.pj-frame--reel {
+  aspect-ratio: 9 / 16;
+}
+.pj-frame--reel .reel {
+  width: 100%;
+  height: 100%;
+}
+@media (min-width: 768px) {
+  .pj-strip--reel {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+  .pj-frame--reel {
+    aspect-ratio: auto;
+  }
+}
 .pj:has(#v-grid:checked) .pj-list,
 .pj:has(#v-list:checked) .pj-grid {
   display: none;
@@ -1036,6 +1060,59 @@
   opacity: 1;
 }
 
+/* ---------- Project clips (Reel.astro) ---------- */
+.reel {
+  display: block;
+  object-fit: cover;
+  background: #1a1612;
+}
+/* On a card: the 9:16 clip stands inside the photo's right edge, as a card of its own. */
+.card-reel {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  height: calc(100% - 1.5rem);
+  width: auto;
+  aspect-ratio: 9 / 16;
+  border-radius: calc(var(--radius-card) - 0.75rem);
+  box-shadow: 0 1.25rem 2.5rem -1rem rgb(0 0 0 / 0.45);
+}
+@media (min-width: 768px) {
+  .card-reel {
+    top: 1.25rem;
+    right: 1.25rem;
+    height: calc(100% - 2.5rem);
+    border-radius: calc(var(--radius-card) - 0.5rem);
+  }
+}
+/* Project page: on tall screens the clip fills the hero over the cover photo, fading in
+   once it plays. On wide ones a 9:16 clip would be cropped to a sliver, so it stands as a
+   card on the right instead, above the shade, with the note below it. */
+.pj-reel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+.pj-reel.is-on {
+  opacity: 1;
+}
+@media (min-width: 768px) and (orientation: landscape) and (min-height: 36rem) {
+  .pj-reel {
+    inset: auto;
+    top: 6.5rem;
+    right: max(2.5rem, (100% - 1600px) / 2 + 2.5rem);
+    width: auto;
+    height: calc(100% - 17.5rem);
+    aspect-ratio: 9 / 16;
+    z-index: 1;
+    border-radius: var(--radius-card);
+    box-shadow: 0 2rem 4rem -1.5rem rgb(0 0 0 / 0.55);
+  }
+}
+
 /* ---------- Portfolio: CSS-only category filter ---------- */
 .pf-radio {
   position: absolute;
@@ -1064,8 +1141,10 @@
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }
-.pf:has(#f-designer:checked) .pf-item:not([data-cat="designer"]),
-.pf:has(#f-custom:checked) .pf-item:not([data-cat="custom"]) {
+.pf:has(#f-selected:checked) .pf-item:not([data-sel]),
+.pf:has(#f-kitchen:checked) .pf-item:not([data-cat="kitchen"]),
+.pf:has(#f-storage:checked) .pf-item:not([data-cat="storage"]),
+.pf:has(#f-living:checked) .pf-item:not([data-cat="living"]) {
   display: none;
 }
 

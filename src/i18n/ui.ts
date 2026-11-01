@@ -52,7 +52,7 @@ export const ui = {
     portfolio: {
       eyebrow: "Radovi",
       title: "Naši radovi",
-      filters: { selected: "Izdvojeno", designer: "Dizajn enterijera", custom: "Elementi po mjeri" },
+      filters: { selected: "Izdvojeno", kitchen: "Kuhinje", storage: "Ormari i predsoblja", living: "Dnevni i poslovni prostori" },
       open: "Otvori sliku",
       prev: "Prethodna",
       next: "Sljedeća",
@@ -154,7 +154,7 @@ export const ui = {
     portfolio: {
       eyebrow: "Portfolio",
       title: "Our work",
-      filters: { selected: "Selected", designer: "Interior design", custom: "Custom elements" },
+      filters: { selected: "Selected", kitchen: "Kitchens", storage: "Wardrobes and hallways", living: "Living and retail" },
       open: "Open image",
       prev: "Previous",
       next: "Next",

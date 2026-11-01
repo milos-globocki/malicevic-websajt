@@ -90,6 +90,35 @@ if (video && !skip) {
   io.observe(video);
 }
 
+// 2c. Project clips (Reel.astro): sources attached when a clip nears the screen, played
+//     while it is on it. Skipped, the poster frame shows instead (.is-on reveals it).
+for (const reel of document.querySelectorAll<HTMLVideoElement>("video[data-reel]")) {
+  if (skip) {
+    reel.classList.add("is-on");
+    continue;
+  }
+  let loaded = false;
+  reel.addEventListener("playing", () => reel.classList.add("is-on"), { once: true });
+  new IntersectionObserver(
+    ([entry]) => {
+      if (!entry) return;
+      if (!entry.isIntersecting) return reel.pause();
+      if (!loaded) {
+        loaded = true;
+        reel.replaceChildren(
+          ...(JSON.parse(reel.dataset.reel!) as { src: string; type: string }[]).map((s) =>
+            Object.assign(document.createElement("source"), s),
+          ),
+        );
+        reel.preload = "auto";
+        reel.load();
+      }
+      reel.play().catch(() => {});
+    },
+    { rootMargin: "200px 0px" },
+  ).observe(reel);
+}
+
 // 3. Lightbox for the photos on a project page.
 const dialog = document.getElementById("lb") as HTMLDialogElement | null;
 if (dialog) {

@@ -5,6 +5,7 @@ import Layout from "../layouts/Layout.astro";
 import Header from "./Header.astro";
 import Contact from "./Contact.astro";
 import Lightbox from "./Lightbox.astro";
+import Reel from "./Reel.astro";
 import { nextProject, projectPath, type Project } from "../data/projects";
 import { photo } from "../data/photos";
 import { site } from "../data/site";
@@ -23,6 +24,8 @@ const paths = projectPaths(p);
 const url = new URL(paths[lang], origin).href;
 const next = nextProject(p);
 const title = p.title[lang];
+// A long title steps down a size so it stays on the faded part of the photo.
+const titleSize = title.length > 48 ? "clamp(2rem, 4vw, 3.75rem)" : "clamp(2.25rem, 5.4vw, 5.25rem)";
 const category = t.categories[p.category];
 const [cover, ...rest] = p.photos as [string, ...string[]];
 const alt = (i: number) => `${title}, ${i + 1}/${p.photos.length}`;
@@ -96,6 +99,7 @@ const words = splitWords(p.intro[lang]);
             fetchpriority="high"
             class="pj-hero-img h-full w-full object-cover"
           />
+          {p.video && <Reel name={p.video} class="pj-reel" />}
           <div class="pj-hero-shade absolute inset-0"></div>
         </div>
       </div>
@@ -107,7 +111,7 @@ const words = splitWords(p.intro[lang]);
           <span>{category}</span>
         </nav>
         <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-10">
-          <h1 class="h-display max-w-[18ch]" style="font-size: clamp(2.25rem, 5.4vw, 5.25rem)">
+          <h1 class="h-display max-w-[18ch]" style={`font-size: ${titleSize}`}>
             <span class="line"><span class="line-in text-balance" style="--d:0">{title}</span></span>
           </h1>
           <p class="hero-rise max-w-sm text-mute md:text-right" style="--d:2">{p.note[lang]}</p>
@@ -134,6 +138,13 @@ const words = splitWords(p.intro[lang]);
         <p class="fill pj-intro md:col-span-9">
           {words.map(({ word, p: at }) => <span class="w" style={`--p:${at}`}>{word} </span>)}
         </p>
+        {
+          p.text && (
+            <div class="reveal max-w-2xl space-y-5 text-lg leading-relaxed text-mute md:col-span-9 md:col-start-4">
+              {p.text[lang].map((para) => <p>{para}</p>)}
+            </div>
+          )
+        }
       </div>
     </section>
 

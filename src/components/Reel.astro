@@ -1,0 +1,35 @@
+---
+import { getImage } from "astro:assets";
+import { photo } from "../data/photos";
+import { clipSources } from "../lib/video";
+
+interface Props {
+  /** The project's `video`: public/video/<name>.*, poster src/assets/photos/<name>-video.jpg. */
+  name: string;
+  class?: string;
+}
+const { name, class: className } = Astro.props;
+
+// A project's 9:16 clip: muted, looping, started by main.ts once it is near the screen and
+// paused when it leaves. Until then (and for good with reduced motion or data saver) the
+// poster, the clip's own first frame, stands in for it. The sources travel in a data
+// attribute so nothing downloads before that.
+const sources = clipSources(name);
+const poster = sources.length ? await getImage({ src: photo(`${name}-video`), width: 540, format: "webp" }) : undefined;
+---
+
+{
+  poster && (
+    <video
+      class:list={["reel", className]}
+      muted
+      loop
+      playsinline
+      preload="none"
+      poster={poster.src}
+      aria-hidden="true"
+      tabindex="-1"
+      data-reel={JSON.stringify(sources)}
+    />
+  )
+}
