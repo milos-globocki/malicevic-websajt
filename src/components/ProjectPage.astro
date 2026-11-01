@@ -5,12 +5,14 @@ import Layout from "../layouts/Layout.astro";
 import Header from "./Header.astro";
 import Contact from "./Contact.astro";
 import Lightbox from "./Lightbox.astro";
+import PhotoWall, { type Tile } from "./PhotoWall.astro";
 import Reel from "./Reel.astro";
 import { nextProject, projectPath, type Project } from "../data/projects";
 import { photo } from "../data/photos";
 import { site } from "../data/site";
 import { getUI, otherLang, projectsPath, type Lang } from "../i18n/ui";
 import { projectImage, projectPaths } from "../lib/seo";
+import { packWall } from "../lib/wall";
 import { splitWords } from "../lib/words";
 
 interface Props {
@@ -30,26 +32,29 @@ const category = t.categories[p.category];
 const [cover, ...rest] = p.photos as [string, ...string[]];
 const alt = (i: number) => `${title}, ${i + 1}/${p.photos.length}`;
 
-// Shapes come from the lightbox-size getImage() result: touching photo().width would
-// make Astro ship the original JPEG too. A landscape photo gets a row of its own, two
-// portrait or square photos share one, and a leftover one sits centred at half width.
+// The gallery is the home page's photo wall, without captions. Shapes come from the
+// lightbox-size getImage() result: touching photo().width would make Astro ship the
+// original JPEG too. packWall() picks the spans so every row fills, on desktop and phones.
 const shots = await Promise.all(
   rest.map(async (name, i) => {
     const full = await projectImage(name);
     const { width, height } = full.options.src as ImageMetadata;
-    return { name, full: full.src, ratio: width / height, alt: alt(i + 1) };
+    return { name, full: full.src, tall: height > width, alt: alt(i + 1) };
   }),
 );
-const wide = (s: (typeof shots)[number]) => s.ratio >= 1.2;
-const rows: (typeof shots)[] = [];
-for (let i = 0; i < shots.length; i++) {
-  const s = shots[i]!;
-  const n = shots[i + 1];
-  if (!wide(s) && n && !wide(n)) {
-    rows.push([s, n]);
-    i++;
-  } else rows.push([s]);
-}
+const spans = packWall(shots.map((s) => s.tall));
+const tiles = shots.map(
+  (s, i): Tile => ({
+    image: s.name,
+    full: s.full,
+    alt: s.alt,
+    title,
+    note: p.note[lang],
+    label: `${t.portfolio.open}: ${s.alt}`,
+    lg: spans.lg[i]!,
+    sm: spans.sm[i]!,
+  }),
+);
 
 // Meta description: the one-line note, plus the intro's first sentence while it fits.
 const lead = p.intro[lang].split(/(?<=\.)\s/)[0]!;
@@ -152,36 +157,7 @@ const words = splitWords(p.intro[lang]);
     </section>
 
     <section class="wrap pb-24 md:pb-40" aria-label={t.projects.photos}>
-      <div class="pj-rows">
-        {
-          rows.map((row) => (
-            <div class:list={["pj-row", { "pj-row--lone": row.length === 1 && !wide(row[0]!) }]}>
-              {row.map((s) => (
-                <button
-                  type="button"
-                  class="pj-shot unveil"
-                  style={`--r:${s.ratio.toFixed(4)}`}
-                  data-lb
-                  data-full={s.full}
-                  data-alt={s.alt}
-                  data-title={title}
-                  data-note={p.note[lang]}
-                  aria-label={`${t.portfolio.open}: ${s.alt}`}
-                >
-                  <Image
-                    src={photo(s.name)}
-                    alt={s.alt}
-                    widths={row.length === 1 && wide(s) ? [800, 1280, 1920] : [480, 800, 1100]}
-                    sizes={row.length === 1 && wide(s) ? "100vw" : "(min-width: 640px) 50vw, 100vw"}
-                    loading="lazy"
-                    class="par pj-shot-img"
-                  />
-                </button>
-              ))}
-            </div>
-          ))
-        }
-      </div>
+      <PhotoWall tiles={tiles} />
     </section>
 
     <section class="px-5 pb-24 md:px-10 md:pb-40">

@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets";
+import { photo } from "../data/photos";
+import type { Span } from "../lib/wall";
+
+export interface Tile {
+  /** Base name in src/assets/photos. */
+  image: string;
+  /** Lightbox source, and the title and note the lightbox shows with it. */
+  full: string;
+  alt: string;
+  title: string;
+  note: string;
+  label: string;
+  /** Spans on desktop (3 columns) and on phones (2 columns). */
+  lg: Span;
+  sm: Span;
+  /** Text under the photo; a wall without any is photos only. */
+  caption?: { title: string; note: string };
+  /** Extra attributes on the tile, such as the home page's filter data. */
+  attrs?: Record<string, string | undefined>;
+}
+
+interface Props {
+  tiles: Tile[];
+}
+const { tiles } = Astro.props;
+const bare = !tiles.some((t) => t.caption);
+---
+
+<!-- Packed grid: row height follows column width (container units), each tile spans
+     the rows and columns it is given, and dense flow fills the holes a filter leaves.
+     Each tile opens its photo in the lightbox. -->
+<div class="pf-wrap">
+  <ul class:list={["pf-grid", { "pf-grid--bare": bare }]}>
+    {
+      tiles.map((t) => {
+        const wideLg = t.lg[0] > 1;
+        const wideSm = t.sm[0] > 1;
+        return (
+          <li class="pf-item" style={`--c:${t.lg[0]};--r:${t.lg[1]};--cs:${t.sm[0]};--rs:${t.sm[1]}`} {...t.attrs}>
+            <button
+              type="button"
+              class="hover-zoom group flex h-full w-full flex-col text-left"
+              data-lb
+              data-full={t.full}
+              data-alt={t.alt}
+              data-title={t.title}
+              data-note={t.note}
+              aria-label={t.label}
+            >
+              <span class="unveil block min-h-0 flex-1 overflow-clip rounded-card">
+                <Image
+                  src={photo(t.image)}
+                  alt={t.alt}
+                  widths={wideLg || wideSm ? [800, 1100, 1600] : [480, 800, 1100]}
+                  sizes={`(min-width: 768px) ${wideLg ? "66vw" : "33vw"}, ${wideSm ? "100vw" : "50vw"}`}
+                  loading="lazy"
+                  class="unveil-img h-full w-full object-cover"
+                />
+              </span>
+              {t.caption && (
+                <span class="flex h-12 shrink-0 items-center justify-between gap-3 px-1">
+                  <span class="min-w-0 truncate font-serif text-base leading-tight tracking-tight md:text-2xl">{t.caption.title}</span>
+                  <span class="hidden shrink-0 text-xs text-mute md:inline">{t.caption.note}</span>
+                </span>
+              )}
+            </button>
+          </li>
+        );
+      })
+    }
+  </ul>
+</div>
