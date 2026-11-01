@@ -354,6 +354,26 @@
       linear-gradient(to top, var(--color-paper) 0%, rgb(246 243 240 / 0.88) 10%, rgb(246 243 240 / 0.45) 22%, transparent 36%);
   }
 }
+/* The shade above is cut for a title of two or three lines. This one is the copy's own
+   backdrop, as tall as the copy plus a fade above it, so a longer title still sits on
+   paper. It stays put while the photo drifts on scroll, and where the clip stands as a
+   card on the right it thins out before it, so the clip keeps its colour. */
+.pj-hero-foot {
+  position: relative;
+}
+.pj-hero-foot::before {
+  content: "";
+  position: absolute;
+  inset: -7rem 0 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(246 243 240 / 0.9) calc(100% - 7rem), transparent);
+}
+@media (min-width: 768px) and (orientation: landscape) and (min-height: 36rem) {
+  .pj-hero-foot::before {
+    mask-image: linear-gradient(to right, #000 45%, transparent 68%);
+  }
+}
 .pj-intro {
   font-family: var(--font-serif);
   font-size: clamp(1.6rem, 3.2vw, 3rem);

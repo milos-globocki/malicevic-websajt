@@ -85,7 +85,8 @@ const words = splitWords(p.intro[lang]);
     <!--
       Arriving from a project card, the card's photo grows into this frame (a view
       transition, see main.ts), so the photo only settles and the title rises right after.
-      The photo fades into the paper at the bottom and the title sits on it.
+      The photo fades into the paper at the bottom and the title sits on it; .pj-hero-foot
+      grows that paper with the copy, so a long title still reads.
     -->
     <section class="relative isolate flex h-[100svh] min-h-[34rem] items-end overflow-hidden">
       <div class="hero-media absolute inset-0 -z-10">
@@ -104,17 +105,19 @@ const words = splitWords(p.intro[lang]);
         </div>
       </div>
 
-      <div class="hero-copy wrap pb-8 md:pb-12" style="--intro: 0.3s">
-        <nav class="hero-rise eyebrow mb-5 flex flex-wrap gap-x-2 text-mute" style="--d:0" aria-label={t.projects.title}>
-          <a href={projectsPath(lang)} class="text-ink underline-offset-4 hover:underline">{t.projects.title}</a>
-          <span aria-hidden="true">/</span>
-          <span>{category}</span>
-        </nav>
-        <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-10">
-          <h1 class="h-display max-w-[18ch]" style={`font-size: ${titleSize}`}>
-            <span class="line"><span class="line-in text-balance" style="--d:0">{title}</span></span>
-          </h1>
-          <p class="hero-rise max-w-sm text-mute md:text-right" style="--d:2">{p.note[lang]}</p>
+      <div class="pj-hero-foot w-full">
+        <div class="hero-copy wrap pb-8 md:pb-12" style="--intro: 0.3s">
+          <nav class="hero-rise eyebrow mb-5 flex flex-wrap gap-x-2 text-mute" style="--d:0" aria-label={t.projects.title}>
+            <a href={projectsPath(lang)} class="text-ink underline-offset-4 hover:underline">{t.projects.title}</a>
+            <span aria-hidden="true">/</span>
+            <span>{category}</span>
+          </nav>
+          <div class="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-10">
+            <h1 class="h-display max-w-[18ch]" style={`font-size: ${titleSize}`}>
+              <span class="line"><span class="line-in text-balance" style="--d:0">{title}</span></span>
+            </h1>
+            <p class="hero-rise max-w-sm text-mute md:text-right" style="--d:2">{p.note[lang]}</p>
+          </div>
         </div>
       </div>
     </section>
