@@ -9,7 +9,7 @@ const modules = import.meta.glob<{ default: ImageMetadata }>("../assets/photos/*
 const slots: Record<string, string> = {
   hero: "luksuz-12",
   about: "drvo-07",
-  poster: "prirodno-08",
+  poster: "minimal-03",
   "offer-1": "drvo-09",
   "offer-2": "luksuz-13",
   "offer-3": "prirodno-05",

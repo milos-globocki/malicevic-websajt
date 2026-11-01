@@ -33,7 +33,7 @@ export const ui = {
         { title: "Namještaj po mjeri", text: "Kuhinje, plakari i enterijeri projektovani za vaš prostor i izrađeni prema vašim željama." },
       ],
     },
-    materials: { label: "Materijali", items: ["Masivno drvo", "Furnir", "Lak", "Kamen", "Metal", "Staklo"] },
+    materials: { label: "Materijali", items: ["Masivno drvo", "Furnir", "MDF", "Iverica", "Metal", "Staklo"] },
     featured: {
       title: "Odabrani projekti",
       more: {
@@ -127,7 +127,7 @@ export const ui = {
         { title: "Made to measure", text: "Kitchens, wardrobes and interiors designed for your space and built to your wishes." },
       ],
     },
-    materials: { label: "Materials", items: ["Solid wood", "Veneer", "Lacquer", "Stone", "Metal", "Glass"] },
+    materials: { label: "Materials", items: ["Solid wood", "Veneer", "MDF", "Chipboard", "Metal", "Glass"] },
     featured: {
       title: "Selected projects",
       more: {
