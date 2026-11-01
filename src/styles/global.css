@@ -300,7 +300,7 @@
 
 /* Row height = a 4:3 photo at the current column width + the 3rem caption (none on a
    wall without captions), so landscape tiles fill one row and portrait tiles two. Each
-   tile's spans come in as --c/--r (desktop) and --cs/--rs (phones). */
+   tile's spans come in as --c/--r (desktop, --x a fixed first column) and --cs/--rs (phones). */
 .pf-wrap {
   container-type: inline-size;
 }
@@ -327,7 +327,7 @@
     --gap: 1.25rem;
   }
   .pf-item {
-    grid-column: span var(--c, 1);
+    grid-column: var(--x, auto) / span var(--c, 1);
     grid-row: span var(--r, 1);
   }
 }

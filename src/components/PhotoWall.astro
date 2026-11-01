@@ -12,7 +12,7 @@ export interface Tile {
   title: string;
   note: string;
   label: string;
-  /** Spans on desktop (3 columns) and on phones (2 columns). */
+  /** Spans on desktop (3 columns, with an optional fixed first column) and on phones (2 columns). */
   lg: Span;
   sm: Span;
   /** Text under the photo; a wall without any is photos only. */
@@ -38,7 +38,7 @@ const bare = !tiles.some((t) => t.caption);
         const wideLg = t.lg[0] > 1;
         const wideSm = t.sm[0] > 1;
         return (
-          <li class="pf-item" style={`--c:${t.lg[0]};--r:${t.lg[1]};--cs:${t.sm[0]};--rs:${t.sm[1]}`} {...t.attrs}>
+          <li class="pf-item" style={`--c:${t.lg[0]};--r:${t.lg[1]};--cs:${t.sm[0]};--rs:${t.sm[1]}${t.lg[2] ? `;--x:${t.lg[2]}` : ""}`} {...t.attrs}>
             <button
               type="button"
               class="hover-zoom group flex h-full w-full flex-col text-left"
