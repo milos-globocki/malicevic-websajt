@@ -34,7 +34,10 @@ const links = [
 
 <header class:list={["site-header", { "site-header--solid": solid }]}>
   <div class:list={["wrap flex h-16 items-center justify-between md:h-20", { "intro-fade": !solid && onHome }]}>
-    <a href={home} class="flex items-center gap-2.5 text-lg font-semibold tracking-tight md:text-xl" aria-label={site.name}>
+    <!-- The logo always scrolls back to the top of the page it is on ("#top" is the hero on
+         the home page, and the top of the document on pages without one); "Početna" in the
+         nav goes home. -->
+    <a href="#top" class="flex items-center gap-2.5 text-lg font-semibold tracking-tight md:text-xl" aria-label={site.name}>
       <Mark class="h-[1.15em] w-auto shrink-0" />
       <span>MALIČEVIĆ<span class="ml-1.5 font-normal opacity-70 max-[359px]:hidden">Enterijeri</span></span>
     </a>
