@@ -26,7 +26,6 @@ export const ui = {
     statement:
       "Svaki prostor ima svoj ritam. Mi pravimo namještaj koji ga prati, od mjere i materijala do posljednjeg detalja.",
     offer: {
-      eyebrow: "Ponuda",
       title: "Tri načina da dođete do namještaja iz naše radionice",
       items: [
         { title: "Gotovi proizvodi", text: "Provjereni modeli iz naše proizvodnje, spremni za isporuku, u više materijala i završnih obrada." },
@@ -36,7 +35,6 @@ export const ui = {
     },
     materials: { label: "Materijali", items: ["Masivno drvo", "Furnir", "Lak", "Kamen", "Metal", "Staklo"] },
     featured: {
-      eyebrow: "Izdvojeno",
       title: "Odabrani projekti",
       more: {
         title: "Svi projekti",
@@ -46,11 +44,9 @@ export const ui = {
     },
     categories: { finished: "Gotovi proizvodi", designer: "Dizajn enterijera", custom: "Po mjeri" },
     video: {
-      eyebrow: "Radionica",
       title: "Od skice do ugradnje, sve na jednom mjestu.",
     },
     portfolio: {
-      eyebrow: "Radovi",
       title: "Naši radovi",
       filters: { selected: "Izdvojeno", kitchen: "Kuhinje", storage: "Ormari i predsoblja", living: "Dnevni i poslovni prostori" },
       open: "Otvori sliku",
@@ -58,7 +54,6 @@ export const ui = {
       next: "Sljedeća",
     },
     projects: {
-      eyebrow: "Projekti",
       title: "Projekti",
       line1: "Prostori koje smo",
       line2: "osmislili i izradili.",
@@ -74,7 +69,6 @@ export const ui = {
       photos: "Fotografije",
     },
     process: {
-      eyebrow: "Kako radimo",
       title: "Od prvog razgovora do ugradnje",
       steps: [
         { title: "Razgovor", text: "Upoznajemo prostor, potrebe i budžet." },
@@ -84,7 +78,6 @@ export const ui = {
       ],
     },
     about: {
-      eyebrow: "O nama",
       title: "Porodična radionica sa tradicijom.",
       text: "Maličević Enterijeri je radionica posvećena izradi namještaja i enterijera. Spajamo zanatsko iskustvo i savremeni dizajn kako bi svaki komad bio funkcionalan, trajan i lijep.",
       stats: [
@@ -94,7 +87,6 @@ export const ui = {
       ],
     },
     contact: {
-      eyebrow: "Kontakt",
       title: "Razgovarajmo o vašem prostoru.",
       text: "Pozovite nas ili pišite na Viber, WhatsApp i društvenim mrežama. Radimo za klijente u BiH i širom Evrope.",
       call: "Pozovite",
@@ -128,7 +120,6 @@ export const ui = {
     statement:
       "Every space has its own rhythm. We build furniture that follows it, from measurements and materials to the last detail.",
     offer: {
-      eyebrow: "Services",
       title: "Three ways to get furniture from our workshop",
       items: [
         { title: "Ready-made products", text: "Proven models from our own production, ready to ship, in a range of materials and finishes." },
@@ -138,7 +129,6 @@ export const ui = {
     },
     materials: { label: "Materials", items: ["Solid wood", "Veneer", "Lacquer", "Stone", "Metal", "Glass"] },
     featured: {
-      eyebrow: "Featured",
       title: "Selected projects",
       more: {
         title: "All projects",
@@ -148,11 +138,9 @@ export const ui = {
     },
     categories: { finished: "Ready-made", designer: "Interior design", custom: "Made to measure" },
     video: {
-      eyebrow: "Workshop",
       title: "From sketch to installation, all under one roof.",
     },
     portfolio: {
-      eyebrow: "Portfolio",
       title: "Our work",
       filters: { selected: "Selected", kitchen: "Kitchens", storage: "Wardrobes and hallways", living: "Living and retail" },
       open: "Open image",
@@ -160,7 +148,6 @@ export const ui = {
       next: "Next",
     },
     projects: {
-      eyebrow: "Projects",
       title: "Projects",
       line1: "Spaces we have",
       line2: "designed and built.",
@@ -176,7 +163,6 @@ export const ui = {
       photos: "Photos",
     },
     process: {
-      eyebrow: "How we work",
       title: "From first conversation to installation",
       steps: [
         { title: "Talk", text: "We learn about your space, needs and budget." },
@@ -186,7 +172,6 @@ export const ui = {
       ],
     },
     about: {
-      eyebrow: "About",
       title: "A family workshop with a tradition.",
       text: "Maličević Enterijeri is a workshop dedicated to furniture and interiors. We combine craft experience with contemporary design so every piece is functional, durable and beautiful.",
       stats: [
@@ -196,7 +181,6 @@ export const ui = {
       ],
     },
     contact: {
-      eyebrow: "Contact",
       title: "Let's talk about your space.",
       text: "Call us or message us on Viber, WhatsApp or social media. We work with clients in Bosnia and Herzegovina and across Europe.",
       call: "Call",

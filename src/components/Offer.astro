@@ -10,10 +10,7 @@ const t = getUI(Astro.props.lang).offer;
 ---
 
 <section id="services" class="wrap pb-24 md:pb-40">
-  <div class="mb-12 grid gap-6 md:mb-16 md:grid-cols-12">
-    <p class="eyebrow reveal md:col-span-3">{t.eyebrow}</p>
-    <h2 class="h-section reveal md:col-span-9 md:max-w-[22ch]">{t.title}</h2>
-  </div>
+  <h2 class="h-section reveal mb-12 md:mb-16 md:max-w-[22ch]">{t.title}</h2>
   <ul class="grid gap-4 md:grid-cols-3">
     {
       t.items.map((item, i) => (

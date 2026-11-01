@@ -1,4 +1,5 @@
 ---
+import Arrow from "./Arrow.astro";
 import { site } from "../data/site";
 import { getUI, type Lang } from "../i18n/ui";
 
@@ -35,7 +36,6 @@ const apps = [
   <div class="wrap pt-20 pb-14 md:pt-[5.5rem] md:pb-[4.5rem]">
     <div class="grid gap-14 md:grid-cols-12 md:gap-10">
       <div class="md:col-span-5 md:flex md:flex-col">
-        <p class="eyebrow mb-5 text-white/60">{t.eyebrow}</p>
         <h2 class="h-section max-w-[14ch]">{t.title}</h2>
         <p class="mt-6 max-w-sm text-white/70">{t.text}</p>
 
@@ -61,7 +61,7 @@ const apps = [
                 rel={r.href.startsWith("http") ? "noopener" : undefined}
               >
                 <span class="eyebrow shrink-0 text-white/55">{r.label}</span>
-                <span class="min-w-0 text-right font-serif text-xl tracking-tight [overflow-wrap:anywhere] min-[400px]:text-2xl md:text-2xl lg:text-4xl">{r.value}&nbsp;<span aria-hidden="true">↗</span></span>
+                <span class="min-w-0 text-right font-serif text-xl tracking-tight [overflow-wrap:anywhere] min-[400px]:text-2xl md:text-2xl lg:text-4xl">{r.value}&nbsp;<Arrow /></span>
               </a>
             </li>
           ))}
@@ -69,7 +69,7 @@ const apps = [
           <span class="contact-row-num font-serif text-xl tracking-tight max-[359px]:text-lg min-[400px]:text-2xl md:text-2xl lg:text-4xl">{site.messenger.display}</span>
           <span class="contact-row-apps flex flex-col gap-2 lg:flex-row">
             {apps.map((app) => (
-              <a class="pill pill--light justify-center" href={app.href} target={app.href.startsWith("http") ? "_blank" : undefined} rel={app.href.startsWith("http") ? "noopener" : undefined}>{app.label} <span aria-hidden="true">↗</span></a>
+              <a class="pill pill--light justify-center" href={app.href} target={app.href.startsWith("http") ? "_blank" : undefined} rel={app.href.startsWith("http") ? "noopener" : undefined}>{app.label} <Arrow /></a>
             ))}
           </span>
         </li>
@@ -82,7 +82,7 @@ const apps = [
                 rel={r.href.startsWith("http") ? "noopener" : undefined}
               >
                 <span class="eyebrow shrink-0 text-white/55">{r.label}</span>
-                <span class="min-w-0 text-right font-serif text-xl tracking-tight [overflow-wrap:anywhere] min-[400px]:text-2xl md:text-2xl lg:text-4xl">{r.value}&nbsp;<span aria-hidden="true">↗</span></span>
+                <span class="min-w-0 text-right font-serif text-xl tracking-tight [overflow-wrap:anywhere] min-[400px]:text-2xl md:text-2xl lg:text-4xl">{r.value}&nbsp;<Arrow /></span>
               </a>
             </li>
           ))}

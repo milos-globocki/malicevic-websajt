@@ -48,6 +48,8 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 - Never read `photo(x).width`/`.height` in a component. Any property access makes Astro ship the original JPEG as well. Read the dimensions off a `getImage()` result (`.options.src`) instead, as `Portfolio.astro` does.
 - Component CSS must stay inside `@layer components`. Otherwise it overrides Tailwind utilities such as `hidden` and `md:flex`.
 - A CSS grid with no `grid-template-columns` sizes its column to its widest unbreakable content (a `truncate` line, say). On a phone the content then spills off the screen, in Chrome and Safari alike. Give such grids `minmax(0, 1fr)` columns, as `.lb` has. After a layout change, measure at phone widths that nothing sticks out of the viewport, with the lightbox open too, in Chromium and in WebKit (Playwright `webkit`; every iPhone browser, Brave and Chrome included, runs on WebKit).
+- Never write arrow characters such as `↗` in markup: iPhones draw them as colour emoji. Links that leave the page use the SVG in `Arrow.astro`. `→` and `↓` render as text and are fine.
+- Section headings stand alone: no small uppercase overline ("eyebrow") above them. The `.eyebrow` style is only for labels and facts (contact row labels, `Po mjeri · 2025`, the project breadcrumb).
 - `astro check` needs TypeScript 6. TS 7 is unsupported, so keep `typescript@^6`.
 
 ## Content workflow

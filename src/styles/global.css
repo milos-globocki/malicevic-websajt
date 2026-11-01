@@ -435,6 +435,8 @@
 .pj-strip--reel .pj-frame--cover {
   grid-column: auto;
   aspect-ratio: auto;
+  /* Its photo must not size the row: a portrait cover would stand taller than the clip. */
+  contain: size;
 }
 .pj-frame--reel {
   aspect-ratio: 9 / 16;
@@ -1204,6 +1206,18 @@
 }
 
 /* ---------- Contact links ---------- */
+/* A hairline like the serif's own strokes, at any text size. */
+.arrow-out {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.25px;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .contact-link {
   display: flex;
   align-items: baseline;
