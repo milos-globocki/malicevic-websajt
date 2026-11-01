@@ -92,31 +92,35 @@ if (video && !skip) {
 
 // 2c. Project clips (Reel.astro): sources attached when a clip nears the screen, played
 //     while it is on it. Skipped, the poster frame shows instead (.is-on reveals it).
+//     A clip starts only once it has stayed in view a moment: a jump to a section further
+//     down flies past the featured stack, and starting its clips on the way drops frames.
+//     The poster is the clip's first frame, so the wait does not show.
 for (const reel of document.querySelectorAll<HTMLVideoElement>("video[data-reel]")) {
   if (skip) {
     reel.classList.add("is-on");
     continue;
   }
   let loaded = false;
+  let wait = 0;
+  const start = () => {
+    if (!loaded) {
+      loaded = true;
+      reel.replaceChildren(
+        ...(JSON.parse(reel.dataset.reel!) as { src: string; type: string }[]).map((s) =>
+          Object.assign(document.createElement("source"), s),
+        ),
+      );
+      reel.preload = "auto";
+      reel.load();
+    }
+    reel.play().catch(() => {});
+  };
   reel.addEventListener("playing", () => reel.classList.add("is-on"), { once: true });
-  new IntersectionObserver(
-    ([entry]) => {
-      if (!entry) return;
-      if (!entry.isIntersecting) return reel.pause();
-      if (!loaded) {
-        loaded = true;
-        reel.replaceChildren(
-          ...(JSON.parse(reel.dataset.reel!) as { src: string; type: string }[]).map((s) =>
-            Object.assign(document.createElement("source"), s),
-          ),
-        );
-        reel.preload = "auto";
-        reel.load();
-      }
-      reel.play().catch(() => {});
-    },
-    { rootMargin: "200px 0px" },
-  ).observe(reel);
+  new IntersectionObserver(([entry]) => {
+    clearTimeout(wait);
+    if (!entry?.isIntersecting) return reel.pause();
+    wait = window.setTimeout(start, 400);
+  }).observe(reel);
 }
 
 // 3. Lightbox for the photos on a project page.
