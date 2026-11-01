@@ -129,8 +129,8 @@ if (dialog) {
   const img = dialog.querySelector("img")!;
   const stage = dialog.querySelector("[data-lb-stage]")!;
   const count = dialog.querySelector("[data-lb-count]")!;
-  const title = dialog.querySelector("[data-lb-title]")!;
-  const note = dialog.querySelector("[data-lb-note]")!;
+  const title = dialog.querySelector("[data-lb-title]");
+  const note = dialog.querySelector("[data-lb-note]");
   const pad = (n: number) => String(n).padStart(2, "0");
   img.addEventListener("load", () => img.classList.add("is-in"));
   const items = () =>
@@ -146,8 +146,8 @@ if (dialog) {
     img.src = el.dataset.full!;
     img.alt = el.dataset.alt ?? "";
     count.textContent = `${pad(index + 1)} / ${pad(list.length)}`;
-    title.textContent = el.dataset.title ?? "";
-    note.textContent = el.dataset.note ?? "";
+    if (title) title.textContent = el.dataset.title ?? "";
+    if (note) note.textContent = el.dataset.note ?? "";
   };
 
   document.addEventListener("click", (e) => {
