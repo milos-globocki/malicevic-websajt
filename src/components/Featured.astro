@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import { projectPath, projects } from "../data/projects";
 import { photo } from "../data/photos";
-import Reel from "./Reel.astro";
 import { getUI, projectsPath, type Lang } from "../i18n/ui";
 
 interface Props {
@@ -48,7 +47,7 @@ const stack = (i: number) =>
                 <a href={projectPath(p, lang)} class="pill pill--solid mt-8">{t.projects.view} →</a>
               </div>
             </div>
-            <div class="hover-zoom relative overflow-hidden md:col-span-8">
+            <div class="hover-zoom overflow-hidden md:col-span-8">
               <Image
                 src={photo(p.photos[0]!)}
                 alt={p.title[lang]}
@@ -59,7 +58,6 @@ const stack = (i: number) =>
                 data-vt={p.id}
                 data-vt-href={projectPath(p, lang)}
               />
-              {p.video && <Reel name={p.video} class="card-reel" />}
             </div>
           </div>
         </article>
