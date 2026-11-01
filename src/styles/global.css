@@ -1130,7 +1130,7 @@
   color: #fff;
   /* The rows live on .lb, not .lb[open]: while it fades out the dialog is no
      longer [open], and losing the rows would collapse the photo mid fade. The column is
-     held to the screen: left auto, a long title sizes it and Safari pushes it off screen. */
+     held to the screen: left auto, a long title sizes it and the frame spills off screen. */
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto minmax(0, 1fr) auto;
   gap: 1rem;

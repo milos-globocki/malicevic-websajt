@@ -47,7 +47,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 - Never put `overflow: hidden` on an ancestor of a `view()`-animated element. It makes that ancestor the timeline's scroller, which never scrolls, so the effect freezes. Use `overflow: clip` (`overflow-clip`) to crop instead.
 - Never read `photo(x).width`/`.height` in a component. Any property access makes Astro ship the original JPEG as well. Read the dimensions off a `getImage()` result (`.options.src`) instead, as `Portfolio.astro` does.
 - Component CSS must stay inside `@layer components`. Otherwise it overrides Tailwind utilities such as `hidden` and `md:flex`.
-- A CSS grid with no `grid-template-columns` sizes its column to its widest unbreakable content (a `truncate` line, say). Safari then pushes the overflow off the left edge of the screen. Give such grids `minmax(0, 1fr)` columns, as `.lb` has. After a layout change, check phones in WebKit (Playwright `webkit`), not only Chrome.
+- A CSS grid with no `grid-template-columns` sizes its column to its widest unbreakable content (a `truncate` line, say). On a phone the content then spills off the screen, in Chrome and Safari alike. Give such grids `minmax(0, 1fr)` columns, as `.lb` has. After a layout change, measure at phone widths that nothing sticks out of the viewport, with the lightbox open too, in Chromium and in WebKit (Playwright `webkit`; every iPhone browser, Brave and Chrome included, runs on WebKit).
 - `astro check` needs TypeScript 6. TS 7 is unsupported, so keep `typescript@^6`.
 
 ## Content workflow
