@@ -995,6 +995,25 @@
   top: calc(5.25rem + var(--i, 0) * 1rem);
   transform-origin: 50% 0;
 }
+/* Phones: the card is the screen less its sticky top and a strip where the next card
+   already shows, the photo taking whatever the text leaves. The photo keeps at least
+   10rem, so on a short screen or with a long title the card grows past that instead. */
+@media (max-width: 767.98px) {
+  .stack-card {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100svh - 11rem - var(--i, 0) * 1rem);
+  }
+  /* Flex column from its utilities (a display set here would lose to them). */
+  .stack-body {
+    flex: 1;
+    min-height: 0;
+  }
+  .stack-media {
+    flex: 1 1 0;
+    min-height: 10rem;
+  }
+}
 
 /* ---------- Video band ---------- */
 .vband {
