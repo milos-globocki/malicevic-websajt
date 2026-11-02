@@ -8,7 +8,9 @@ interface Props {
 const words = splitWords(getUI(Astro.props.lang).statement);
 ---
 
-<section class="wrap py-28 md:py-44">
+<!-- A segment of its own between the hero and the offer: it takes the whole screen and
+     holds the statement in its middle, on every width. -->
+<section class="wrap flex min-h-svh flex-col justify-center py-28 md:py-44">
   <p class="fill h-section max-w-[24ch] md:max-w-[28ch]" style="font-size: clamp(2rem, 5.2vw, 4.75rem)">
     {words.map(({ word, p }) => <span class="w" style={`--p:${p}`}>{word} </span>)}
   </p>
