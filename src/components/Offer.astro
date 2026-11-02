@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import { photo } from "../data/photos";
 import { getUI, type Lang } from "../i18n/ui";
+import { splitWords } from "../lib/words";
 
 interface Props {
   lang: Lang;
@@ -9,8 +10,12 @@ interface Props {
 const t = getUI(Astro.props.lang).offer;
 ---
 
-<section id="services" class="wrap pb-24 md:pb-40">
-  <h2 class="h-section reveal mb-12 md:mb-16 md:max-w-[22ch]">{t.title}</h2>
+<!-- With motion, the heading rises into the opening at the end of the dive above
+     (Statement.astro): .dive-next pulls this section up under the held statement. -->
+<section id="services" class="dive-next wrap pb-24 md:pb-40">
+  <h2 class="dive-head h-section mb-12 md:mb-16 md:max-w-[22ch]">
+    {splitWords(t.title).map(({ word, p }) => <><span class="w" style={`--p:${p}`}>{word}</span>{" "}</>)}
+  </h2>
   <ul class="grid gap-4 md:grid-cols-3">
     {
       t.items.map((item, i) => (

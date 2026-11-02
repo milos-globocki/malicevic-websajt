@@ -175,6 +175,140 @@ if (dialog) {
   );
 }
 
+// 3b. The dive into the statement's full stop (Statement.astro): the motion is CSS on the
+//     scroll; this tells it where the dot sits, measured again whenever the text reflows,
+//     and finishes the move once the scroll stops half way. offsetLeft/Top give the layout
+//     position, unmoved by the zoom.
+const dive = document.querySelector<HTMLElement>("[data-dive]");
+if (dive) {
+  const pin = dive.firstElementChild as HTMLElement;
+  const cam = pin.querySelector<HTMLElement>(".dive-cam")!;
+  const text = pin.querySelector<HTMLElement>(".dive-text")!;
+  const dot = pin.querySelector<HTMLElement>(".dive-dot")!;
+  // Position within the pin, whichever ancestors the browser counts as offset parents.
+  const at = (el: HTMLElement) => {
+    let x = 0;
+    let y = 0;
+    for (let e: HTMLElement | null = el; e && e !== pin; e = e.offsetParent as HTMLElement | null) {
+      x += e.offsetLeft;
+      y += e.offsetTop;
+    }
+    return [x, y] as const;
+  };
+  const measure = () => {
+    // The camera is the screen with the browser bars showing; the pin reaches on to the
+    // bottom of the screen without them.
+    const w = pin.clientWidth;
+    const h = cam.clientHeight;
+    const r = parseFloat(getComputedStyle(dot).width) / 2;
+    const [dl, dt] = at(dot);
+    const [tl, tt] = at(text);
+    const x = dl + r;
+    const y = dt + r;
+    const R = Math.ceil(Math.hypot(w / 2, Math.max(h / 2, pin.clientHeight - h / 2))) + 2;
+    const set = (k: string, v: number) => pin.style.setProperty(k, `${v}px`);
+    set("--dx", x);
+    set("--dy", y);
+    set("--cy", h / 2);
+    set("--tx", w / 2 - x);
+    set("--ty", h / 2 - y);
+    set("--ox", x - tl);
+    set("--oy", y - tt);
+    set("--R", R);
+    pin.style.setProperty("--s0", String(r / R));
+    dive.dataset.ready = "";
+  };
+  const ro = new ResizeObserver(measure);
+  ro.observe(pin);
+  ro.observe(cam);
+  ro.observe(text);
+  document.fonts.ready.then(measure);
+
+  // The move from the full statement to the offer heading is never left half way: once
+  // the scroll stops in between, it glides on to the end it was heading for, down to the
+  // heading at its anchor position (#services, cards below) or back up to the statement.
+  // Only a scroll that has come to rest is moved, so a fling or a trackpad's coast plays
+  // out first. A touch, a key or a wheel turned the other way hands the scroll back.
+  const services = document.getElementById("services");
+  if (services && CSS.supports("animation-timeline: view()")) {
+    const calm = matchMedia("(prefers-reduced-motion: reduce)");
+    // Cover 103svh on the scene's timeline (global.css, "Dive"); the camera is 100svh.
+    const ends = () => {
+      const y = scrollY;
+      return [
+        dive.getBoundingClientRect().top + y - innerHeight + cam.clientHeight * 1.03,
+        services.getBoundingClientRect().top + y - parseFloat(getComputedStyle(services).scrollMarginTop),
+      ] as const;
+    };
+    let last = scrollY;
+    let dir = 0;
+    let touching = false;
+    let glide = 0;
+    let glideDir = 0;
+    let rest = 0;
+    // While gliding, the wheel turned the same way is held back rather than fought.
+    const wheel = (e: WheelEvent) => {
+      if (Math.sign(e.deltaY) === glideDir) e.preventDefault();
+      else if (e.deltaY) stop();
+    };
+    const stop = () => {
+      cancelAnimationFrame(glide);
+      glide = 0;
+      removeEventListener("wheel", wheel);
+    };
+    const settle = () => {
+      if (glide || touching || !dir || calm.matches) return;
+      const [from, to] = ends();
+      const y = scrollY;
+      if (y <= from + 1 || y >= to - 1) return;
+      const target = dir > 0 ? to : from;
+      const time = 250 + (850 * Math.abs(target - y)) / (to - from);
+      const start = performance.now();
+      const step = (now: number) => {
+        const t = Math.min((now - start) / time, 1);
+        const e = t < 0.5 ? 4 * t ** 3 : 1 - (2 - 2 * t) ** 3 / 2;
+        scrollTo({ top: y + (target - y) * e, behavior: "instant" });
+        if (t < 1) glide = requestAnimationFrame(step);
+        else stop();
+      };
+      glideDir = dir;
+      glide = requestAnimationFrame(step);
+      addEventListener("wheel", wheel, { passive: false });
+    };
+    // At rest: the scroll has been still a moment (Safari has no scrollend yet), or a
+    // finger has just let go without a fling.
+    const later = () => {
+      clearTimeout(rest);
+      rest = window.setTimeout(settle, 150);
+    };
+    addEventListener(
+      "scroll",
+      () => {
+        if (!glide && scrollY !== last) dir = Math.sign(scrollY - last);
+        last = scrollY;
+        later();
+      },
+      { passive: true },
+    );
+    addEventListener("scrollend", settle);
+    addEventListener(
+      "touchstart",
+      () => {
+        touching = true;
+        stop();
+      },
+      { passive: true },
+    );
+    const lift = () => {
+      touching = false;
+      later();
+    };
+    addEventListener("touchend", lift, { passive: true });
+    addEventListener("touchcancel", lift, { passive: true });
+    addEventListener("keydown", stop);
+  }
+}
+
 // 4. Page transitions: the crossfade itself is CSS (@view-transition). Here we pick the one
 //    photo that should grow into the next page's hero, or shrink back into its card:
 //    [data-vt] marks project photos, [data-vt-href] the project page each one opens and
