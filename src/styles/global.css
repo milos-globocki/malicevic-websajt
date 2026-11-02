@@ -891,20 +891,24 @@
        full stop until the dot covers the screen, and the dark opens from the middle onto
        the offer heading. Offsets are scroll lengths on the scene's own timeline, from the
        moment its top meets the bottom of the screen (cover 0):
-         45 to 112  words fill in as the statement rises to the middle
-         118 to 200 zoom: the dot slides to the middle while the words grow and fade,
+         40 to 102  words fill in as the statement rises to the middle
+         103        the full statement, held: one end of the move below
+         106 to 166 zoom: the dot slides to the middle while the words grow and fade,
                     then the dot rushes out to cover the screen
-         212        the heading below starts to rise under the dark (its own timeline)
-         214 to 244 the dark opens from the middle, the heading's words rise into it
-         246 to 270 the rest of the dark fades away, uncovering the offer cards
-         290        the scene ends and scrolls away with the page
-       The heading is pulled 78svh up into the scene (.dive-next), so it rises into the
+         168        the heading below starts to rise under the dark (its own timeline)
+         170 to 194 the dark opens from the middle, the heading's words rise into it
+         194 to 210 the rest of the dark fades away, uncovering the offer cards
+         215        the scene ends and scrolls away with the page
+         about 253  the heading at its anchor position (#services): the other end
+       The move between the two ends is never left half way: once the scroll stops in
+       between, main.ts glides it on to the end it was heading for.
+       The heading is pulled 47svh up into the scene (.dive-next), so it rises into the
        opening and the cards follow it as usual. main.ts sets the dot's position (--dx,
        --dy), the middle of the screen (--cy), the slide that centres the dot (--tx,
        --ty), the zoom origin in the text (--ox, --oy), and the disc size (--R, the reach
        to the furthest corner, and --s0, the dot's share of it). */
     .dive {
-      height: 290svh;
+      height: 215svh;
       view-timeline: --dive block;
     }
     /* The pin is as tall as the screen gets once the phone's browser bars slide away, so
@@ -929,14 +933,14 @@
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --dive;
-      animation-range: cover calc(45svh + var(--p) * 55svh) cover calc(57svh + var(--p) * 55svh);
+      animation-range: cover calc(40svh + var(--p) * 50svh) cover calc(52svh + var(--p) * 50svh);
     }
     .dive-cam {
       animation-name: dive-move;
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --dive;
-      animation-range: cover 118svh cover 200svh;
+      animation-range: cover 106svh cover 166svh;
     }
     .dive-text {
       transform-origin: var(--ox, 100%) var(--oy, 100%);
@@ -944,7 +948,7 @@
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --dive;
-      animation-range: cover 118svh cover 200svh;
+      animation-range: cover 106svh cover 166svh;
     }
     /* The dot is a disc of its own above the words: drawn at full size and scaled down, it
        stays sharp at the end, where the words would blur. Until the zoom it sits exactly
@@ -957,7 +961,7 @@
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --dive;
-      animation-range: cover 246svh cover 270svh;
+      animation-range: cover 194svh cover 210svh;
     }
     .dive:not([data-ready]) .dive-veil {
       display: none;
@@ -978,8 +982,8 @@
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --dive;
-      animation-range-start: cover 110svh, cover 118svh, cover 118svh;
-      animation-range-end: cover 118svh, cover 200svh, cover 200svh;
+      animation-range-start: cover 100svh, cover 106svh, cover 106svh;
+      animation-range-end: cover 106svh, cover 166svh, cover 166svh;
     }
     .dive-iris {
       left: 50%;
@@ -989,10 +993,10 @@
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: --dive;
-      animation-range: cover 214svh cover 244svh;
+      animation-range: cover 170svh cover 194svh;
     }
     .dive-next {
-      margin-top: -78svh;
+      margin-top: -47svh;
     }
     .dive-head {
       position: relative;

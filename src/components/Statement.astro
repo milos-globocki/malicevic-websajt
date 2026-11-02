@@ -15,8 +15,8 @@ const last = words.length - 1;
   The statement fills in word by word as it rises, then holds on screen while the scroll
   zooms into its last words, faster and faster, until the full stop covers the screen.
   The dark opens from the middle onto the offer heading (Offer.astro), which rises into
-  it. All of it is CSS on the scroll (global.css, "Dive"); main.ts only measures where the
-  dot sits. Without scroll-driven animations, or with reduced motion, this is the plain
+  it. All of it is CSS on the scroll (global.css, "Dive"); main.ts measures where the dot
+  sits, and once the scroll stops half way it glides on to the heading or back. Without scroll-driven animations, or with reduced motion, this is the plain
   statement and the heading follows as usual.
 -->
 <section class="dive" data-dive>
