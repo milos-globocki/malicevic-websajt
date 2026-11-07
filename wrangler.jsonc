@@ -2,6 +2,8 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "malicevic",
   "compatibility_date": "2026-11-07",
+  // A single production Worker: new versions get no public preview address.
+  "preview_urls": false,
   // Static Astro build: Cloudflare serves these files, with no Worker code in front of them.
   "assets": { "directory": "./dist", "not_found_handling": "404-page" }
 }
