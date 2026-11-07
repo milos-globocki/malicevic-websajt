@@ -70,6 +70,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 ## Hosting
 - A Cloudflare Worker with static assets (`wrangler.jsonc`), at `malicevic.somalosmi.workers.dev` until the domain is attached. The `workers.dev` copy is noindex through `public/_headers`.
 - There is no Worker code: every request is a plain static asset, free and outside the account's daily Workers quota. Keep it that way. Static assets answer Range requests with the whole file (200), but the clips play on a real iPhone without a handler, so don't add one because of a `curl` result.
+- Unknown URLs get `404.html` or `en/404.html` (`NotFound.astro`, `not_found_handling` in `wrangler.jsonc`), with status 404. These pages are noindex and stay out of the sitemap.
 - `public/_redirects` sends the previous site's URLs (`/o-nama`, `/galerija`, `/dizajn-enterijera`, `/kontakt`) to their sections.
 - The production domain `enterijermalicevic.ba` is the default `site`; `SITE_URL` overrides it. The domain stays registered through GlobalHost (`.ba` is not on Cloudflare Registrar). Mail is on Google Workspace, so moving the DNS must carry over the MX and TXT records.
 

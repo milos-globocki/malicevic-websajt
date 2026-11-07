@@ -3,5 +3,5 @@
   "name": "malicevic",
   "compatibility_date": "2026-11-07",
   // Static Astro build: Cloudflare serves these files, with no Worker code in front of them.
-  "assets": { "directory": "./dist" }
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" }
 }

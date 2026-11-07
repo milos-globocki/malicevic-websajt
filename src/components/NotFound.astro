@@ -1,0 +1,36 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "./Header.astro";
+import Contact from "./Contact.astro";
+import { site } from "../data/site";
+import { getUI, homePath, projectsPath, type Lang } from "../i18n/ui";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = getUI(lang).notFound;
+---
+
+<Layout lang={lang} title={`${t.title} | ${site.name}`} description={t.intro} noindex>
+  <Header lang={lang} solid />
+  <main id="main">
+    <section class="wrap grid min-h-svh content-end gap-8 pb-14 pt-32 md:grid-cols-12 md:items-end md:pb-24 md:pt-48" style="--intro: 0.15s">
+      <div class="md:col-span-8">
+        <h1 class="h-display max-w-[14ch]">
+          <span class="line"><span class="line-in" style="--d:0">{t.line1}</span></span>
+          <span class="line"><span class="line-in font-serif font-normal italic" style="--d:1">{t.line2}</span></span>
+        </h1>
+      </div>
+      <div class="hero-rise max-w-sm md:col-span-4 md:justify-self-end" style="--d:3">
+        <p class="font-serif text-lg italic text-mute tabular-nums">404</p>
+        <p class="mt-3 text-mute">{t.intro}</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href={homePath(lang)} class="pill pill--solid">{t.home}</a>
+          <a href={projectsPath(lang)} class="pill">{t.projects}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Contact lang={lang} />
+</Layout>

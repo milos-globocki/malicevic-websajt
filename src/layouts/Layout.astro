@@ -16,8 +16,10 @@ interface Props {
   image?: string;
   /** Page-specific JSON-LD: page type, breadcrumbs, extra nodes. */
   ld?: Pick<PageMeta, "type" | "crumbs" | "about" | "nodes">;
+  /** For the 404 page: no canonical, hreflang or JSON-LD, and kept out of search results. */
+  noindex?: boolean;
 }
-const { lang, paths = homePaths, image, ld: pageLd } = Astro.props;
+const { lang, paths = homePaths, image, ld: pageLd, noindex = false } = Astro.props;
 const t = getUI(lang);
 const title = Astro.props.title ?? t.metaTitle;
 const description = Astro.props.description ?? t.metaDescription;
@@ -37,11 +39,12 @@ const ld = await jsonLd({ lang, paths, title, description, image: ogUrl, ...page
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f6f3f0" />
-    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
     {
-      langs.map((l) => <link rel="alternate" hreflang={getUI(l).hreflang} href={href(l)} />)
+      !noindex && langs.map((l) => <link rel="alternate" hreflang={getUI(l).hreflang} href={href(l)} />)
     }
-    <link rel="alternate" hreflang="x-default" href={href("sr")} />
+    {!noindex && <link rel="alternate" hreflang="x-default" href={href("sr")} />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content={t.ogLocale} />
@@ -59,7 +62,7 @@ const ld = await jsonLd({ lang, paths, title, description, image: ogUrl, ...page
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={newsreaderLatin} as="font" type="font/woff2" crossorigin />
-    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
   </head>
   <body>
     <a
