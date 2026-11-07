@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "deploy:test": "SITE_URL=https://malicevic.pages.dev astro build && pnpm dlx wrangler@4.152.0 pages deploy dist --project-name malicevic --branch main"
+    "deploy:prod": "astro check && astro build && wrangler deploy"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "4.152.0"
   }
 }

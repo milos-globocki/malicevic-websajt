@@ -62,11 +62,16 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 - Photos that no component renders must not sit in `src/assets/photos/` itself: the glob imports them and Astro then ships the original JPEG. Keep spares in a subfolder (`unused/`, `archive/`).
 - An admin panel or CMS comes only if manual updates become a burden. Keep the data shape CMS-friendly: flat objects, one photo per name.
 - Current photos and clips are the client's own work, delivered as camera originals and phone shots and listed in `src/assets/photos/CREDITS.md`. The clips are the client's Instagram reels, with their own logo and captions baked in. The previous site's photos and projects are in `src/assets/photos/archive/` (and `../original-site-assets/`).
-- Contact details, address (city only), geo and socials come from the old site. Placeholders are marked `TODO`: domain (`site` in `astro.config.mjs`), the international phone number (`phoneIntl` in `site.ts`, the row hides while empty), opening hours, the two hero clips, the workshop video, and the About/Offer copy and numbers.
+- Contact details, address (city only), geo and socials come from the old site. Placeholders are marked `TODO`: the international phone number (`phoneIntl` in `site.ts`, the row hides while empty), opening hours, the two hero clips, the workshop video, and the About/Offer copy and numbers.
 
 ## Commands
-`pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm check`. Run `pnpm check && pnpm build` before calling work done.
-Hosting is undecided. Any static host works; Cloudflare Pages is preferred.
+`pnpm dev` · `pnpm build` · `pnpm preview` · `pnpm check` · `pnpm deploy:prod`. Run `pnpm check && pnpm build` before calling work done. `pnpm deploy` alone is pnpm's own command, not this script.
+
+## Hosting
+- A Cloudflare Worker with static assets (`wrangler.jsonc`), at `malicevic.somalosmi.workers.dev` until the domain is attached. The `workers.dev` copy is noindex through `public/_headers`.
+- Static assets answer Range requests with the whole file (200), and Safari expects 206 for video. So `run_worker_first` sends `/video/*` to `worker/index.js`, which cuts the ranges. Only those requests count against the account's daily Workers quota; everything else stays plain static assets.
+- `public/_redirects` sends the previous site's URLs (`/o-nama`, `/galerija`, `/dizajn-enterijera`, `/kontakt`) to their sections.
+- The production domain `enterijermalicevic.ba` is the default `site`; `SITE_URL` overrides it. The domain stays registered through GlobalHost (`.ba` is not on Cloudflare Registrar). Mail is on Google Workspace, so moving the DNS must carry over the MX and TXT records.
 
 ## Don'ts
 - Don't use the connected Resend MCP. It belongs to another project (Terminko).

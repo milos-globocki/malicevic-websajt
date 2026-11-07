@@ -1,0 +1,9 @@
+# Pages of the previous site, so old links and search results land on the matching section.
+/o-nama /#about 301
+/o-nama/ /#about 301
+/galerija /#portfolio 301
+/galerija/ /#portfolio 301
+/dizajn-enterijera /#services 301
+/dizajn-enterijera/ /#services 301
+/kontakt /#contact 301
+/kontakt/ /#contact 301

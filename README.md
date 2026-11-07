@@ -18,7 +18,7 @@ black, big grotesque + serif, 25px radii, scroll-driven motion) at a fraction of
 | JS | ~2 KB in `src/scripts/main.ts`: menu close, video play/pause, lightbox |
 | Contact | Static details section (phone, Viber, WhatsApp, Instagram, Facebook, TikTok, email, opening hours). **No form, no backend.** |
 | SEO | JSON-LD `@graph`, hreflang, OG tags, `sitemap.xml` (with images) + `robots.txt` generated from `site` |
-| Hosting | Not decided. Any static host works (Cloudflare Pages recommended). |
+| Hosting | Cloudflare Worker with static assets (`wrangler.jsonc`), deployed with `pnpm deploy:prod`. |
 
 ## Commands
 

@@ -1,9 +1,9 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
-// TODO: real production domain. Canonicals, hreflang, sitemap.xml and robots.txt all derive from it.
-// SITE_URL overrides it for test builds, e.g. the Cloudflare Pages preview.
-const site = process.env.SITE_URL ?? "https://malicevic.example";
+// Production domain. Canonicals, hreflang, sitemap.xml and robots.txt all derive from it.
+// SITE_URL overrides it for a build meant for another address.
+const site = process.env.SITE_URL ?? "https://enterijermalicevic.ba";
 
 export default defineConfig({
   site,
