@@ -69,7 +69,7 @@ Showcase site and portfolio for a furniture and interiors workshop: finished pro
 
 ## Hosting
 - A Cloudflare Worker with static assets (`wrangler.jsonc`), at `malicevic.somalosmi.workers.dev` until the domain is attached. The `workers.dev` copy is noindex through `public/_headers`.
-- Static assets answer Range requests with the whole file (200), and Safari expects 206 for video. So `run_worker_first` sends `/video/*` to `worker/index.js`, which cuts the ranges. Only those requests count against the account's daily Workers quota; everything else stays plain static assets.
+- There is no Worker code: every request is a plain static asset, free and outside the account's daily Workers quota. Keep it that way. Static assets answer Range requests with the whole file (200), but the clips play on a real iPhone without a handler, so don't add one because of a `curl` result.
 - `public/_redirects` sends the previous site's URLs (`/o-nama`, `/galerija`, `/dizajn-enterijera`, `/kontakt`) to their sections.
 - The production domain `enterijermalicevic.ba` is the default `site`; `SITE_URL` overrides it. The domain stays registered through GlobalHost (`.ba` is not on Cloudflare Registrar). Mail is on Google Workspace, so moving the DNS must carry over the MX and TXT records.
 
